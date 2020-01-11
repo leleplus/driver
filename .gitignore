@@ -1,0 +1,22 @@
+# keil项目相关的忽略文件
+*.plg
+*.uvgui.*
+JLinkLog.txt
+*.o
+*.d
+*.crf
+*.tra
+*.axf
+# *.hex
+*.lnp
+*.sct
+*.__i
+*.dep
+*.map
+*.lst
+*.iex
+*.scvd
+*.uvguix
+*.dbg*
+*.uvguix.*
+.mxproject

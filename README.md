@@ -2,7 +2,7 @@
 
 ## Background
 
-    Soon, I was about to graduate, facing the problem of graduation design, so with the development background of this project, at first, I just wanted to make a Java Web project based on the Spring boot framework. Due to the requirements of the school, the graduates of this major graduate The design must be related to the embedded or the Internet of Things. I have to improve my ideas. The current project includes the web server inherited by the Spring boot framework, the web front-end page inherited by the vue framework, and embedded devices based on the Stm32F103ZE development board, including , RFID module, LED light, ESP8266 module, etc. The project is being perfected, good luck to me ...
+  Soon, I was about to graduate, facing the problem of graduation design, so with the development background of this project, at first, I just wanted to make a Java Web project based on the Spring boot framework. Due to the requirements of the school, the graduates of this major graduate The design must be related to the embedded or the Internet of Things. I have to improve my ideas. The current project includes the web server inherited by the Spring boot framework, the web front-end page inherited by the vue framework, and embedded devices based on the Stm32F103ZE development board, including , RFID module, LED light, ESP8266 module, etc. The project is being perfected, good luck to me ...
 
 
 ## install
@@ -21,7 +21,7 @@ $ git clone https://github.com/leleplus/driver.git
 > Embedded related code is developed based on keil5, you can also directly download the hex file in the `bin/` directory to the corresponding development board
 
 ```bash
-cd driver/
+$ cd driver/
 ```
 
 ## Usage
