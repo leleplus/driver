@@ -5,6 +5,7 @@
 
 #include "delay.h"
 #include "led.h"
+#include "key.h"
 
 
 /**
@@ -21,6 +22,7 @@ void init(void){
 	
 	delayInit();	    	 //延时函数初始化	  
 	ledInit();		  	//初始化与LED连接的硬件接口
+	keyInit();
 	
 }
 
@@ -31,16 +33,31 @@ void init(void){
 *
 */
 int main(void){
+	int key = 0;
+	
 	// 初始化设备
 	init();
 	
+	
 	while(1){
-		openLed(LED_ALL);
-		delaySec(8);
+		
 		closeLed(LED_ALL);
-		delaySec(1);
-		openLed(LED_S3);
-		delaySec(3);
-		closeLed(LED_S3);
+		key = getKeyValue(0);
+		
+		switch(key){
+			case 1:
+				openLed(LED_S1);
+				break;
+			case 2:
+				openLed(LED_S2);
+				break;
+			case 3:
+				openLed(LED_S3);
+				break;
+			default:break;
+		}
+		
+		delayMs(600);
+		
 	}
 }

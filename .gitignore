@@ -20,3 +20,4 @@ JLinkLog.txt
 *.dbg*
 *.uvguix.*
 .mxproject
+/stm32_client/driver/bin/*.htm
