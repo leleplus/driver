@@ -3,32 +3,78 @@ DriverManager
 
 用户表(driver_user)
 	id bigint(255) primary key '主键id' auto_increment
-	parent_Id bigint(255)
-
+	telphone
+	login_Id(登录id，不可修改)
+	id_card
+	email(邮箱)varchar(255)
+	username(用户名，可修改)
+	password
+	role_name(角色名)
+	role_code(角色编码)
+	enable(账户是否可用) int
 
 
 系统管理员表(driver_administrator)
 
-	user_info_id(用户信息id) bigint(255)
+(管理员的这些信息不重要，一两个字段就可以，表得有，用来拓展，没有基于自身的业务)
+	id
+	realname(真实姓名)varchar(50)
+	gender
+	address
+	wage
+	job
 
 
-学员表(driver_student)
+
+
+学员表(driver_student_archives)
 	id bigint(255)
+	user_id(用户表外键)
+	realname(真实姓名)varchar(50)
+	birthday(出生日期)varchar(255)
+	age(年龄)int(255)
+	gender(性别)varchar(255)
+	id_photo(证件照)varchar(255)
+	user_face(头像)varchar(255)
+	national(民族)varchar(255)
+
+	address(住址)varchar(255)
+
+	Paper_file_number(纸质档案编号) varchar(200)
+	driver_type(报考驾照类型) varchar(20)
+	medical_time(体检时间) bigint(50)
+	agent(经办人) varchar(200)
+
 	sign_date(报名日期) bigint(50)
 	archive_id(档案编号) bigint(255)
 	expiration_time(过期时间) bigint(50)
 	user_info_id(信息表id) bigint(255)
 
+	created_time(创建时间) bigint(50)
+	is_enable(是否使用) int(1)
+	status(信息状态) varchar(50)
 
 
-教练表(driver_coach)
+教练表(driver_coach_archives)
 	id bigint(255)
-	user_info_id(信息表id) bigint(255)
+	user_id(用户表外键)
+	realname(真实姓名)varchar(50)
+	birthday(出生日期)varchar(255)
+	age(年龄)int(255)
+	gender(性别)varchar(255)
+	id_photo(证件照)varchar(255)
+	user_face(头像)varchar(255)
+	national(民族)varchar(255)
+
+	address(住址)varchar(255)
 	wage(工资) number(10,2)
 	driver_type(驾照类型) varchar(100)
 
 	car_info_id(车辆信息表id) bigint(255)
 
+	created_time(创建时间) bigint(50)
+	is_enable(是否使用) int(1)
+	status(信息状态) varchar(50)
 
 
 
@@ -40,62 +86,36 @@ DriverManager
 	----
 	created_time(创建时间) bigint(50)
 	expiration_time(过期时间) bigint(50)
-	is_enable(是否使用) int(1)
+	is_enable(是否有效) int(1)
 	status(信息状态) varchar(50)
 	description(描述信息) varchar(255)
 
 
-用户信息表(driver_user_info)
-	id bigint(255)
-	login_id(登录id)varchar(30) bigint(255)
-	username(用户名)varchar(30)
-	realname(真实姓名)varchar(50)
-	id_card(身份证号)varchar(20)
-	birthday(出生日期)varchar(255)
-	age(年龄)int(255)
-	gender(性别)varchar(255)
-	id_photo(证件照)varchar(255)
-	user_face(头像)varchar(255)
-	national(民族)varchar(255)
-	telphone(手机号)varchar(255)
-	email(邮箱)varchar(255)
-	address(住址)varchar(255)
-
-
-	-------
-	created_time(创建时间) bigint(50)
-	is_enable(是否使用) int(1)
-	status(信息状态) varchar(50)
-
-
 用户操作记录表(driver_action_record)
 	id bigint(255)
-	user_info_id(用户信息表id) bigint(255)
+	user_id(用户表id) bigint(255)
 
 	action_time(操作时间) bigint(50)
 	action_content(操作内容) varchar(255)
 	ip_address(ip地址) varchar(100)
 	city(操作城市) varchar(100)
 
+
+
 车辆信息表(driver_car_info)
 	id bigint(255)
 	Car_license_number(车牌号) varchar(200)
-
 	purchase_date(购买日期) bigint(50)
 	purchase_price(购买价格) varchar(200)
 	vehicle_type(车辆型号) varchar(200)
 	brand(品牌) varchar(200)
 
-档案表(driver_archive)
-	id bigint(255)
-	Paper_file_number(纸质档案编号) varchar(200)
-	driver_type(报考驾照类型) varchar(20)
-	medical_time(体检时间) bigint(50)
-	agent(经办人) varchar(200)
+
+
 
 科目表(driver_subject)
 	id bigint(255)
-	archive_id(档案id) bigint(255)
+	student_archive_id(学员档案id) bigint(255)
 	sub_name(科目名称) varchar(200)
 	is_pass(是否通过) int(1)
 	score_a(第一次考试成绩) varchar(10)
@@ -110,32 +130,20 @@ DriverManager
 	practice_date(练车日期) bigint(50)
 	practice_time(练车时间) bigint(50)
 	practice_type(练车类型) varchar(200)
+	status(记录状态)
 
 
 
-// 判断身份，查不同的表，做不同的事情
-前台单选框
-if(type.equals("admin")){
-	//管理员
+登录流程:
+User user = selectUser(tel/idcard/loginid/email);
+if(user == null){
+	用户不存在
+	throw new usernameNotFoundException("");
+}
 
-
-}else if(type.equals("student")){
-	//学员
-
-}else{
-// 教练
-
+if(isNotdeleted&&enable&&password.equals(p)){
+	retun user+role_code
 }
 
 
-<if test="type == 'admin' ">
-	<h1>管理员相关菜单</h1>
-</if>
-
-
-
-
-登陆模式
-用户选择是学员，教练还是管理员
-正则表达式判断是邮箱、身份证号、手机号还是loginid，实现这些都可以登陆
 
