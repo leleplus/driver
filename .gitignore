@@ -30,6 +30,10 @@ stm32_client/**/*.zip
 
 ### Java Server项目相关的忽略文件 ###
 
+# 日志文件务必忽略
+**/back_end/driver-manager-system/logs/**
+*.log
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

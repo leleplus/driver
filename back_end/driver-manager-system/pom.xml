@@ -23,7 +23,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.2.RELEASE</version>
-        
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     
@@ -52,7 +51,29 @@
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>2.9.2</version>
             </dependency>
+            
     
+            <!-- 导入log4j2依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+                <version>2.2.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <!-- 加上这个才能辨认到log4j2.yml文件 -->
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>2.10.1</version>
+            </dependency>
+            <!-- end -->
+            <!-- log4j2支持异步日志，导入disruptor依赖，不需要支持异步日志，也可以去掉该依赖包 -->
+            <!--<dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${com.lmax.disruptor}</version>
+            </dependency>-->
+            <!-- end -->
+            
             <!-- 删除spring-boot-starter和spring-boot-starter-test，
                 因为parent中继承的祖先中已经有了，并且一般dependencyManagement管理的依赖都要写版本号 -->
 <!--            <dependency>-->

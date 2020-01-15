@@ -1,0 +1,8 @@
+server:
+  port: 80
+  servlet:
+    context-path: /driver
+
+# log日志配置文件路径
+logging:
+  config: classpath:log4j2-system-config.yml
