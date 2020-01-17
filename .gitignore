@@ -34,6 +34,11 @@ stm32_client/**/*.zip
 **/back_end/driver-manager-system/logs/**
 *.log
 
+# 打包文件忽略
+**/back_end/driver-manager-system/deploy-bin/apps/*.jar
+
+
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

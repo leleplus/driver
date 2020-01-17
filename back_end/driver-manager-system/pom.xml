@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        
+        <!-- 项目的版本 -->
         <driver.version>1.0-SNAPSHOT</driver.version>
     </properties>
     
@@ -73,7 +73,12 @@
                 <version>${com.lmax.disruptor}</version>
             </dependency>-->
             <!-- end -->
-            
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.42</version>
+<!--                <scope>runtime</scope>-->
+            </dependency>
             <!-- 删除spring-boot-starter和spring-boot-starter-test，
                 因为parent中继承的祖先中已经有了，并且一般dependencyManagement管理的依赖都要写版本号 -->
 <!--            <dependency>-->
@@ -85,6 +90,24 @@
 <!--                <artifactId>spring-boot-starter-test</artifactId>-->
 <!--                <scope>test</scope>-->
 <!--            </dependency>-->
+    
+            <!-- mybatis集成spring boot 的依赖 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+    
+            <!-- 一些工具jar -->
+            <!-- lombok插件，自动生成get/set  构造器/toString等 -->
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.10</version>
+                <scope>provided</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 导入 spring boot 的配置文件 -->
+    <properties resource="application.properties" />
+    
+    <!--设置复合主键时不单独为主键创建实体-->
+    <context id="driver" targetRuntime="Mybatis3" defaultModelType="flat">
+        
+        
+        <!--    <classPathEntry
+                   location="D:\Documents\00_appWorkSpaces\mvn_repository\mysql\mysql-connector-java\8.0.18\mysql-connector-java-8.0.18.jar" />-->
+        
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="utf-8" />
+        
+        <!-- 是否只生成POJO对象 -->
+        <property name="modelOnly" value="false" />
+        
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+        
+        <!-- 将数据库中表的字段描述信息添加到注释 -->
+        <property name="addRemarkComments" value="true" />
+        <!-- 是否取消所有注释 -->
+        <property name="suppressAllComments" value="true" />
+        
+        <!--  注释里不添加日期-->
+        <property name="suppressDate" value="true" />
+        
+        <!-- 生成的POJO实现java.io.Serializable接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        
+        <!--自动生成toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        
+        
+        <!-- 自动生成equals方法和hashcode方法
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        -->
+        
+        <!-- 数据库连接，直接通过${}读取application.properties里的配置 -->
+        <jdbcConnection
+                driverClass="${spring.datasource.driver-class-name}"
+                connectionURL="${spring.datasource.url}"
+                userId="${spring.datasource.username}"
+                password="${spring.datasource.password}" />
+        <!-- 另一种指定数据库连接的方式
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/cms?characterEncoding=utf8 &amp; serverTimezone=UTC"
+                        userId="lele"
+                        password="lele">
+            产生selectByPrimaryKey
+            <property name="useInformationSchema" value="true" />
+        </jdbcConnection>
+        -->
+        
+        <!-- 注释相关配置  实现接口，自定义注释
+            <commentGenerator>
+            </commentGenerator>
+        -->
+        
+        <!--指定生成的类型为java类型，避免数据库中number等类型字段
+            bigDecimal类型， false可自动转化以下类型（Long, Integer, Short, etc.）-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        
+        <!-- 生成POJO对象，并将类放到XXX包下 -->
+        <javaModelGenerator targetPackage="com.leleplus.bean" targetProject="src/main/java">
+            <!-- 允许子包 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 字符串去空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        
+        
+        <!-- 生成XXX mapper.xml文件，并放到resources下的mapper文件夹下 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <!-- 允许放到子文件夹下 -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        
+        <!-- 生成Xxx mapper.xml对应Xxx mapper.java的dao接口，放到com.songguoliang.springboot.mapper包下-->
+        <javaClientGenerator targetPackage="com.leleplus.dao" targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+        
+        
+        <!-- table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 -->
+            <table tableName="driver_user" domainObjectName="User"
+                   selectByExampleQueryId="true"
+                   enableCountByExample="true" enableUpdateByExample="true"
+                   enableDeleteByExample="true" enableSelectByExample="true"
+            >
+                <!-- 数据库表主键 -->
+                <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+                <!-- 数据库中表名有时我们都会带个前缀，而实体又不想带前缀，这个配置可以把实体的前缀去掉 -->
+                <domainObjectRenamingRule searchString="^driver_" replaceString="" />
+            
+            </table>
+        
+        <!-- 指定生成的类中，某个字段的类型-->
+<!--        <table tableName="cms_article" domainObjectName="Article">-->
+<!--            <columnOverride column="content" javaType="String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="source" javaType="String" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+        
+        <!--是否生成example类
+        <table schema="jfdb" tableName="sys_user"
+               domainObjectName="UserTest" selectByExampleQueryId="true"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+            >
+          </table>-->
+    </context>
+    
+    <!-- 覆盖生成的内容，命令
+        mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+    -->
+
+</generatorConfiguration>
