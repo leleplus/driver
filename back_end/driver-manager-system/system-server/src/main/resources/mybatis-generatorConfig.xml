@@ -92,7 +92,7 @@
         
         
         <!-- table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 -->
-            <table tableName="driver_user" domainObjectName="User"
+            <table tableName="driver_%"
                    selectByExampleQueryId="true"
                    enableCountByExample="true" enableUpdateByExample="true"
                    enableDeleteByExample="true" enableSelectByExample="true"
@@ -100,7 +100,7 @@
                 <!-- 数据库表主键 -->
                 <generatedKey column="id" sqlStatement="Mysql" identity="true" />
                 <!-- 数据库中表名有时我们都会带个前缀，而实体又不想带前缀，这个配置可以把实体的前缀去掉 -->
-                <domainObjectRenamingRule searchString="^driver_" replaceString="" />
+                <domainObjectRenamingRule searchString="^Driver" replaceString="" />
             
             </table>
         
