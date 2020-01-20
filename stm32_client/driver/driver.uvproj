@@ -573,14 +573,19 @@
           <GroupName>hardware</GroupName>
           <Files>
             <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\HARDWARE\src\key.c</FilePath>
+            </File>
+            <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\HARDWARE\src\led.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
+              <FileName>usart1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\HARDWARE\src\key.c</FilePath>
+              <FilePath>.\src\HARDWARE\src\usart1.c</FilePath>
             </File>
           </Files>
         </Group>

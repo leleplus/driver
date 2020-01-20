@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/1/18 20:51:00                           */
+/* Created on:     2020/1/20 23:22:20                           */
 /*==============================================================*/
 
 
@@ -18,11 +18,11 @@ drop table if exists driver_rfid_record;
 
 drop table if exists driver_student_archives;
 
+drop table if exists driver_student_associate_coach;
+
 drop table if exists driver_subject;
 
 drop table if exists driver_user;
-
-drop table if exists student_associate_coach;
 
 /*==============================================================*/
 /* Table: driver_action_record                                  */
@@ -159,6 +159,24 @@ create table driver_student_archives
 alter table driver_student_archives comment '学员表';
 
 /*==============================================================*/
+/* Table: driver_student_associate_coach                        */
+/*==============================================================*/
+create table driver_student_associate_coach
+(
+   id                   bigint(255) not null comment '学员教练关联表主键',
+   student_id           bigint(255) comment '学员id',
+   coach_id             bigint(255) comment '教练id',
+   create_time          bigint(50) comment '创建时间',
+   expiration_time      bigint(50) comment '过期时间',
+   is_enable            int(1) comment '是否有效',
+   status               varchar(50) comment '信息状态',
+   description          varchar(255) comment '描述信息',
+   primary key (id)
+);
+
+alter table driver_student_associate_coach comment '学员教练关联表';
+
+/*==============================================================*/
 /* Table: driver_subject                                        */
 /*==============================================================*/
 create table driver_subject
@@ -198,24 +216,6 @@ create table driver_user
 
 alter table driver_user comment '用户表';
 
-/*==============================================================*/
-/* Table: student_associate_coach                               */
-/*==============================================================*/
-create table student_associate_coach
-(
-   id                   bigint(255) not null comment '学员教练关联表主键',
-   student_id           bigint(255) comment '学员id',
-   coach_id             bigint(255) comment '教练id',
-   create_time          bigint(50) comment '创建时间',
-   expiration_time      bigint(50) comment '过期时间',
-   is_enable            int(1) comment '是否有效',
-   status               varchar(50) comment '信息状态',
-   description          varchar(255) comment '描述信息',
-   primary key (id)
-);
-
-alter table student_associate_coach comment '学员教练关联表';
-
 alter table driver_action_record add constraint FK_Reference_6 foreign key (user_id)
       references driver_user (id) on delete restrict on update restrict;
 
@@ -237,12 +237,12 @@ alter table driver_rfid_record add constraint FK_Reference_10 foreign key (user_
 alter table driver_student_archives add constraint FK_Reference_1 foreign key (user_id)
       references driver_user (id) on delete restrict on update restrict;
 
+alter table driver_student_associate_coach add constraint FK_Reference_4 foreign key (student_id)
+      references driver_student_archives (id) on delete restrict on update restrict;
+
+alter table driver_student_associate_coach add constraint FK_Reference_5 foreign key (coach_id)
+      references driver_coach_archives (id) on delete restrict on update restrict;
+
 alter table driver_subject add constraint FK_Reference_8 foreign key (student_archive_id)
       references driver_student_archives (id) on delete restrict on update restrict;
-
-alter table student_associate_coach add constraint FK_Reference_4 foreign key (student_id)
-      references driver_student_archives (id) on delete restrict on update restrict;
-
-alter table student_associate_coach add constraint FK_Reference_5 foreign key (coach_id)
-      references driver_coach_archives (id) on delete restrict on update restrict;
 

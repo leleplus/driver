@@ -25,7 +25,7 @@
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
         
         <!-- 将数据库中表的字段描述信息添加到注释 -->
-        <property name="addRemarkComments" value="true" />
+        <property name="addRemarkComments" value="false" />
         <!-- 是否取消所有注释 -->
         <property name="suppressAllComments" value="true" />
         

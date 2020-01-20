@@ -2,10 +2,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stm32f10x.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "delay.h"
 #include "led.h"
 #include "key.h"
+#include "usart1.h"
 
 
 /**
@@ -23,7 +25,8 @@ void init(void){
 	delayInit();	    	 //延时函数初始化	  
 	ledInit();		  	//初始化与LED连接的硬件接口
 	keyInit();
-	
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	usart1Init(9600);
 }
 
 
@@ -46,12 +49,15 @@ int main(void){
 		
 		switch(key){
 			case 1:
+				sendStr("input key s1");
 				openLed(LED_S1);
 				break;
 			case 2:
+				sendStr("input key s2");
 				openLed(LED_S2);
 				break;
 			case 3:
+				sendStr("input key s3");
 				openLed(LED_S3);
 				break;
 			default:break;
