@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/1/20 23:22:20                           */
+/* Created on:     2020/1/21 23:05:12                           */
 /*==============================================================*/
 
 
@@ -201,8 +201,8 @@ alter table driver_subject comment '科目表';
 create table driver_user
 (
    id                   bigint(255) not null comment '用户主键',
-   login_Id             varbinary(36) comment '用户登录id,最多36长度',
-   telphone             varbinary(20) comment '手机号码,可用来登录',
+   login_Id             varchar(36) comment '用户登录id,最多36长度',
+   telphone             varchar(36) comment '手机号码,可用来登录',
    rfid_card_id         varchar(255) comment 'rfid卡片编号',
    id_card              varchar(20) not null comment '身份证号,可用来登录(登录默认账户)',
    email                varchar(255) comment '邮箱,用户邮箱，用户接收通知等，可用来登录',

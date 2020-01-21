@@ -5,6 +5,7 @@
 <Workspace>
 	<Local Expanded="Yes">
 		<Model Expanded="Yes" ID="{6FEDF942-8E51-4A15-A335-F0A142DB687F}" Loaded="No" Name="driver" Type="{FF4B6538-9856-42CF-B9B9-304ED370CEAA}" URL="driver.prj"/>
+		<Model Expanded="Yes" ID="{A1564342-CAD7-4ECB-A1E6-54A06062A496}" Loaded="No" Name="driver" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="driver.pdm"/>
 		<Model Expanded="Yes" ID="{A1564342-CAD7-4ECB-A1E6-54A06062A496}" Name="driver" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="driver.pdm"/>
 	</Local>
 	<BrowserModule Name="仓库(&amp;R)"/>

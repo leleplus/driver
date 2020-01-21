@@ -18,11 +18,6 @@ public class DriverException extends Exception {
     
     private String errCode;
     
-    
-    public DriverException () {
-        super();
-    }
-    
     public DriverException (String msg) {
         super(msg);
     }
