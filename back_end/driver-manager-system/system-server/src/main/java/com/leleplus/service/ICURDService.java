@@ -1,4 +1,4 @@
-package com.leleplus.service.impl;
+package com.leleplus.service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -1,6 +1,4 @@
-package com.leleplus.exceptions;
-
-import com.leleplus.enums.DriverExceptionEnum;
+package com.leleplus.expand.exceptions;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com

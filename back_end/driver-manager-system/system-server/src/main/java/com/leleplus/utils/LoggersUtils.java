@@ -1,7 +1,7 @@
 package com.leleplus.utils;
 
 
-import com.leleplus.expand.LoggerEnum;
+import com.leleplus.expand.log.LoggerEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

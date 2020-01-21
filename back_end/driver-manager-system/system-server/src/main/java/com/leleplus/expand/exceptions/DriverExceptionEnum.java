@@ -1,4 +1,4 @@
-package com.leleplus.enums;
+package com.leleplus.expand.exceptions;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
