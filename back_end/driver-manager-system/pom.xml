@@ -26,7 +26,7 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     
-    <!--  -->
+    <!-- 项目编码和JDK版本 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -97,7 +97,21 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>2.1.1</version>
             </dependency>
-    
+
+            <!-- Spring security -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>2.2.2.RELEASE</version>
+            </dependency>
+
+            <!-- jwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.0</version>
+            </dependency>
+
             <!-- 一些工具jar -->
             <!-- lombok插件，自动生成get/set  构造器/toString等 -->
             <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->

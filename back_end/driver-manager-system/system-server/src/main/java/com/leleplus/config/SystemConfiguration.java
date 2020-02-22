@@ -1,5 +1,6 @@
 package com.leleplus.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,7 +20,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  */
 
 @Configuration
-public class SystemConfigration {
+@MapperScan("com.leleplus.dao")
+public class SystemConfiguration {
     
     /**
      * 配置Swagger Docket对象的自动注入

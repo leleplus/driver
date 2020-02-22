@@ -27,14 +27,12 @@ public class DriverTestController {
     @ApiOperation("测试接口")
     @GetMapping("index")
     public String index(){
-        
         logger.info("测试info日志");
         logger.trace("测试trace日志");
         logger.warn("测试warn日志");
         logger.error("测试error日志");
         logger.debug("测试debug日志");
         return "欢迎访问物联网驾校管理系统！";
-        
     }
     
 }

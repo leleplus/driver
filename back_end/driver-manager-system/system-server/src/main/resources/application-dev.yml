@@ -1,0 +1,19 @@
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://www.leleplus.fun:3306/driver-dev?
+    username: lele
+    password: lele
+#  jackson:
+#    serialization: true  # JSON格式化
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+
+driver:
+  token:
+    secret: auth
+    header: token
+    expiration-ime: 3600
+    expiration-time-remember: 86400

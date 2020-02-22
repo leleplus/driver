@@ -14,7 +14,7 @@ Configuration:
       - name: project.name
         value: driver-system
       - name: log.pattern
-        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{<--%5p ${PID:-} [%15.15t] %-30.30C{1.} --> %m%n}{FATAL=mauve, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan,TRACE=blue}"
+        value: "%red{%d{yyyy-MM-dd HH:mm:ss.SSS}}  %highlight{%5p}{FATAL=mauve, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan,TRACE=blue}  %green{[%15.15t] :} %cyan{%-30.30C{1.}} %magenta{-->} %blue{%m%n}"
 
   Appenders:
     Console:  #输出到控制台
