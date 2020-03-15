@@ -177,6 +177,6 @@ void sendStr(char * str){
 	u16 len = strlen(str);
 	USART_SendData(USART1, *str);
 	
-	printf("\r\n 字符串数据发送成功 \r\n");//插入换行
+//	printf("\r\n 字符串数据发送成功 \r\n");//插入换行
 }
 
