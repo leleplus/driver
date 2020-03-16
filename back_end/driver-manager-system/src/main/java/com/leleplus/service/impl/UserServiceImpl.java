@@ -18,10 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -262,15 +258,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public String login(String account, String password, boolean isRemember) throws Exception {
 
-        if (StringUtils.isEmpty(account))
-            throw new NullArgsException(DriverExceptionEnum.USER_NULL_VALUE.setDescription("用户名不能为空"));
-        if (StringUtils.isEmpty(password))
-            throw new NullArgsException(DriverExceptionEnum.USER_NULL_VALUE.setDescription("密码不能为空"));
-
-        UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(account, password);
-        final Authentication authenticate = authenticationManager.authenticate(AuthenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(account);
-        return tokenProviderUtil.generateToken(userDetails, isRemember);
+//        if (StringUtils.isEmpty(account))
+//            throw new NullArgsException(DriverExceptionEnum.USER_NULL_VALUE.setDescription("用户名不能为空"));
+//        if (StringUtils.isEmpty(password))
+//            throw new NullArgsException(DriverExceptionEnum.USER_NULL_VALUE.setDescription("密码不能为空"));
+//
+//        UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(account, password);
+//        final Authentication authenticate = authenticationManager.authenticate(AuthenticationToken);
+//        SecurityContextHolder.getContext().setAuthentication(authenticate);
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(account);
+//        return tokenProviderUtil.generateToken(userDetails, isRemember);
+        return null;
     }
 }

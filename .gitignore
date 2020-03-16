@@ -33,6 +33,7 @@ stm32_client/**/*.zip
 # 日志文件务必忽略
 **/back_end/driver-manager-system/logs/**
 *.log
+back_end/temp/**
 
 # 打包文件忽略
 **/back_end/driver-manager-system/deploy-bin/apps/*.jar
