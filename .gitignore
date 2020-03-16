@@ -34,6 +34,9 @@ stm32_client/**/*.zip
 **/back_end/driver-manager-system/logs/**
 *.log
 back_end/temp/**
+!back_end/driver-manager-system/*.xml
+!back_end/driver-manager-system/src/main/**
+!back_end/driver-manager-system/src/test/**
 
 # 打包文件忽略
 **/back_end/driver-manager-system/deploy-bin/apps/*.jar
