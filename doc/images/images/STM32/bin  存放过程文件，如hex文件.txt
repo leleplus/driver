@@ -1,0 +1,7 @@
+bin  存放过程文件，如hex文件
+src  源代码
+CORE 存放核心文件
+STARTUP 启动文件
+FWLIB  外设的底层程序，源码
+USER 用户自定义的程序，入口文件等
+LIBRARY 自定义使用的STM32库文件
