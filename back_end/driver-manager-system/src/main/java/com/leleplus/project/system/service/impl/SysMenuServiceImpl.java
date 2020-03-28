@@ -1,19 +1,21 @@
 package com.leleplus.project.system.service.impl;
 
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.domain.TreeSelect;
-import com.ruoyi.project.system.domain.SysMenu;
-import com.ruoyi.project.system.domain.SysUser;
-import com.ruoyi.project.system.domain.vo.MetaVo;
-import com.ruoyi.project.system.domain.vo.RouterVo;
-import com.ruoyi.project.system.mapper.SysMenuMapper;
-import com.ruoyi.project.system.mapper.SysRoleMenuMapper;
-import com.ruoyi.project.system.service.ISysMenuService;
+
+import com.leleplus.common.constant.UserConstants;
+import com.leleplus.common.utils.SecurityUtils;
+import com.leleplus.common.utils.StringUtils;
+import com.leleplus.core.web.domain.TreeSelect;
+import com.leleplus.project.system.domain.SysMenu;
+import com.leleplus.project.system.domain.SysUser;
+import com.leleplus.project.system.domain.vo.MetaVo;
+import com.leleplus.project.system.domain.vo.RouterVo;
+import com.leleplus.project.system.mapper.SysMenuMapper;
+import com.leleplus.project.system.mapper.SysRoleMenuMapper;
+import com.leleplus.project.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,10 +29,10 @@ public class SysMenuServiceImpl implements ISysMenuService
 {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
-    @Autowired
+    @Resource
     private SysMenuMapper menuMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMenuMapper roleMenuMapper;
 
     /**

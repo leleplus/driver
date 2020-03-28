@@ -1,11 +1,12 @@
 package com.leleplus.project.system.service.impl;
 
-import com.ruoyi.project.system.domain.SysDictData;
-import com.ruoyi.project.system.mapper.SysDictDataMapper;
-import com.ruoyi.project.system.service.ISysDictDataService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.leleplus.project.system.domain.SysDictData;
+import com.leleplus.project.system.mapper.SysDictDataMapper;
+import com.leleplus.project.system.service.ISysDictDataService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 public class SysDictDataServiceImpl implements ISysDictDataService
 {
-    @Autowired
+    @Resource
     private SysDictDataMapper dictDataMapper;
 
     /**

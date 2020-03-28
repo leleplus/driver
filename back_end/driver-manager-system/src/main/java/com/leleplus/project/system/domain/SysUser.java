@@ -135,6 +135,11 @@ public class SysUser extends BaseEntity {
 
     }
 
+    public SysUser(Long userId) {
+        this.userId = userId;
+    }
+
+
     public boolean isAdmin() {
         return isAdmin(this.userId);
     }

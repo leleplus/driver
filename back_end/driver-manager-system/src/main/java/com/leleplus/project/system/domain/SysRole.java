@@ -44,6 +44,7 @@ public class SysRole extends BaseEntity {
      * 角色排序
      */
     @Excel(name = "角色排序")
+    @NotBlank(message = "显示顺序不能为空")
     private String roleSort;
 
     /**
@@ -79,7 +80,10 @@ public class SysRole extends BaseEntity {
     private Long[] deptIds;
 
     public SysRole() {
+    }
 
+    public SysRole(Long roleId) {
+        this.roleId = roleId;
     }
 
     public boolean isAdmin() {
@@ -102,7 +106,7 @@ public class SysRole extends BaseEntity {
         return roleKey;
     }
 
-    @NotBlank(message = "显示顺序不能为空")
+
     public String getRoleSort() {
         return roleSort;
     }

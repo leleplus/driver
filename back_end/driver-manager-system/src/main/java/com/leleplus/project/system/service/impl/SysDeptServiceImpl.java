@@ -1,16 +1,17 @@
 package com.leleplus.project.system.service.impl;
 
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.exception.CustomException;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
-import com.ruoyi.framework.web.domain.TreeSelect;
-import com.ruoyi.project.system.domain.SysDept;
-import com.ruoyi.project.system.mapper.SysDeptMapper;
-import com.ruoyi.project.system.service.ISysDeptService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.leleplus.common.constant.UserConstants;
+import com.leleplus.common.exception.CustomException;
+import com.leleplus.common.utils.StringUtils;
+import com.leleplus.core.aspect.lang.annotation.DataScope;
+import com.leleplus.core.web.domain.TreeSelect;
+import com.leleplus.project.system.domain.SysDept;
+import com.leleplus.project.system.mapper.SysDeptMapper;
+import com.leleplus.project.system.service.ISysDeptService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class SysDeptServiceImpl implements ISysDeptService
 {
-    @Autowired
+    @Resource
     private SysDeptMapper deptMapper;
 
     /**
