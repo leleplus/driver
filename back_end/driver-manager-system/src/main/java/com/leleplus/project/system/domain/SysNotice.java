@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 /**
  * 通知公告表 sys_notice
  *
- * @author ruoyi
+ * @author witt
  */
 
 @Data

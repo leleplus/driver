@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 公告 服务层实现
  *
- * @author ruoyi
+ * @author witt
  */
 @Service
 public class SysNoticeServiceImpl implements ISysNoticeService {

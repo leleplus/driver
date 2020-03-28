@@ -20,7 +20,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * 业务 服务层实现
  * 
- * @author ruoyi
+ * @author witt
  */
 @Service
 public class GenTableServiceImpl implements IGenTableService

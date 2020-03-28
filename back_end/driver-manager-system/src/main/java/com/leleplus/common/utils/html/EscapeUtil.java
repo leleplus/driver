@@ -6,7 +6,7 @@ import com.leleplus.common.utils.StringUtils;
 /**
  * 转义和反转义工具类
  *
- * @author ruoyi
+ * @author witt
  */
 public class EscapeUtil {
     public static final String RE_HTML_MARK = "(<[^<]*?>)|(<[\\s]*?/[^<]*?>)|(<[^<]*?/[\\s]*?>)";

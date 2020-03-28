@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 用户与岗位关联表 数据层
  *
- * @author ruoyi
+ * @author witt
  */
 public interface SysUserPostMapper {
     /**

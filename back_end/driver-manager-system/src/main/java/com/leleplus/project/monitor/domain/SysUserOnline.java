@@ -3,7 +3,7 @@ package com.leleplus.project.monitor.domain;
 /**
  * 当前在线会话
  * 
- * @author ruoyi
+ * @author witt
  */
 public class SysUserOnline
 {

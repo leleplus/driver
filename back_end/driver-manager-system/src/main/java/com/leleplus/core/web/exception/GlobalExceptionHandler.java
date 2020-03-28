@@ -22,7 +22,7 @@ import javax.security.auth.login.AccountExpiredException;
 /**
  * 全局异常处理器
  *
- * @author ruoyi
+ * @author witt
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -3,7 +3,7 @@ package com.leleplus.core.aspect.lang.enums;
 /**
  * 操作人类别
  *
- * @author ruoyi
+ * @author witt
  */
 public enum OperatorType {
     /**

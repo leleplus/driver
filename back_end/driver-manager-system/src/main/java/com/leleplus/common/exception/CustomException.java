@@ -3,7 +3,7 @@ package com.leleplus.common.exception;
 /**
  * 自定义异常
  * 
- * @author ruoyi
+ * @author witt
  */
 public class CustomException extends RuntimeException
 {

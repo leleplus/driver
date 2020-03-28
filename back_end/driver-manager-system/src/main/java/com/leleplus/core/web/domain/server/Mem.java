@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * 內存相关信息
  *
- * @author ruoyi
+ * @author witt
  */
 
 @Data

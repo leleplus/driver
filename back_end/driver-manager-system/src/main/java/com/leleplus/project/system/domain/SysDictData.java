@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 /**
  * 字典数据表 sys_dict_data
  *
- * @author ruoyi
+ * @author witt
  */
 @Data
 @Accessors(chain = true)

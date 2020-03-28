@@ -3,7 +3,7 @@ package com.leleplus.common.constant;
 /**
  * 返回状态码
  * 
- * @author ruoyi
+ * @author witt
  */
 public interface HttpStatus
 {

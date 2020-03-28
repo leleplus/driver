@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 数据字典信息
  *
- * @author ruoyi
+ * @author witt
  */
 @RestController
 @RequestMapping("/system/dict/type")

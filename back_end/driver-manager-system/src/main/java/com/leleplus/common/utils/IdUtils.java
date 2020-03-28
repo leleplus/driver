@@ -6,7 +6,7 @@ import com.leleplus.common.core.lang.UUID;
 /**
  * ID生成器工具类
  *
- * @author ruoyi
+ * @author witt
  */
 public class IdUtils {
     /**

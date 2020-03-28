@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * 系统相关信息
  *
- * @author ruoyi
+ * @author witt
  */
 @Data
 @Accessors(chain = true)

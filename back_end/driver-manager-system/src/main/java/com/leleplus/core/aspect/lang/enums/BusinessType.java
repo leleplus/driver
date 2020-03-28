@@ -3,7 +3,7 @@ package com.leleplus.core.aspect.lang.enums;
 /**
  * 业务操作类型
  *
- * @author ruoyi
+ * @author witt
  */
 public enum BusinessType {
     /**

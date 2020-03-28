@@ -3,7 +3,7 @@ package com.leleplus.common.utils.sign;
 /**
  * Base64工具类
  *
- * @author ruoyi
+ * @author witt
  */
 public final class Base64 {
     static private final int BASELENGTH = 128;

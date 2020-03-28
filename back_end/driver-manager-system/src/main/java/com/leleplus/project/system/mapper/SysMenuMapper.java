@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 菜单表 数据层
  *
- * @author ruoyi
+ * @author witt
  */
 public interface SysMenuMapper {
     /**

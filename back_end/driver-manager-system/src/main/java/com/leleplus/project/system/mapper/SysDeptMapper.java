@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 部门管理 数据层
  *
- * @author ruoyi
+ * @author witt
  */
 public interface SysDeptMapper {
     /**

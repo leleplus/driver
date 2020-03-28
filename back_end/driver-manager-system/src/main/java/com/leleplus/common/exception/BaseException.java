@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 基础异常
  *
- * @author ruoyi
+ * @author witt
  */
 
 @Data

@@ -6,7 +6,7 @@ import com.leleplus.common.exception.BaseException;
 /**
  * 文件信息异常类
  *
- * @author ruoyi
+ * @author witt
  */
 public class FileException extends BaseException {
     private static final long serialVersionUID = 1L;

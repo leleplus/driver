@@ -11,7 +11,6 @@ import com.leleplus.project.system.service.ISysConfigService;
 import com.leleplus.project.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * 用户 业务层处理
  *
- * @author ruoyi
+ * @author witt
  */
 @Service
 public class SysUserServiceImpl implements ISysUserService {

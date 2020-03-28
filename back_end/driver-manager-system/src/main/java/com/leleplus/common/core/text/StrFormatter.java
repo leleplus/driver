@@ -6,7 +6,7 @@ import com.leleplus.common.utils.StringUtils;
 /**
  * 字符串格式化
  *
- * @author ruoyi
+ * @author witt
  */
 public class StrFormatter {
     public static final String EMPTY_JSON = "{}";

@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * CPU相关信息
  *
- * @author ruoyi
+ * @author witt
  */
 
 @Data

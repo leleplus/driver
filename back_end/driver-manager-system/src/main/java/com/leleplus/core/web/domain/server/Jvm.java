@@ -10,7 +10,7 @@ import java.lang.management.ManagementFactory;
 /**
  * JVM相关信息
  *
- * @author ruoyi
+ * @author witt
  */
 
 @Data
