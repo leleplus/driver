@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ruoyi.framework.aspectj.lang.annotation.Log;
-import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
+import com.witt.framework.aspectj.lang.annotation.Log;
+import com.witt.framework.aspectj.lang.enums.BusinessType;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
-import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.framework.web.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.witt.framework.web.controller.BaseController;
+import com.witt.framework.web.domain.AjaxResult;
+import com.witt.common.utils.poi.ExcelUtil;
 #if($table.crud)
-import com.ruoyi.framework.web.page.TableDataInfo;
+import com.witt.framework.web.page.TableDataInfo;
 #elseif($table.tree)
 #end
 
