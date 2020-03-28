@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
  *
  * @author witt
  */
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired

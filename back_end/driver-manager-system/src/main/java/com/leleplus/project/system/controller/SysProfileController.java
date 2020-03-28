@@ -5,7 +5,7 @@ import com.leleplus.common.utils.ServletUtils;
 import com.leleplus.common.utils.file.FileUploadUtils;
 import com.leleplus.core.aspect.lang.annotation.Log;
 import com.leleplus.core.aspect.lang.enums.BusinessType;
-import com.leleplus.core.config.wittConfig;
+import com.leleplus.core.config.RuoYiConfig;
 import com.leleplus.core.security.LoginUser;
 import com.leleplus.core.security.service.TokenService;
 import com.leleplus.core.web.controller.BaseController;
@@ -106,7 +106,7 @@ public class SysProfileController extends BaseController
         if (!file.isEmpty())
         {
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-            String avatar = FileUploadUtils.upload(wittConfig.getAvatarPath(), file);
+            String avatar = FileUploadUtils.upload(RuoYiConfig.getAvatarPath(), file);
             if (userService.updateUserAvatar(loginUser.getUsername(), avatar))
             {
                 AjaxResult ajax = AjaxResult.success();

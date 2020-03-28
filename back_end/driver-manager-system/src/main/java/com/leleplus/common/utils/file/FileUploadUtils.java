@@ -7,7 +7,7 @@ import com.leleplus.common.exception.file.InvalidExtensionException;
 import com.leleplus.common.utils.DateUtils;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.common.utils.security.Md5Utils;
-import com.leleplus.core.config.wittConfig;
+import com.leleplus.core.config.RuoYiConfig;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +33,7 @@ public class FileUploadUtils {
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = wittConfig.getProfile();
+    private static String defaultBaseDir = RuoYiConfig.getProfile();
 
     private static int counter = 0;
 
@@ -129,7 +129,7 @@ public class FileUploadUtils {
     }
 
     private static final String getPathFileName(String uploadDir, String fileName) throws IOException {
-        int dirLastIndex = wittConfig.getProfile().length() + 1;
+        int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;

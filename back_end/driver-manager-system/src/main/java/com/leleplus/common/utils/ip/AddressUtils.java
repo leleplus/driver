@@ -3,7 +3,7 @@ package com.leleplus.common.utils.ip;
 import com.alibaba.fastjson.JSONObject;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.common.utils.http.HttpUtils;
-import com.leleplus.core.config.wittConfig;
+import com.leleplus.core.config.RuoYiConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class AddressUtils {
         if (IpUtils.internalIp(ip)) {
             return "内网IP";
         }
-        if (wittConfig.isAddressEnabled()) {
+        if (RuoYiConfig.isAddressEnabled()) {
             String rspStr = HttpUtils.sendPost(IP_URL, "ip=" + ip);
             if (StringUtils.isEmpty(rspStr)) {
                 log.error("获取地理位置异常 {}", ip);
