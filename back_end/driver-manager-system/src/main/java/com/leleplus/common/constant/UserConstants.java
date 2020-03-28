@@ -1,4 +1,4 @@
-package com.ruoyi.common.constant;
+package com.leleplus.common.constant;
 
 /**
  * 用户常量信息

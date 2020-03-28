@@ -1,4 +1,4 @@
-package com.ruoyi.common.exception;
+package com.leleplus.common.exception;
 
 /**
  * 自定义异常

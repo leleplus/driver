@@ -1,4 +1,4 @@
-package com.ruoyi.common.exception;
+package com.leleplus.common.exception;
 
 /**
  * 工具类异常

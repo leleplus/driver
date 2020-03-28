@@ -1,4 +1,4 @@
-package com.ruoyi.common.utils;
+package com.leleplus.common.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

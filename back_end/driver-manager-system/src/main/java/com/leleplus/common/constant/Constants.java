@@ -1,4 +1,4 @@
-package com.ruoyi.common.constant;
+package com.leleplus.common.constant;
 
 import io.jsonwebtoken.Claims;
 

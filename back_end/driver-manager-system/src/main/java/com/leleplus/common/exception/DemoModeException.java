@@ -1,4 +1,4 @@
-package com.ruoyi.common.exception;
+package com.leleplus.common.exception;
 
 /**
  * 演示模式异常
