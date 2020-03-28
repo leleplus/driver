@@ -1,7 +1,8 @@
-package com.ruoyi.project.monitor.mapper;
+package com.leleplus.project.monitor.mapper;
+
+import com.ruoyi.project.monitor.domain.SysLogininfor;
 
 import java.util.List;
-import com.ruoyi.project.monitor.domain.SysLogininfor;
 
 /**
  * 系统访问日志情况信息 数据层

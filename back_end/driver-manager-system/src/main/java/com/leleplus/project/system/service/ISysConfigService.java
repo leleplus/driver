@@ -1,7 +1,8 @@
-package com.ruoyi.project.system.service;
+package com.leleplus.project.system.service;
+
+import com.ruoyi.project.system.domain.SysConfig;
 
 import java.util.List;
-import com.ruoyi.project.system.domain.SysConfig;
 
 /**
  * 参数配置 服务层

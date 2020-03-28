@@ -1,10 +1,11 @@
-package com.ruoyi.project.system.domain;
+package com.leleplus.project.system.domain;
+
+import com.ruoyi.framework.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 通知公告表 sys_notice
@@ -84,7 +85,7 @@ public class SysNotice extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
             .append("noticeId", getNoticeId())
             .append("noticeTitle", getNoticeTitle())
             .append("noticeType", getNoticeType())

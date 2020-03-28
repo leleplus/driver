@@ -1,8 +1,9 @@
-package com.ruoyi.project.system.mapper;
+package com.leleplus.project.system.mapper;
+
+import com.ruoyi.project.system.domain.SysMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
-import com.ruoyi.project.system.domain.SysMenu;
 
 /**
  * 菜单表 数据层

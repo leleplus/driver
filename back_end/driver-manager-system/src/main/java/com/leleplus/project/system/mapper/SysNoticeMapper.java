@@ -1,7 +1,8 @@
-package com.ruoyi.project.system.mapper;
+package com.leleplus.project.system.mapper;
+
+import com.ruoyi.project.system.domain.SysNotice;
 
 import java.util.List;
-import com.ruoyi.project.system.domain.SysNotice;
 
 /**
  * 通知公告表 数据层

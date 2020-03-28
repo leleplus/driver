@@ -1,7 +1,8 @@
-package com.ruoyi.project.system.mapper;
+package com.leleplus.project.system.mapper;
+
+import com.ruoyi.project.system.domain.SysRoleMenu;
 
 import java.util.List;
-import com.ruoyi.project.system.domain.SysRoleMenu;
 
 /**
  * 角色与菜单关联表 数据层

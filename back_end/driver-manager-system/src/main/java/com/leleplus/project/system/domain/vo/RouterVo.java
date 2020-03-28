@@ -1,6 +1,7 @@
-package com.ruoyi.project.system.domain.vo;
+package com.leleplus.project.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**

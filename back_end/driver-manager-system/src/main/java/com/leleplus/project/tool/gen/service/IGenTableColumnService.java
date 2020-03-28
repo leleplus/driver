@@ -1,7 +1,8 @@
-package com.ruoyi.project.tool.gen.service;
+package com.leleplus.project.tool.gen.service;
+
+import com.ruoyi.project.tool.gen.domain.GenTableColumn;
 
 import java.util.List;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
 
 /**
  * 业务字段 服务层

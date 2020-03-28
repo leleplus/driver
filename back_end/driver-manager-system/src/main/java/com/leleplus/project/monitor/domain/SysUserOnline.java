@@ -1,4 +1,4 @@
-package com.ruoyi.project.monitor.domain;
+package com.leleplus.project.monitor.domain;
 
 /**
  * 当前在线会话

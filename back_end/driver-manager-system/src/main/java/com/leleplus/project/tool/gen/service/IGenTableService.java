@@ -1,8 +1,9 @@
-package com.ruoyi.project.tool.gen.service;
+package com.leleplus.project.tool.gen.service;
+
+import com.ruoyi.project.tool.gen.domain.GenTable;
 
 import java.util.List;
 import java.util.Map;
-import com.ruoyi.project.tool.gen.domain.GenTable;
 
 /**
  * 业务 服务层

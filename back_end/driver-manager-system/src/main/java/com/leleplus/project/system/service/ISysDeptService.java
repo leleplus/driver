@@ -1,8 +1,9 @@
-package com.ruoyi.project.system.service;
+package com.leleplus.project.system.service;
 
-import java.util.List;
 import com.ruoyi.framework.web.domain.TreeSelect;
 import com.ruoyi.project.system.domain.SysDept;
+
+import java.util.List;
 
 /**
  * 部门管理 服务层

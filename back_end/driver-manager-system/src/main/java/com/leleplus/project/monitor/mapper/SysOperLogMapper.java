@@ -1,7 +1,8 @@
-package com.ruoyi.project.monitor.mapper;
+package com.leleplus.project.monitor.mapper;
+
+import com.ruoyi.project.monitor.domain.SysOperLog;
 
 import java.util.List;
-import com.ruoyi.project.monitor.domain.SysOperLog;
 
 /**
  * 操作日志 数据层

@@ -1,7 +1,8 @@
-package com.ruoyi.project.tool.gen.mapper;
+package com.leleplus.project.tool.gen.mapper;
+
+import com.ruoyi.project.tool.gen.domain.GenTableColumn;
 
 import java.util.List;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
 
 /**
  * 业务字段 数据层

@@ -1,17 +1,18 @@
-package com.ruoyi.project.monitor.domain;
+package com.leleplus.project.monitor.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.job.CronUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel.ColumnType;
 import com.ruoyi.framework.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 定时任务调度表 sys_job
@@ -151,7 +152,7 @@ public class SysJob extends BaseEntity implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
             .append("jobId", getJobId())
             .append("jobName", getJobName())
             .append("jobGroup", getJobGroup())

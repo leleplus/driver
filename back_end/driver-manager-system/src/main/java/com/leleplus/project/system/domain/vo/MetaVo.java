@@ -1,4 +1,4 @@
-package com.ruoyi.project.system.domain.vo;
+package com.leleplus.project.system.domain.vo;
 
 /**
  * 路由显示信息
