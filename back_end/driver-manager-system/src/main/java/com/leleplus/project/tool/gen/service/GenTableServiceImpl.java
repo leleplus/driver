@@ -2,18 +2,18 @@ package com.leleplus.project.tool.gen.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.constant.GenConstants;
-import com.ruoyi.common.exception.CustomException;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.project.tool.gen.domain.GenTable;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
-import com.ruoyi.project.tool.gen.mapper.GenTableColumnMapper;
-import com.ruoyi.project.tool.gen.mapper.GenTableMapper;
-import com.ruoyi.project.tool.gen.util.GenUtils;
-import com.ruoyi.project.tool.gen.util.VelocityInitializer;
-import com.ruoyi.project.tool.gen.util.VelocityUtils;
+import com.leleplus.common.constant.Constants;
+import com.leleplus.common.constant.GenConstants;
+import com.leleplus.common.exception.CustomException;
+import com.leleplus.common.utils.SecurityUtils;
+import com.leleplus.common.utils.StringUtils;
+import com.leleplus.project.tool.gen.domain.GenTable;
+import com.leleplus.project.tool.gen.domain.GenTableColumn;
+import com.leleplus.project.tool.gen.mapper.GenTableColumnMapper;
+import com.leleplus.project.tool.gen.mapper.GenTableMapper;
+import com.leleplus.project.tool.gen.util.GenUtils;
+import com.leleplus.project.tool.gen.util.VelocityInitializer;
+import com.leleplus.project.tool.gen.util.VelocityUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -43,10 +44,10 @@ public class GenTableServiceImpl implements IGenTableService
 {
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
-    @Autowired
+    @Resource
     private GenTableMapper genTableMapper;
 
-    @Autowired
+    @Resource
     private GenTableColumnMapper genTableColumnMapper;
 
     /**

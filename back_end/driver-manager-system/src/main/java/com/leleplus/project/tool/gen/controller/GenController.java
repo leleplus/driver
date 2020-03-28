@@ -1,15 +1,15 @@
 package com.leleplus.project.tool.gen.controller;
 
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.framework.aspectj.lang.annotation.Log;
-import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
-import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.framework.web.domain.AjaxResult;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.tool.gen.domain.GenTable;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
-import com.ruoyi.project.tool.gen.service.IGenTableColumnService;
-import com.ruoyi.project.tool.gen.service.IGenTableService;
+import com.leleplus.common.core.text.Convert;
+import com.leleplus.core.aspect.lang.annotation.Log;
+import com.leleplus.core.aspect.lang.enums.BusinessType;
+import com.leleplus.core.web.controller.BaseController;
+import com.leleplus.core.web.domain.AjaxResult;
+import com.leleplus.core.web.page.TableDataInfo;
+import com.leleplus.project.tool.gen.domain.GenTable;
+import com.leleplus.project.tool.gen.domain.GenTableColumn;
+import com.leleplus.project.tool.gen.service.IGenTableColumnService;
+import com.leleplus.project.tool.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
