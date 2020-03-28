@@ -26,8 +26,8 @@ import java.lang.reflect.Method;
 public class DataSourceAspect {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.DataSource)"
-            + "|| @within(com.ruoyi.framework.aspectj.lang.annotation.DataSource)")
+    @Pointcut("@annotation(com.leleplus.core.aspect.lang.annotation.DataSource)"
+            + "|| @within(com.leleplus.core.aspect.lang.annotation.DataSource)")
     public void dsPointCut() {
 
     }

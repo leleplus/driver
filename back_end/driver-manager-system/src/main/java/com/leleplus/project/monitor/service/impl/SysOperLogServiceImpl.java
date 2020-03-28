@@ -1,11 +1,12 @@
 package com.leleplus.project.monitor.service.impl;
 
-import com.ruoyi.project.monitor.domain.SysOperLog;
-import com.ruoyi.project.monitor.mapper.SysOperLogMapper;
-import com.ruoyi.project.monitor.service.ISysOperLogService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.leleplus.project.monitor.domain.SysOperLog;
+import com.leleplus.project.monitor.mapper.SysOperLogMapper;
+import com.leleplus.project.monitor.service.ISysOperLogService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService
 {
-    @Autowired
+    @Resource
     private SysOperLogMapper operLogMapper;
 
     /**
