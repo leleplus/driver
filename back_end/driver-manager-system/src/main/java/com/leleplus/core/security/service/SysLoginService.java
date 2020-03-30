@@ -5,12 +5,14 @@ import com.leleplus.common.exception.CustomException;
 import com.leleplus.common.exception.user.CaptchaException;
 import com.leleplus.common.exception.user.UserPasswordNotMatchException;
 import com.leleplus.common.utils.MessageUtils;
+import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.core.manager.AsyncManager;
 import com.leleplus.core.manager.factory.AsyncFactory;
 import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.security.LoginUser;
 import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +28,9 @@ import javax.annotation.Resource;
  * @author witt
  */
 @Component
+@Slf4j
 public class SysLoginService {
+
 
     @Autowired
     private TokenService tokenService;
@@ -50,6 +54,10 @@ public class SysLoginService {
      * @return 结果
      */
     public String login(String username, String password, String code, String uuid) {
+
+        // debug信息，打出登录信息
+        log.debug("login user -> {} - {}<-password", username, SecurityUtils.encryptPassword(password));
+
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
 
         // 从redis里拿到验证码后，立即删除
@@ -64,7 +72,7 @@ public class SysLoginService {
         if (sysUser != null) {
             userInfoId = sysUser.getUserInfoId();
 
-            if(userInfoId == null)
+            if (userInfoId == null)
                 userInfoId = 0L;
         }
 

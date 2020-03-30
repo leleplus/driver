@@ -2,10 +2,13 @@ package com.leleplus.project.system.service.impl;
 
 import com.leleplus.common.constant.UserConstants;
 import com.leleplus.common.exception.CustomException;
+import com.leleplus.common.exception.user.LoginCertificateErrorException;
 import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
+import com.leleplus.common.utils.reflect.ReflectUtils;
 import com.leleplus.core.aspect.lang.annotation.DataScope;
 import com.leleplus.project.system.domain.*;
+import com.leleplus.project.system.domain.vo.LoginCertificate;
 import com.leleplus.project.system.mapper.*;
 import com.leleplus.project.system.service.ISysConfigService;
 import com.leleplus.project.system.service.ISysUserService;
@@ -393,6 +396,24 @@ public class SysUserServiceImpl implements ISysUserService {
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    /**
+     * 通过登录凭证来查询
+     *
+     * @param loginCertificate 登录凭证
+     * @return 系统用户
+     */
+    @Override
+    public SysUser selectByLoginCertificate(LoginCertificate loginCertificate) {
+        // 校验只能有一种登录方式  ..后端自己控制，省略
+
+        if (ReflectUtils.CheckLoginCertificate(loginCertificate)) {
+            return userMapper.selectUserByLoginCertificate(loginCertificate);
+        }
+
+        log.error("校验用户登录凭证出现错误！");
+        throw new LoginCertificateErrorException();
     }
 
 }

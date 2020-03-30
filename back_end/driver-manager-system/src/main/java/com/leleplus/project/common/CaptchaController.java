@@ -7,6 +7,7 @@ import com.leleplus.common.utils.VerifyCodeUtils;
 import com.leleplus.common.utils.sign.Base64;
 import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.web.domain.AjaxResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @author witt
  */
 @RestController
+@Slf4j
 public class CaptchaController {
     @Autowired
     private RedisCache redisCache;
@@ -36,6 +38,8 @@ public class CaptchaController {
         // 唯一标识
         String uuid = IdUtils.simpleUUID();
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
+
+        log.debug("请求验证码-> uuid{}  \n  code -> {},",verifyKey,verifyCode);
 
         redisCache.setCacheObject(verifyKey, verifyCode, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 生成图片

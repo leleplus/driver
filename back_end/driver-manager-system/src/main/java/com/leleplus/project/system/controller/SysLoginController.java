@@ -1,7 +1,6 @@
 package com.leleplus.project.system.controller;
 
 import com.leleplus.common.constant.Constants;
-import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.ServletUtils;
 import com.leleplus.core.security.LoginUser;
 import com.leleplus.core.security.service.SysLoginService;
@@ -50,7 +49,7 @@ public class SysLoginController {
      */
     @PostMapping("/login")
     public AjaxResult login(String username, String password, String code, String uuid) {
-        System.out.println(SecurityUtils.encryptPassword(password));
+
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(username, password, code, uuid);

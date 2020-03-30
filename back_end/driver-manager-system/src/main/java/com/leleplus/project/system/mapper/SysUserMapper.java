@@ -2,6 +2,7 @@ package com.leleplus.project.system.mapper;
 
 
 import com.leleplus.project.system.domain.SysUser;
+import com.leleplus.project.system.domain.vo.LoginCertificate;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -109,4 +110,12 @@ public interface SysUserMapper {
      * @return 结果
      */
     SysUser checkEmailUnique(String email);
+
+    /**
+     * 通过登录凭证查询
+     *
+     * @param loginCertificate
+     * @return
+     */
+    SysUser selectUserByLoginCertificate(LoginCertificate loginCertificate);
 }

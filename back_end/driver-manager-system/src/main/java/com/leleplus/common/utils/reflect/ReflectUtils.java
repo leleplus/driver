@@ -319,4 +319,29 @@ public class ReflectUtils {
         }
         return new RuntimeException(msg, e);
     }
+
+    /**
+     * 校验登陆凭证，只能有一种方式
+     * @param obj
+     * @return
+     */
+    public static Boolean CheckLoginCertificate(Object obj) {
+        try {
+            Class<?> clazz = obj.getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            int flag = 0;
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.get(obj) != null) {
+                    flag++;
+                }
+            }
+            if (flag == 1) {
+                return true;
+            }
+        } catch (IllegalAccessException ignored) {
+        }
+        return false;
+    }
+
 }
