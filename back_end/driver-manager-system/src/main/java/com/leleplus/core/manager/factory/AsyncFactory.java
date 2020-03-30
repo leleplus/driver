@@ -24,16 +24,19 @@ import java.util.TimerTask;
 public class AsyncFactory {
     private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
 
+//    @Resource
+//    private static SysLogininforMapper sysLogininforMapper;
+
     /**
      * 记录登陆信息
      *
-     * @param username 用户名
+     * @param userInfoId 用户名
      * @param status   状态
      * @param message  消息
      * @param args     列表
      * @return 任务task
      */
-    public static TimerTask recordLogininfor(final String username, final String status, final String message,
+    public static TimerTask recordLogininfor(final Long userInfoId, final String status, final String message,
                                              final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
@@ -41,26 +44,25 @@ public class AsyncFactory {
             @Override
             public void run() {
                 String address = AddressUtils.getRealAddressByIP(ip);
-                StringBuilder s = new StringBuilder();
-                s.append(LogUtils.getBlock(ip));
-                s.append(address);
-                s.append(LogUtils.getBlock(username));
-                s.append(LogUtils.getBlock(status));
-                s.append(LogUtils.getBlock(message));
                 // 打印信息到日志
-                sys_user_logger.info(s.toString(), args);
+                sys_user_logger.info(LogUtils.getBlock(ip) +
+                        address +
+                        LogUtils.getBlock(userInfoId) +
+                        LogUtils.getBlock(status) +
+                        LogUtils.getBlock(message), args);
                 // 获取客户端操作系统
                 String os = userAgent.getOperatingSystem().getName();
                 // 获取客户端浏览器
                 String browser = userAgent.getBrowser().getName();
                 // 封装对象
-                SysLogininfor logininfor = new SysLogininfor();
-                logininfor.setUserName(username);
-                logininfor.setIpaddr(ip);
-                logininfor.setLoginLocation(address);
-                logininfor.setBrowser(browser);
-                logininfor.setOs(os);
-                logininfor.setMsg(message);
+                SysLogininfor logininfor =
+                        new SysLogininfor()
+                                .setUserInfoId(userInfoId)
+                                .setIpaddr(ip)
+                                .setLoginLocation(address)
+                                .setBrowser(browser)
+                                .setOs(os)
+                                .setMsg(message);
                 // 日志状态
                 if (Constants.LOGIN_SUCCESS.equals(status) || Constants.LOGOUT.equals(status)) {
                     logininfor.setStatus(Constants.SUCCESS);
@@ -69,6 +71,9 @@ public class AsyncFactory {
                 }
                 // 插入数据
                 SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
+
+
+//              相当于  sysLogininforMapper.insertLogininfor(logininfor);
             }
         };
     }

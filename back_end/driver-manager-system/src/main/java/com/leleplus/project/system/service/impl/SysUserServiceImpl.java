@@ -60,12 +60,12 @@ public class SysUserServiceImpl implements ISysUserService {
     /**
      * 通过用户名查询用户
      *
-     * @param userName 用户名
+     * @param username 用户名
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserByUserName(String userName) {
-        return userMapper.selectUserByUserName(userName);
+    public SysUser selectUserByUserName(String username) {
+        return userMapper.selectUserByUserName(username);
     }
 
     /**

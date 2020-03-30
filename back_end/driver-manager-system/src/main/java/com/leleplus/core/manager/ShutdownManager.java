@@ -26,7 +26,7 @@ public class ShutdownManager {
     private void shutdownAsyncManager() {
         try {
             logger.info("====关闭后台任务任务线程池====");
-            AsyncManager.me().shutdown();
+            AsyncManager.getInstance().shutdown();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

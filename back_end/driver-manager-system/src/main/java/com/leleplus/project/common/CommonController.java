@@ -5,7 +5,7 @@ import com.leleplus.common.constant.Constants;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.common.utils.file.FileUploadUtils;
 import com.leleplus.common.utils.file.FileUtils;
-import com.leleplus.core.config.RuoYiConfig;
+import com.leleplus.core.config.DriverSystemConfiguration;
 import com.leleplus.core.config.ServerConfig;
 import com.leleplus.core.web.domain.AjaxResult;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class CommonController {
                 throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
-            String filePath = RuoYiConfig.getDownloadPath() + fileName;
+            String filePath = DriverSystemConfiguration.getDownloadPath() + fileName;
 
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
@@ -66,7 +66,7 @@ public class CommonController {
     public AjaxResult uploadFile(MultipartFile file) throws Exception {
         try {
             // 上传文件路径
-            String filePath = RuoYiConfig.getUploadPath();
+            String filePath = DriverSystemConfiguration.getUploadPath();
             // 上传并返回新文件名称
             String fileName = FileUploadUtils.upload(filePath, file);
             String url = serverConfig.getUrl() + fileName;
@@ -85,7 +85,7 @@ public class CommonController {
     @GetMapping("/common/download/resource")
     public void resourceDownload(String name, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 本地资源路径
-        String localPath = RuoYiConfig.getProfile();
+        String localPath = DriverSystemConfiguration.getProfile();
         // 数据库资源地址
         String downloadPath = localPath + StringUtils.substringAfter(name, Constants.RESOURCE_PREFIX);
         // 下载名称

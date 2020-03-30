@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "driver")
 @Data
 @Accessors(chain = true)
-public class RuoYiConfig {
+public class DriverSystemConfiguration {
     /**
      * 项目名称
      */
@@ -46,11 +46,11 @@ public class RuoYiConfig {
     private static boolean addressEnabled;
 
     public void setProfile(String profile) {
-        RuoYiConfig.profile = profile;
+        DriverSystemConfiguration.profile = profile;
     }
 
     public void setAddressEnabled(boolean addressEnabled) {
-        RuoYiConfig.addressEnabled = addressEnabled;
+        DriverSystemConfiguration.addressEnabled = addressEnabled;
     }
 
     public static String getProfile() {

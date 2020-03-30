@@ -131,6 +131,12 @@ public class SysUser extends BaseEntity {
      */
     private Long[] postIds;
 
+    /**
+     * 用户信息id
+     */
+    private Long userInfoId;
+
+
     public SysUser() {
 
     }

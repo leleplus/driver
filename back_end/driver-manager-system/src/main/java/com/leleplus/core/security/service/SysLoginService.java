@@ -9,6 +9,8 @@ import com.leleplus.core.manager.AsyncManager;
 import com.leleplus.core.manager.factory.AsyncFactory;
 import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.security.LoginUser;
+import com.leleplus.project.system.domain.SysUser;
+import com.leleplus.project.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,6 +27,7 @@ import javax.annotation.Resource;
  */
 @Component
 public class SysLoginService {
+
     @Autowired
     private TokenService tokenService;
 
@@ -34,25 +37,46 @@ public class SysLoginService {
     @Autowired
     private RedisCache redisCache;
 
+    @Autowired
+    private ISysUserService userService;
+
     /**
      * 登录验证
      *
      * @param username 用户名
-     * @param password 密码
+     * @param password 原始密码
      * @param code     验证码
      * @param uuid     唯一标识
      * @return 结果
      */
     public String login(String username, String password, String code, String uuid) {
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
+
+        // 从redis里拿到验证码后，立即删除
         String captcha = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
+
+        // 获取异步任务管理器实例
+        AsyncManager asyncManagerInstance = AsyncManager.getInstance();
+
+        SysUser sysUser = userService.selectUserByUserName(username);
+        Long userInfoId = 0L;
+        if (sysUser != null) {
+            userInfoId = sysUser.getUserInfoId();
+
+            if(userInfoId == null)
+                userInfoId = 0L;
+        }
+
+        // 验证码过期
         if (captcha == null) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+
+            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaException();
         }
+        // 验证码错误
         if (!code.equalsIgnoreCase(captcha)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
         }
         // 用户验证
@@ -63,14 +87,14 @@ public class SysLoginService {
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
             if (e instanceof BadCredentialsException) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, e.getMessage()));
                 throw new CustomException(e.getMessage());
             }
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         // 生成token
         return tokenService.createToken(loginUser);

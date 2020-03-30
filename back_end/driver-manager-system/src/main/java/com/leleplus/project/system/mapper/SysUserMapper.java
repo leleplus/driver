@@ -23,10 +23,10 @@ public interface SysUserMapper {
     /**
      * 通过用户名查询用户
      *
-     * @param userName 用户名
+     * @param username 用户名
      * @return 用户对象信息
      */
-    SysUser selectUserByUserName(String userName);
+    SysUser selectUserByUserName(String username);
 
     /**
      * 通过用户ID查询用户

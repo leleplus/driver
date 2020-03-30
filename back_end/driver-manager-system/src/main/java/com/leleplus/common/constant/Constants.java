@@ -3,17 +3,16 @@ package com.leleplus.common.constant;
 import io.jsonwebtoken.Claims;
 
 /**
- * 通用常量信息
- * 
+ * 通用常量值
+ *
  * @author witt
  */
-public class Constants
-{
+public class Constants {
     /**
      * UTF-8 字符集
      */
     public static final String UTF8 = "UTF-8";
-    
+
     /**
      * 通用成功标识
      */

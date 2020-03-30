@@ -28,7 +28,7 @@ public class SwaggerConfig {
      * 系统基础配置
      */
     @Autowired
-    private RuoYiConfig RuoYiConfig;
+    private DriverSystemConfiguration DriverSystemConfiguration;
 
     /**
      * 创建API
@@ -36,7 +36,7 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .pathMapping("/dev-api")
+//                .pathMapping("/dev-api")
                 // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
                 .apiInfo(apiInfo())
                 // 设置哪些接口暴露给Swagger展示
@@ -98,9 +98,9 @@ public class SwaggerConfig {
                 // 描述
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
                 // 作者信息
-                .contact(new Contact(RuoYiConfig.getName(), null, null))
+                .contact(new Contact(DriverSystemConfiguration.getName(), null, null))
                 // 版本
-                .version("版本号:" + RuoYiConfig.getVersion())
+                .version("版本号:" + DriverSystemConfiguration.getVersion())
                 .build();
     }
 }

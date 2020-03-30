@@ -3,7 +3,7 @@ package com.leleplus.common.utils.ip;
 import com.alibaba.fastjson.JSONObject;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.common.utils.http.HttpUtils;
-import com.leleplus.core.config.RuoYiConfig;
+import com.leleplus.core.config.DriverSystemConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +18,12 @@ public class AddressUtils {
     public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo.php";
 
     public static String getRealAddressByIP(String ip) {
-        String address = "XX XX";
+        String address = "Unknown IP";
         // 内网不查询
         if (IpUtils.internalIp(ip)) {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled()) {
+        if (DriverSystemConfiguration.isAddressEnabled()) {
             String rspStr = HttpUtils.sendPost(IP_URL, "ip=" + ip);
             if (StringUtils.isEmpty(rspStr)) {
                 log.error("获取地理位置异常 {}", ip);

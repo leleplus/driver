@@ -8,7 +8,7 @@ import com.leleplus.common.utils.reflect.ReflectUtils;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.aspect.lang.annotation.Excel.Type;
 import com.leleplus.core.aspect.lang.annotation.Excels;
-import com.leleplus.core.config.RuoYiConfig;
+import com.leleplus.core.config.DriverSystemConfiguration;
 import com.leleplus.core.web.domain.AjaxResult;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
@@ -549,7 +549,7 @@ public class ExcelUtil<T> {
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename) {
-        String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+        String downloadPath = DriverSystemConfiguration.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists()) {
             desc.getParentFile().mkdirs();

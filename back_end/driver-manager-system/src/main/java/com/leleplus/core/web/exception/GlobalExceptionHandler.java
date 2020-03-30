@@ -7,8 +7,10 @@ import com.leleplus.common.exception.CustomException;
 import com.leleplus.common.exception.DemoModeException;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.web.domain.AjaxResult;
+import io.lettuce.core.RedisConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.PoolException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
@@ -73,6 +75,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public AjaxResult handleException(Exception e) {
+
+        // 拦截 获取验证码时， Redis未开启的错误
+        if (e instanceof PoolException || e instanceof RedisConnectionException) {
+            log.error("Redis 服务器未开启！", e);
+            return AjaxResult.error("Redis服务未开启，请联系管理员！");
+        }
         log.error(e.getMessage(), e);
         return AjaxResult.error(e.getMessage());
     }
