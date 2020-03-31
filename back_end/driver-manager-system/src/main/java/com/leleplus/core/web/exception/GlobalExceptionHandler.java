@@ -5,6 +5,7 @@ import com.leleplus.common.constant.HttpStatus;
 import com.leleplus.common.exception.BaseException;
 import com.leleplus.common.exception.CustomException;
 import com.leleplus.common.exception.DemoModeException;
+import com.leleplus.common.exception.user.LoginCertificateErrorException;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.web.domain.AjaxResult;
 import io.lettuce.core.RedisConnectionException;
@@ -47,6 +48,17 @@ public class GlobalExceptionHandler {
             return AjaxResult.error(e.getMessage());
         }
         return AjaxResult.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 登录凭证匹配不到
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(LoginCertificateErrorException.class)
+    public AjaxResult LoginCertificateErrorException(LoginCertificateErrorException e) {
+        return AjaxResult.error("用户不存在，您可以选择身份证号、手机号、邮箱、用户名任意方式加您的密码登录系统!");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)

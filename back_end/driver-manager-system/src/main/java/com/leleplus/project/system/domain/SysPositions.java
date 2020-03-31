@@ -5,22 +5,26 @@ import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.aspect.lang.annotation.Excel.ColumnType;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 岗位表 sys_post
+ * Copyright (C) @2020 fgwang.660@gmail.com
  *
  * @author witt
+ * @version 1.0
+ * @className SysUserInfo
+ * @date 2020-02-17 08:03
+ * @description 职位实体 sys_post
  */
 
 @Data
 @Accessors(chain = true)
-public class SysPost extends BaseEntity {
+@ToString
+public class SysPositions extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -63,28 +67,4 @@ public class SysPost extends BaseEntity {
      */
     private boolean flag = false;
 
-    public String getPostCode() {
-        return postCode;
-    }
-
-
-    public String getPostName() {
-        return postName;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("postId", getPostId())
-                .append("postCode", getPostCode())
-                .append("postName", getPostName())
-                .append("postSort", getPostSort())
-                .append("status", getStatus())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
-    }
 }

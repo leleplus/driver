@@ -3,6 +3,7 @@ package com.leleplus.project.system.service;
 
 import com.leleplus.core.web.domain.TreeSelect;
 import com.leleplus.project.system.domain.SysMenu;
+import com.leleplus.project.system.domain.SysRole;
 import com.leleplus.project.system.domain.vo.RouterVo;
 
 import java.util.List;
@@ -26,10 +27,10 @@ public interface ISysMenuService {
      * 根据用户查询系统菜单列表
      *
      * @param menu   菜单信息
-     * @param userId 用户ID
+     * @param roles  角色
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuList(SysMenu menu, Long userId);
+    List<SysMenu> selectMenuList(SysMenu menu, List<SysRole> roles);
 
     /**
      * 根据用户ID查询权限

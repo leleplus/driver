@@ -109,9 +109,9 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public String selectUserPostGroup(String userName) {
-        List<SysPost> list = postMapper.selectPostsByUserName(userName);
+        List<SysPositions> list = postMapper.selectPostsByUserName(userName);
         StringBuffer idsStr = new StringBuffer();
-        for (SysPost post : list) {
+        for (SysPositions post : list) {
             idsStr.append(post.getPostName()).append(",");
         }
         if (StringUtils.isNotEmpty(idsStr.toString())) {
@@ -143,9 +143,9 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public String checkPhoneUnique(SysUser user) {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
+        SysUser info = userMapper.checkPhoneUnique(user.getTelphone());
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -159,9 +159,9 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public String checkEmailUnique(SysUser user) {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
+        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
         SysUser info = userMapper.checkEmailUnique(user.getEmail());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -173,7 +173,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param user 用户信息
      */
     public void checkUserAllowed(SysUser user) {
-        if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin()) {
+        if (StringUtils.isNotNull(user.getId()) && user.isAdmin()) {
             throw new CustomException("不允许操作超级管理员用户");
         }
     }
@@ -190,7 +190,7 @@ public class SysUserServiceImpl implements ISysUserService {
         // 新增用户信息
         int rows = userMapper.insertUser(user);
         // 新增用户岗位关联
-        insertUserPost(user);
+//        insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user);
         return rows;
@@ -205,7 +205,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     @Transactional
     public int updateUser(SysUser user) {
-        Long userId = user.getUserId();
+        Long userId = user.getId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
@@ -213,7 +213,7 @@ public class SysUserServiceImpl implements ISysUserService {
         // 删除用户与岗位关联
         userPostMapper.deleteUserPostByUserId(userId);
         // 新增用户与岗位管理
-        insertUserPost(user);
+//        insertUserPost(user);
         return userMapper.updateUser(user);
     }
 
@@ -279,19 +279,17 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param user 用户对象
      */
     public void insertUserRole(SysUser user) {
-        Long[] roles = user.getRoleIds();
-        if (StringUtils.isNotNull(roles)) {
-            // 新增用户与角色管理
-            List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roles) {
-                SysUserRole ur = new SysUserRole();
-                ur.setUserId(user.getUserId());
-                ur.setRoleId(roleId);
-                list.add(ur);
-            }
-            if (list.size() > 0) {
-                userRoleMapper.batchUserRole(list);
-            }
+        Long[] roles = user.getRoles().stream().map(SysRole::getRoleId).toArray(Long[]::new);
+        // 新增用户与角色管理
+        List<SysUserRole> list = new ArrayList<>();
+        for (Long roleId : roles) {
+            SysUserRole ur = new SysUserRole();
+            ur.setUserId(user.getId());
+            ur.setRoleId(roleId);
+            list.add(ur);
+        }
+        if (list.size() > 0) {
+            userRoleMapper.batchUserRole(list);
         }
     }
 
@@ -300,22 +298,22 @@ public class SysUserServiceImpl implements ISysUserService {
      *
      * @param user 用户对象
      */
-    public void insertUserPost(SysUser user) {
-        Long[] posts = user.getPostIds();
-        if (StringUtils.isNotNull(posts)) {
-            // 新增用户与岗位管理
-            List<SysUserPost> list = new ArrayList<SysUserPost>();
-            for (Long postId : posts) {
-                SysUserPost up = new SysUserPost();
-                up.setUserId(user.getUserId());
-                up.setPostId(postId);
-                list.add(up);
-            }
-            if (list.size() > 0) {
-                userPostMapper.batchUserPost(list);
-            }
-        }
-    }
+//    public void insertUserPost(SysUser user) {
+//        Long[] posts = user.getPostIds();
+//        if (StringUtils.isNotNull(posts)) {
+//            // 新增用户与岗位管理
+//            List<SysUserPost> list = new ArrayList<SysUserPost>();
+//            for (Long postId : posts) {
+//                SysUserPost up = new SysUserPost();
+//                up.setUserId(user.getUserId());
+//                up.setPostId(postId);
+//                list.add(up);
+//            }
+//            if (list.size() > 0) {
+//                userPostMapper.batchUserPost(list);
+//            }
+//        }
+//    }
 
     /**
      * 通过用户ID删除用户
@@ -366,25 +364,25 @@ public class SysUserServiceImpl implements ISysUserService {
         for (SysUser user : userList) {
             try {
                 // 验证是否存在这个用户
-                SysUser u = userMapper.selectUserByUserName(user.getUserName());
+                SysUser u = userMapper.selectUserByUserName(user.getUsername());
                 if (StringUtils.isNull(u)) {
                     user.setPassword(SecurityUtils.encryptPassword(password));
                     user.setCreateBy(operName);
                     this.insertUser(user);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUsername() + " 导入成功");
                 } else if (isUpdateSupport) {
                     user.setUpdateBy(operName);
                     this.updateUser(user);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUsername() + " 更新成功");
                 } else {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、账号 " + user.getUserName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、账号 " + user.getUsername() + " 已存在");
                 }
             } catch (Exception e) {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、账号 " + user.getUserName() + " 导入失败：";
+                String msg = "<br/>" + failureNum + "、账号 " + user.getUsername() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
                 log.error(msg, e);
             }

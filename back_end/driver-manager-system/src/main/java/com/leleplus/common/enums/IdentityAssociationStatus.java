@@ -1,4 +1,4 @@
-package com.leleplus.project.system.domain;
+package com.leleplus.common.enums;
 
 import lombok.Getter;
 
@@ -14,10 +14,10 @@ import lombok.Getter;
 public enum IdentityAssociationStatus {
     NORMAL("_SYS_CS_ASSOC_1", "正常关联"),
     NORMAL_FINISHED("_SYS_CS_ASSOC_2", "正常已毕业"),
-    EXPIRED("_SYS_CS_ASSOC_3","失效已换绑"),
+    EXPIRED("_SYS_CS_ASSOC_3", "失效已换绑"),
 
     // 数据不可用状态
-    EXPIRED_deleted("_SYS_CS_ASSOC_3","失效已注销"),
+    EXPIRED_deleted("_SYS_CS_ASSOC_3", "失效已注销"),
 
     ;
 

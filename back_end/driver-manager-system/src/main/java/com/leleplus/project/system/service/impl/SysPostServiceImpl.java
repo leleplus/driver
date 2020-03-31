@@ -4,7 +4,7 @@ package com.leleplus.project.system.service.impl;
 import com.leleplus.common.constant.UserConstants;
 import com.leleplus.common.exception.CustomException;
 import com.leleplus.common.utils.StringUtils;
-import com.leleplus.project.system.domain.SysPost;
+import com.leleplus.project.system.domain.SysPositions;
 import com.leleplus.project.system.mapper.SysPostMapper;
 import com.leleplus.project.system.mapper.SysUserPostMapper;
 import com.leleplus.project.system.service.ISysPostService;
@@ -34,7 +34,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 岗位信息集合
      */
     @Override
-    public List<SysPost> selectPostList(SysPost post)
+    public List<SysPositions> selectPostList(SysPositions post)
     {
         return postMapper.selectPostList(post);
     }
@@ -45,7 +45,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 岗位列表
      */
     @Override
-    public List<SysPost> selectPostAll()
+    public List<SysPositions> selectPostAll()
     {
         return postMapper.selectPostAll();
     }
@@ -57,7 +57,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 角色对象信息
      */
     @Override
-    public SysPost selectPostById(Long postId)
+    public SysPositions selectPostById(Long postId)
     {
         return postMapper.selectPostById(postId);
     }
@@ -80,10 +80,10 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public String checkPostNameUnique(SysPost post)
+    public String checkPostNameUnique(SysPositions post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = postMapper.checkPostNameUnique(post.getPostName());
+        SysPositions info = postMapper.checkPostNameUnique(post.getPostName());
         if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -98,10 +98,10 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public String checkPostCodeUnique(SysPost post)
+    public String checkPostCodeUnique(SysPositions post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
+        SysPositions info = postMapper.checkPostCodeUnique(post.getPostCode());
         if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -144,7 +144,7 @@ public class SysPostServiceImpl implements ISysPostService
     {
         for (Long postId : postIds)
         {
-            SysPost post = selectPostById(postId);
+            SysPositions post = selectPostById(postId);
             if (countUserPostById(postId) > 0)
             {
                 throw new CustomException(String.format("%1$s已分配,不能删除", post.getPostName()));
@@ -160,7 +160,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public int insertPost(SysPost post)
+    public int insertPost(SysPositions post)
     {
         return postMapper.insertPost(post);
     }
@@ -172,7 +172,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public int updatePost(SysPost post)
+    public int updatePost(SysPositions post)
     {
         return postMapper.updatePost(post);
     }

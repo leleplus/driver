@@ -1,7 +1,7 @@
 package com.leleplus.project.system.mapper;
 
 
-import com.leleplus.project.system.domain.SysPost;
+import com.leleplus.project.system.domain.SysPositions;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public interface SysPostMapper {
      * @param post 岗位信息
      * @return 岗位数据集合
      */
-    List<SysPost> selectPostList(SysPost post);
+    List<SysPositions> selectPostList(SysPositions post);
 
     /**
      * 查询所有岗位
      *
      * @return 岗位列表
      */
-    List<SysPost> selectPostAll();
+    List<SysPositions> selectPostAll();
 
     /**
      * 通过岗位ID查询岗位信息
@@ -32,7 +32,7 @@ public interface SysPostMapper {
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    SysPost selectPostById(Long postId);
+    SysPositions selectPostById(Long postId);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -48,7 +48,7 @@ public interface SysPostMapper {
      * @param userName 用户名
      * @return 结果
      */
-    List<SysPost> selectPostsByUserName(String userName);
+    List<SysPositions> selectPostsByUserName(String userName);
 
     /**
      * 删除岗位信息
@@ -72,7 +72,7 @@ public interface SysPostMapper {
      * @param post 岗位信息
      * @return 结果
      */
-    int updatePost(SysPost post);
+    int updatePost(SysPositions post);
 
     /**
      * 新增岗位信息
@@ -80,7 +80,7 @@ public interface SysPostMapper {
      * @param post 岗位信息
      * @return 结果
      */
-    int insertPost(SysPost post);
+    int insertPost(SysPositions post);
 
     /**
      * 校验岗位名称
@@ -88,7 +88,7 @@ public interface SysPostMapper {
      * @param postName 岗位名称
      * @return 结果
      */
-    SysPost checkPostNameUnique(String postName);
+    SysPositions checkPostNameUnique(String postName);
 
     /**
      * 校验岗位编码
@@ -96,5 +96,5 @@ public interface SysPostMapper {
      * @param postCode 岗位编码
      * @return 结果
      */
-    SysPost checkPostCodeUnique(String postCode);
+    SysPositions checkPostCodeUnique(String postCode);
 }

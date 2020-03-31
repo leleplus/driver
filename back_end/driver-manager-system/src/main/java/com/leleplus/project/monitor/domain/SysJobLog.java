@@ -4,9 +4,8 @@ package com.leleplus.project.monitor.domain;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
@@ -18,6 +17,7 @@ import java.util.Date;
 
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysJobLog extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -72,18 +72,4 @@ public class SysJobLog extends BaseEntity {
      * 停止时间
      */
     private Date stopTime;
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("jobLogId", getJobLogId())
-                .append("jobName", getJobName())
-                .append("jobGroup", getJobGroup())
-                .append("jobMessage", getJobMessage())
-                .append("status", getStatus())
-                .append("exceptionInfo", getExceptionInfo())
-                .append("startTime", getStartTime())
-                .append("stopTime", getStopTime())
-                .toString();
-    }
 }

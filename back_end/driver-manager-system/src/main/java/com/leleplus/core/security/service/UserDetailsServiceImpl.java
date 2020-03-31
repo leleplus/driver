@@ -1,5 +1,6 @@
 package com.leleplus.core.security.service;
 
+import com.leleplus.common.enums.LoginType;
 import com.leleplus.common.enums.UserStatus;
 import com.leleplus.common.exception.BaseException;
 import com.leleplus.common.utils.StringUtils;
@@ -34,27 +35,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String certificate) throws UsernameNotFoundException {
-        // 使用正则匹配登录方式，登录名，手机号，身份证号，邮箱
-
         LoginCertificate loginCertificate = LoginCertificate.getInstance();
 
-        if(StringUtils.isTelNumber(certificate)){
+        // 使用正则匹配登录方式，登录名，手机号，身份证号，邮箱
+        if (StringUtils.isTelNumber(certificate)) {
             loginCertificate.setTelPhone(certificate);
-        }else if(StringUtils.isIdCardNumber(certificate)){
+            log.debug("通过手机号登录-->  {}", certificate);
+        } else if (StringUtils.isIdCardNumber(certificate)) {
             loginCertificate.setId_number(certificate);
-        }else if(StringUtils.isEmail(certificate)){
+            log.debug("通过身份证号登录-->  {}", certificate);
+        } else if (StringUtils.isEmail(certificate)) {
             loginCertificate.setEmail(certificate);
-        }else {
+            log.debug("通过邮箱登录-->  {}", certificate);
+
+        } else {
             loginCertificate.setLoginId(certificate);
+            log.debug("通过用户名登录-->  {}", certificate);
         }
-        
-        
 
 
-        SysUser user = userService.selectUserByUserName(certificate);
+        LoginType loginType = loginCertificate.getType();
+        // 通过凭证查询数据
+        SysUser user = userService.selectByLoginCertificate(loginCertificate);
         if (StringUtils.isNull(user)) {
-            log.info("登录用户：{} 不存在.", certificate);
-            throw new UsernameNotFoundException("登录用户：" + certificate + " 不存在");
+            log.info(loginType.getDescription() + "：{} 不存在.", certificate);
+            throw new UsernameNotFoundException(loginType.getDescription() + " ：" + certificate + " 不存在");
         } else if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
             log.info("登录用户：{} 已被删除.", certificate);
             throw new BaseException("对不起，您的账号：" + certificate + " 已被删除");
@@ -63,10 +68,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new BaseException("对不起，您的账号：" + certificate + " 已停用");
         }
 
-        return createLoginUser(user);
-    }
-
-    public UserDetails createLoginUser(SysUser user) {
         return new LoginUser(user, permissionService.getMenuPermission(user));
     }
 }

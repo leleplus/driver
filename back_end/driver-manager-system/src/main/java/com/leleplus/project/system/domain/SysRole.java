@@ -1,12 +1,13 @@
 package com.leleplus.project.system.domain;
 
 
+import com.leleplus.common.enums.RoleKeys;
+import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +20,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -32,12 +34,16 @@ public class SysRole extends BaseEntity {
      * 角色名称
      */
     @Excel(name = "角色名称")
+    @NotBlank(message = "角色名称不能为空")
+    @Size(min = 0, max = 30, message = "角色名称长度不能超过30个字符")
     private String roleName;
 
     /**
      * 角色权限
      */
     @Excel(name = "角色权限")
+    @NotBlank(message = "权限字符不能为空")
+    @Size(min = 0, max = 100, message = "权限字符长度不能超过100个字符")
     private String roleKey;
 
     /**
@@ -48,9 +54,10 @@ public class SysRole extends BaseEntity {
     private String roleSort;
 
     /**
-     * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限）
+     * 数据范围（1：所有数据权限（管理员）；2：教练数据权限；3：学员数据权限；4：自定义数据权限）
      */
-    @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限")
+    @Excel(name = "数据范围", readConverterExp = "1=所有数据权限（管理员）,2=教练数据权限,3=学员数据权限,4=自定义数据权限")
+//    @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限")
     private String dataScope;
 
     /**
@@ -87,39 +94,19 @@ public class SysRole extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        return isAdmin(this.roleId);
+        return isAdmin(this.roleKey);
     }
 
-    public static boolean isAdmin(Long roleId) {
-        return roleId != null && 1L == roleId;
-    }
-
-    @NotBlank(message = "角色名称不能为空")
-    @Size(min = 0, max = 30, message = "角色名称长度不能超过30个字符")
-    public String getRoleName() {
-        return roleName;
-    }
-
-    @NotBlank(message = "权限字符不能为空")
-    @Size(min = 0, max = 100, message = "权限字符长度不能超过100个字符")
-    public String getRoleKey() {
-        return roleKey;
-    }
-
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("roleId", getRoleId())
-                .append("roleName", getRoleName())
-                .append("roleKey", getRoleKey())
-                .append("roleSort", getRoleSort())
-                .append("dataScope", getDataScope())
-                .append("status", getStatus())
-                .append("delFlag", getDelFlag())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
+    /**
+     * 判断是不是管理员
+     *
+     * @param roleKey
+     * @return
+     */
+    public static boolean isAdmin(String roleKey) {
+        if (StringUtils.isEmpty(roleKey)) {
+            return false;
+        }
+        return RoleKeys.ADMIN.getRole().getRoleKey().equals(roleKey);
     }
 }

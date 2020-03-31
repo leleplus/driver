@@ -1,9 +1,9 @@
 package com.leleplus.project.system.domain;
 
+import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
@@ -20,14 +20,16 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class SysStudentCoach {
+@ToString
+public class SysStudentCoach extends BaseEntity {
 
+    private static final long serialVersionUID = -7986259728749744343L;
     private Long id;
 
-    // 学员id
+    // 学员id（用户信息表，学员id）
     private Long studentId;
 
-    // 教练id
+    // 教练id (用户信息表，教练id)
     private Long coachId;
 
     // 绑定时间
@@ -36,14 +38,5 @@ public class SysStudentCoach {
     // 状态
     private String status;
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("studentId", getStudentId())
-                .append("coachId", getCoachId())
-                .append("bindTime", getBindTime())
-                .append("status", getStatus())
-                .toString();
-    }
+
 }

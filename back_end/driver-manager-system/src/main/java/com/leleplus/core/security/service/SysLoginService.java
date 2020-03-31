@@ -6,6 +6,7 @@ import com.leleplus.common.exception.user.CaptchaException;
 import com.leleplus.common.exception.user.UserPasswordNotMatchException;
 import com.leleplus.common.utils.MessageUtils;
 import com.leleplus.common.utils.SecurityUtils;
+import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.manager.AsyncManager;
 import com.leleplus.core.manager.factory.AsyncFactory;
 import com.leleplus.core.redis.RedisCache;
@@ -76,9 +77,8 @@ public class SysLoginService {
                 userInfoId = 0L;
         }
 
-        // 验证码过期
-        if (captcha == null) {
-
+        // 验证码过期(从redis里没有拿到验证码)
+        if (StringUtils.isEmpty(captcha)) {
             asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaException();
         }

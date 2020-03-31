@@ -67,20 +67,20 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      * @return 在线用户
      */
     public SysUserOnline loginUserToUserOnline(LoginUser user) {
-        if (StringUtils.isNull(user) && StringUtils.isNull(user.getUser())) {
+        if (StringUtils.isNull(user) || StringUtils.isNull(user.getUser())) {
             return null;
         }
         SysUserOnline sysUserOnline = new SysUserOnline();
-        sysUserOnline.setTokenId(user.getToken());
-        sysUserOnline.setUserName(user.getUsername());
-        sysUserOnline.setIpaddr(user.getIpaddr());
-        sysUserOnline.setLoginLocation(user.getLoginLocation());
-        sysUserOnline.setBrowser(user.getBrowser());
-        sysUserOnline.setOs(user.getOs());
-        sysUserOnline.setLoginTime(user.getLoginTime());
-        if (StringUtils.isNotNull(user.getUser().getDept())) {
-            sysUserOnline.setDeptName(user.getUser().getDept().getDeptName());
-        }
+        sysUserOnline.setTokenId(user.getToken())
+                .setUserName(user.getUsername())
+                .setIpaddr(user.getIpaddr())
+                .setLoginLocation(user.getLoginLocation())
+                .setBrowser(user.getBrowser())
+                .setOs(user.getOs())
+                .setLoginTime(user.getLoginTime());
+//        if (StringUtils.isNotNull(user.getUser().getDept())) {
+//            sysUserOnline.setDeptName(user.getUser().getDept().getDeptName());
+//        }
         return sysUserOnline;
     }
 }

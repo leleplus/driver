@@ -9,7 +9,7 @@ import com.leleplus.core.aspect.lang.enums.BusinessType;
 import com.leleplus.core.web.controller.BaseController;
 import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.core.web.page.TableDataInfo;
-import com.leleplus.project.system.domain.SysPost;
+import com.leleplus.project.system.domain.SysPositions;
 import com.leleplus.project.system.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,20 +35,20 @@ public class SysPostController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysPost post)
+    public TableDataInfo list(SysPositions post)
     {
         startPage();
-        List<SysPost> list = postService.selectPostList(post);
+        List<SysPositions> list = postService.selectPostList(post);
         return getDataTable(list);
     }
     
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:config:export')")
     @GetMapping("/export")
-    public AjaxResult export(SysPost post)
+    public AjaxResult export(SysPositions post)
     {
-        List<SysPost> list = postService.selectPostList(post);
-        ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
+        List<SysPositions> list = postService.selectPostList(post);
+        ExcelUtil<SysPositions> util = new ExcelUtil<SysPositions>(SysPositions.class);
         return util.exportExcel(list, "岗位数据");
     }
 
@@ -68,7 +68,7 @@ public class SysPostController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:post:add')")
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysPost post)
+    public AjaxResult add(@Validated @RequestBody SysPositions post)
     {
         if (UserConstants.NOT_UNIQUE.equals(postService.checkPostNameUnique(post)))
         {
@@ -88,7 +88,7 @@ public class SysPostController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysPost post)
+    public AjaxResult edit(@Validated @RequestBody SysPositions post)
     {
         if (UserConstants.NOT_UNIQUE.equals(postService.checkPostNameUnique(post)))
         {
@@ -119,7 +119,7 @@ public class SysPostController extends BaseController
     @GetMapping("/optionselect")
     public AjaxResult optionselect()
     {
-        List<SysPost> posts = postService.selectPostAll();
+        List<SysPositions> posts = postService.selectPostAll();
         return AjaxResult.success(posts);
     }
 }

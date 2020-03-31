@@ -10,6 +10,9 @@ import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.project.system.domain.SysMenu;
 import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysMenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +26,7 @@ import java.util.Set;
  *
  * @author witt
  */
+@Api(value = "SysLoginController", tags = "系统登录接口")
 @RestController
 public class SysLoginController {
 
@@ -47,9 +51,9 @@ public class SysLoginController {
      * @param uuid     唯一标识
      * @return 结果
      */
+    @ApiOperation(value = "登录接口", notes = "username可以为用户名，身份证号，手机号，邮箱")
     @PostMapping("/login")
-    public AjaxResult login(String username, String password, String code, String uuid) {
-
+    public AjaxResult login(String username, String password, @ApiParam("图片验证码") String code, @ApiParam("验证唯一标识") String uuid) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(username, password, code, uuid);
@@ -87,7 +91,7 @@ public class SysLoginController {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         // 用户信息
         SysUser user = loginUser.getUser();
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(user.getUserId());
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(user.getId());
         return AjaxResult.success(menuService.buildMenus(menus));
     }
 }

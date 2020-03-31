@@ -3,9 +3,8 @@ package com.leleplus.project.system.domain;
 
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,6 +19,7 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysMenu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -87,15 +87,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 子菜单
      */
-    private List<SysMenu> children = new ArrayList<SysMenu>();
-
-    public Long getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
+    private List<SysMenu> children = new ArrayList<>();
 
     @NotBlank(message = "菜单名称不能为空")
     @Size(min = 0, max = 50, message = "菜单名称长度不能超过50个字符")
@@ -121,27 +113,5 @@ public class SysMenu extends BaseEntity {
     @NotBlank(message = "菜单类型不能为空")
     public String getMenuType() {
         return menuType;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("menuId", getMenuId())
-                .append("menuName", getMenuName())
-                .append("parentId", getParentId())
-                .append("orderNum", getOrderNum())
-                .append("path", getPath())
-                .append("component", getComponent())
-                .append("isFrame", getIsFrame())
-                .append("menuType", getMenuType())
-                .append("visible", getVisible())
-                .append("perms", getPerms())
-                .append("icon", getIcon())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
     }
 }

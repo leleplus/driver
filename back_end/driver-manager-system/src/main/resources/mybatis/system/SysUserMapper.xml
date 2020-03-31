@@ -5,13 +5,13 @@
 <mapper namespace="com.leleplus.project.system.mapper.SysUserMapper">
 
     <resultMap type="com.leleplus.project.system.domain.SysUser" id="SysUserResult">
-        <id property="userId" column="user_id"/>
-        <result property="deptId" column="dept_id"/>
-        <result property="userName" column="username"/>
+        <id property="id" column="id"/>
+        <!--        <result property="deptId" column="dept_id"/>-->
+        <result property="username" column="username"/>
         <result property="nickName" column="nick_name"/>
         <result property="email" column="email"/>
-        <result property="phonenumber" column="phonenumber"/>
-        <result property="sex" column="sex"/>
+        <result property="telphone" column="telphone"/>
+        <!--        <result property="sex" column="sex"/>-->
         <result property="avatar" column="avatar"/>
         <result property="password" column="password"/>
         <result property="status" column="status"/>
@@ -23,8 +23,8 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
-        <association property="dept" column="dept_id" javaType="com.leleplus.project.system.domain.SysDept"
-                     resultMap="deptResult"/>
+        <!--        <association property="dept" column="dept_id" javaType="com.leleplus.project.system.domain.SysDept"-->
+        <!--                     resultMap="deptResult"/>-->
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
@@ -46,37 +46,38 @@
         <result property="status" column="role_status"/>
     </resultMap>
     <!--
-
+u.dept_id,
     -->
     <sql id="selectUserVo">
-        select u.user_id,u.remark,
+        select u.id,u.remark,
 		 u.username,
-			u.dept_id,
+
 			 u.nick_name,
-			u.email,u.avatar, u.phonenumber,u.del_flag,
+			u.email,u.avatar, u.telphone,u.del_flag,
           u.password, u.sex, u.status,  u.login_ip, u.login_date, u.create_by, u.create_time,
-        d.dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+<!--        d.dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.status as dept_status,-->
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         from sys_user u
-		    left join sys_dept d on u.dept_id = d.dept_id
-		    left join sys_user_role ur on u.user_id = ur.user_id
+		    <!--left join sys_dept d on u.dept_id = d.dept_id-->
+		    left join sys_user_role ur on u.id = ur.id
 		    left join sys_role r on r.role_id = ur.role_id
     </sql>
 
     <select id="selectUserList" parameterType="com.leleplus.project.system.domain.SysUser" resultMap="SysUserResult">
-        select u.user_id, u.dept_id, u.nick_name, u.username, u.email, u.avatar, u.phonenumber, u.password, u.sex,
-        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from
-        sys_user u
-        left join sys_dept d on u.dept_id = d.dept_id
+        select u.id, <!--u.dept_id,--> u.nick_name, u.username, u.email, u.avatar, u.telphone, u.password, u.sex,
+        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+    <!--    d.dept_name, d.leader -->
+        from sys_user u
+       <!-- left join sys_dept d on u.dept_id = d.dept_id-->
         where u.del_flag = '0'
-        <if test="userName != null and userName != ''">
-            AND u.username like concat('%', #{userName}, '%')
+        <if test="username != null and username != ''">
+            AND u.username like concat('%', #{username}, '%')
         </if>
         <if test="status != null and status != ''">
             AND u.status = #{status}
         </if>
-        <if test="phonenumber != null and phonenumber != ''">
-            AND u.phonenumber like concat('%', #{phonenumber}, '%')
+        <if test="telphone != null and telphone != ''">
+            AND u.telphone like concat('%', #{telphone}, '%')
         </if>
         <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
             AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
@@ -84,10 +85,10 @@
         <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
             AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
         </if>
-        <if test="deptId != null and deptId != 0">
-            AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET
-            (#{deptId},ancestors) ))
-        </if>
+        <!--        <if test="deptId != null and deptId != 0">-->
+        <!--            AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET-->
+        <!--            (#{deptId},ancestors) ))-->
+        <!--        </if>-->
         <!-- 数据范围过滤 -->
         ${dataScope}
     </select>
@@ -99,46 +100,46 @@
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
-        where u.user_id = #{userId}
+        where u.id = #{id}
     </select>
 
     <select id="checkUserNameUnique" parameterType="String" resultType="int">
-		select count(1) from sys_user where username = #{userName}
+		select count(1) from sys_user where username = #{username}
 	</select>
 
     <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber}
+		select id, telphone from sys_user where telphone = #{telphone}
 	</select>
 
     <select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email = #{email}
+		select id, email from sys_user where email = #{email}
 	</select>
 
     <insert id="insertUser" parameterType="com.leleplus.project.system.domain.SysUser" useGeneratedKeys="true"
-            keyProperty="userId">
+            keyProperty="id">
         insert into sys_user(
-        <if test="userId != null and userId != 0">user_id,</if>
-        <if test="deptId != null and deptId != 0">dept_id,</if>
-        <if test="userName != null and userName != ''">username,</if>
+        <if test="id != null and id != 0">id,</if>
+        <!--        <if test="deptId != null and deptId != 0">dept_id,</if>-->
+        <if test="username != null and username != ''">username,</if>
         <if test="nickName != null and nickName != ''">nick_name,</if>
         <if test="email != null and email != ''">email,</if>
         <if test="avatar != null and avatar != ''">avatar,</if>
-        <if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
-        <if test="sex != null and sex != ''">sex,</if>
+        <if test="telphone != null and telphone != ''">telphone,</if>
+        <!--        <if test="sex != null and sex != ''">sex,</if>-->
         <if test="password != null and password != ''">password,</if>
         <if test="status != null and status != ''">status,</if>
         <if test="createBy != null and createBy != ''">create_by,</if>
         <if test="remark != null and remark != ''">remark,</if>
         create_time
         )values(
-        <if test="userId != null and userId != ''">#{userId},</if>
-        <if test="deptId != null and deptId != ''">#{deptId},</if>
-        <if test="userName != null and userName != ''">#{userName},</if>
+        <if test="id != null and id != ''">#{id},</if>
+        <!--        <if test="deptId != null and deptId != ''">#{deptId},</if>-->
+        <if test="username != null and username != ''">#{username},</if>
         <if test="nickName != null and nickName != ''">#{nickName},</if>
         <if test="email != null and email != ''">#{email},</if>
         <if test="avatar != null and avatar != ''">#{avatar},</if>
-        <if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
-        <if test="sex != null and sex != ''">#{sex},</if>
+        <if test="telphone != null and telphone != ''">#{telphone},</if>
+        <!--        <if test="sex != null and sex != ''">#{sex},</if>-->
         <if test="password != null and password != ''">#{password},</if>
         <if test="status != null and status != ''">#{status},</if>
         <if test="createBy != null and createBy != ''">#{createBy},</if>
@@ -150,12 +151,12 @@
     <update id="updateUser" parameterType="com.leleplus.project.system.domain.SysUser">
         update sys_user
         <set>
-            <if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
-            <if test="userName != null and userName != ''">username = #{userName},</if>
+            <!--            <if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>-->
+            <if test="username != null and username != ''">username = #{username},</if>
             <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
             <if test="email != null and email != ''">email = #{email},</if>
-            <if test="phonenumber != null and phonenumber != ''">phonenumber = #{phonenumber},</if>
-            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="telphone != null and telphone != ''">telphone = #{telphone},</if>
+            <!--            <if test="sex != null and sex != ''">sex = #{sex},</if>-->
             <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
             <if test="password != null and password != ''">password = #{password},</if>
             <if test="status != null and status != ''">status = #{status},</if>
@@ -165,29 +166,29 @@
             <if test="remark != null">remark = #{remark},</if>
             update_time = sysdate()
         </set>
-        where user_id = #{userId}
+        where id = #{id}
     </update>
 
     <update id="updateUserStatus" parameterType="com.leleplus.project.system.domain.SysUser">
- 		update sys_user set status = #{status} where user_id = #{userId}
+ 		update sys_user set status = #{status} where id = #{id}
 	</update>
 
     <update id="updateUserAvatar" parameterType="com.leleplus.project.system.domain.SysUser">
- 		update sys_user set avatar = #{avatar} where username = #{userName}
+ 		update sys_user set avatar = #{avatar} where username = #{username,jdbcType=VARCHAR}
 	</update>
 
     <update id="resetUserPwd" parameterType="com.leleplus.project.system.domain.SysUser">
- 		update sys_user set password = #{password} where username = #{userName}
+ 		update sys_user set password = #{password} where username = #{username}
 	</update>
 
     <delete id="deleteUserById" parameterType="Long">
- 		delete from sys_user where user_id = #{userId}
+ 		delete from sys_user where id = #{id}
  	</delete>
 
     <delete id="deleteUserByIds" parameterType="Long">
-        update sys_user set del_flag = '2' where user_id in
-        <foreach collection="array" item="userId" open="(" separator="," close=")">
-            #{userId}
+        update sys_user set del_flag = '2' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 
@@ -195,18 +196,21 @@
     <select id="selectUserByLoginCertificate" resultMap="SysUserResult"
             parameterType="com.leleplus.project.system.domain.vo.LoginCertificate">
         <include refid="selectUserVo"/>
+
+
+        <!-- 下列where条件，永远只可能出现一个，所以不需要and or 拼接 -->
         where
         <if test="loginId != null and loginId != ''">
-
+            username = #{loginId,jdbcType=VARCHAR}
         </if>
         <if test="id_number != null and id_number != ''">
-
+            id_card = #{id_number,jdbcType=VARCHAR}
         </if>
         <if test="email != null and email != ''">
-
+            email = #{email,jdbcType=VARCHAR}
         </if>
         <if test="telPhone != null and telPhone != ''">
-
+            telphone = #{telPhone,jdbcType=VARCHAR}
         </if>
 
     </select>

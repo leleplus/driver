@@ -6,12 +6,15 @@ import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.web.domain.TreeSelect;
 import com.leleplus.project.system.domain.SysMenu;
+import com.leleplus.project.system.domain.SysRole;
 import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.domain.vo.MetaVo;
 import com.leleplus.project.system.domain.vo.RouterVo;
 import com.leleplus.project.system.mapper.SysMenuMapper;
 import com.leleplus.project.system.mapper.SysRoleMenuMapper;
 import com.leleplus.project.system.service.ISysMenuService;
+import com.leleplus.project.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +36,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Resource
     private SysRoleMenuMapper roleMenuMapper;
 
+    @Autowired
+    private ISysUserService userService;
+
     /**
      * 根据用户查询系统菜单列表
      *
@@ -41,7 +47,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public List<SysMenu> selectMenuList(Long userId) {
-        return selectMenuList(new SysMenu(), userId);
+        return selectMenuList(new SysMenu(), userService.selectUserById(userId).getRoles());
     }
 
     /**
@@ -51,13 +57,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
+    public List<SysMenu> selectMenuList(SysMenu menu, List<SysRole> roles) {
         List<SysMenu> menuList = null;
         // 管理员显示所有菜单信息
-        if (SysUser.isAdmin(userId)) {
+        if (SysUser.isAdmin(roles)) {
             menuList = menuMapper.selectMenuList(menu);
         } else {
-            menu.getParams().put("userId", userId);
+            menu.getParams().put("userRoles", roles);
             menuList = menuMapper.selectMenuListByUserId(menu);
         }
         return menuList;

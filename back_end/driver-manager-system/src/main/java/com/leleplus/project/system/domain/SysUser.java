@@ -1,15 +1,14 @@
 package com.leleplus.project.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.leleplus.common.enums.RoleKeys;
 import com.leleplus.core.aspect.lang.annotation.Excel;
-import com.leleplus.core.aspect.lang.annotation.Excel.Type;
 import com.leleplus.core.aspect.lang.annotation.Excel.ColumnType;
-import com.leleplus.core.aspect.lang.annotation.Excels;
+import com.leleplus.core.aspect.lang.annotation.Excel.Type;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +23,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -31,43 +31,40 @@ public class SysUser extends BaseEntity {
      * 用户ID
      */
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
-    private Long userId;
-
-    /**
-     * 部门ID
-     */
-    @Excel(name = "部门编号", type = Type.IMPORT)
-    private Long deptId;
+    private Long id;
 
     /**
      * 用户账号
      */
     @Excel(name = "登录名称")
-    private String userName;
+    @NotBlank(message = "用户账号不能为空")
+    @Size(min = 0, max = 30, message = "用户账号长度不能超过30个字符")
+    private String username;
 
     /**
      * 用户昵称
      */
     @Excel(name = "用户名称")
+    @Size(min = 0, max = 30, message = "用户昵称长度不能超过30个字符")
     private String nickName;
 
     /**
      * 用户邮箱
      */
     @Excel(name = "用户邮箱")
+    @Email(message = "邮箱格式不正确")
+    @Size(min = 0, max = 50, message = "邮箱长度不能超过50个字符")
     private String email;
 
     /**
      * 手机号码
      */
     @Excel(name = "手机号码")
-    private String phonenumber;
+    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
+    private String telphone;
 
-    /**
-     * 用户性别
-     */
-    @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
-    private String sex;
+    @Excel(name = "身份证号")
+    private String idCard;
 
     /**
      * 用户头像
@@ -77,10 +74,11 @@ public class SysUser extends BaseEntity {
     /**
      * 密码
      */
+    @JsonProperty
     private String password;
 
     /**
-     * 盐加密
+     * 加密盐
      */
     private String salt;
 
@@ -110,11 +108,11 @@ public class SysUser extends BaseEntity {
     /**
      * 部门对象
      */
-    @Excels({
-            @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
-            @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
-    })
-    private SysDept dept;
+//    @Excels({
+//            @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
+//            @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
+//    })
+//    private SysDept dept;
 
     /**
      * 角色对象
@@ -124,15 +122,15 @@ public class SysUser extends BaseEntity {
     /**
      * 角色组
      */
-    private Long[] roleIds;
+//    private Long[] roleIds;
+
+//    /**
+//     * 岗位组
+//     */
+//    private Long[] postIds;
 
     /**
-     * 岗位组
-     */
-    private Long[] postIds;
-
-    /**
-     * 用户信息id
+     * 用户信息id(表关联在用户信息表中)
      */
     private Long userInfoId;
 
@@ -141,70 +139,26 @@ public class SysUser extends BaseEntity {
 
     }
 
-    public SysUser(Long userId) {
-        this.userId = userId;
+    public SysUser(Long id) {
+        this.id = id;
     }
 
 
     public boolean isAdmin() {
-        return isAdmin(this.userId);
+        return isAdmin(this.getRoles());
     }
 
-    public static boolean isAdmin(Long userId) {
-        return userId != null && 1L == userId;
+    /**
+     * 判断是不是管理员
+     *
+     * @param roles
+     * @return
+     */
+    public static boolean isAdmin(List<SysRole> roles) {
+        if (roles == null || roles.size() == 0) {
+            return false;
+        }
+        return roles.stream().anyMatch(item -> RoleKeys.ADMIN.getRoleKey().equals(item.getRoleKey()));
     }
 
-
-    @Size(min = 0, max = 30, message = "用户昵称长度不能超过30个字符")
-    public String getNickName() {
-        return nickName;
-    }
-
-    @NotBlank(message = "用户账号不能为空")
-    @Size(min = 0, max = 30, message = "用户账号长度不能超过30个字符")
-    public String getUserName() {
-        return userName;
-    }
-
-    @Email(message = "邮箱格式不正确")
-    @Size(min = 0, max = 50, message = "邮箱长度不能超过50个字符")
-    public String getEmail() {
-        return email;
-    }
-
-    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    @JsonProperty
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("userId", getUserId())
-                .append("deptId", getDeptId())
-                .append("userName", getUserName())
-                .append("nickName", getNickName())
-                .append("email", getEmail())
-                .append("phonenumber", getPhonenumber())
-                .append("sex", getSex())
-                .append("avatar", getAvatar())
-                .append("password", getPassword())
-                .append("salt", getSalt())
-                .append("status", getStatus())
-                .append("delFlag", getDelFlag())
-                .append("loginIp", getLoginIp())
-                .append("loginDate", getLoginDate())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .append("dept", getDept())
-                .toString();
-    }
 }

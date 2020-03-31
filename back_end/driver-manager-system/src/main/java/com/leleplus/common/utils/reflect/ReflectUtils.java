@@ -322,6 +322,7 @@ public class ReflectUtils {
 
     /**
      * 校验登陆凭证，只能有一种方式
+     *
      * @param obj
      * @return
      */
