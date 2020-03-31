@@ -106,11 +106,6 @@ public class SysRole extends BaseEntity {
         return roleKey;
     }
 
-
-    public String getRoleSort() {
-        return roleSort;
-    }
-
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("roleId", getRoleId())
