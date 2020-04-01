@@ -49,17 +49,13 @@
 u.dept_id,
     -->
     <sql id="selectUserVo">
-        select u.id,u.remark,
-		 u.username,
-
-			 u.nick_name,
-			u.email,u.avatar, u.telphone,u.del_flag,
+        select u.id,u.remark, u.username, u.nick_name, u.email,u.avatar, u.telphone,u.del_flag,
           u.password, u.sex, u.status,  u.login_ip, u.login_date, u.create_by, u.create_time,
 <!--        d.dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.status as dept_status,-->
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         from sys_user u
 		    <!--left join sys_dept d on u.dept_id = d.dept_id-->
-		    left join sys_user_role ur on u.id = ur.id
+		    left join sys_user_role ur on u.id = ur.user_id
 		    left join sys_role r on r.role_id = ur.role_id
     </sql>
 
@@ -192,25 +188,23 @@ u.dept_id,
         </foreach>
     </delete>
 
-    <!-- 多形式登录 -->
+    <!-- 多形式登录 , 登录查询的接口，需要级联查询出角色-->
     <select id="selectUserByLoginCertificate" resultMap="SysUserResult"
             parameterType="com.leleplus.project.system.domain.vo.LoginCertificate">
         <include refid="selectUserVo"/>
-
-
         <!-- 下列where条件，永远只可能出现一个，所以不需要and or 拼接 -->
         where
         <if test="loginId != null and loginId != ''">
-            username = #{loginId,jdbcType=VARCHAR}
+            u.username = #{loginId,jdbcType=VARCHAR}
         </if>
         <if test="id_number != null and id_number != ''">
-            id_card = #{id_number,jdbcType=VARCHAR}
+            u.id_card = #{id_number,jdbcType=VARCHAR}
         </if>
         <if test="email != null and email != ''">
-            email = #{email,jdbcType=VARCHAR}
+            u.email = #{email,jdbcType=VARCHAR}
         </if>
         <if test="telPhone != null and telPhone != ''">
-            telphone = #{telPhone,jdbcType=VARCHAR}
+            u.telphone = #{telPhone,jdbcType=VARCHAR}
         </if>
 
     </select>

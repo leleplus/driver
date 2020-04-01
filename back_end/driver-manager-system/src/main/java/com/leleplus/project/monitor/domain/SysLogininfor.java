@@ -27,10 +27,10 @@ public class SysLogininfor extends BaseEntity {
     private Long id;
 
     /**
-     * 用户账号
+     * 用户账号(可能是手机号、用户名、邮箱、账户)
      */
-    @Excel(name = "用户信息Id")
-    private Long userInfoId;
+    @Excel(name = "用户账户")
+    private String account;
 
     /**
      * 登录状态 0成功 1失败

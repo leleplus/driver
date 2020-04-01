@@ -144,21 +144,44 @@ public class SysUser extends BaseEntity {
     }
 
 
+    /**
+     * 判断是不是管理员
+     *
+     * @return
+     */
     public boolean isAdmin() {
-        return isAdmin(this.getRoles());
+        return checkRole(this.getRoles(), RoleKeys.ADMIN);
     }
 
     /**
-     * 判断是不是管理员
+     * 判断角色
      *
      * @param roles
      * @return
      */
-    public static boolean isAdmin(List<SysRole> roles) {
+    public static boolean checkRole(List<SysRole> roles, RoleKeys key) {
         if (roles == null || roles.size() == 0) {
             return false;
         }
-        return roles.stream().anyMatch(item -> RoleKeys.ADMIN.getRoleKey().equals(item.getRoleKey()));
+        return roles.stream().anyMatch(item -> key.getRoleKey().equals(item.getRoleKey()));
+    }
+
+    /**
+     * 判断是不是教练
+     *
+     * @return
+     */
+    public boolean isCoach() {
+        return checkRole(this.getRoles(), RoleKeys.COACH);
+    }
+
+    /**
+     * 判断是不是学员
+     *
+     * @return
+     */
+    public boolean isStudent() {
+        return checkRole(this.getRoles(), RoleKeys.STUDENT);
     }
 
 }

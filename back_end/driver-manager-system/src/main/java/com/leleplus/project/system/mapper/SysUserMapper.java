@@ -112,7 +112,7 @@ public interface SysUserMapper {
     SysUser checkEmailUnique(String email);
 
     /**
-     * 通过登录凭证查询
+     * 通过登录凭证查询，需要携带角色信息
      *
      * @param loginCertificate
      * @return

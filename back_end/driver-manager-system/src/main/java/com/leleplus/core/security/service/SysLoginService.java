@@ -11,7 +11,6 @@ import com.leleplus.core.manager.AsyncManager;
 import com.leleplus.core.manager.factory.AsyncFactory;
 import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.security.LoginUser;
-import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,23 +67,14 @@ public class SysLoginService {
         // 获取异步任务管理器实例
         AsyncManager asyncManagerInstance = AsyncManager.getInstance();
 
-        SysUser sysUser = userService.selectUserByUserName(username);
-        Long userInfoId = 0L;
-        if (sysUser != null) {
-            userInfoId = sysUser.getUserInfoId();
-
-            if (userInfoId == null)
-                userInfoId = 0L;
-        }
-
         // 验证码过期(从redis里没有拿到验证码)
         if (StringUtils.isEmpty(captcha)) {
-            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaException();
         }
         // 验证码错误
         if (!code.equalsIgnoreCase(captcha)) {
-            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+            asyncManagerInstance.execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
         }
         // 用户验证
@@ -95,14 +85,14 @@ public class SysLoginService {
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
             if (e instanceof BadCredentialsException) {
-                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
             } else {
-                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_FAIL, e.getMessage()));
+                asyncManagerInstance.execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
                 throw new CustomException(e.getMessage());
             }
         }
-        asyncManagerInstance.execute(AsyncFactory.recordLogininfor(userInfoId, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        asyncManagerInstance.execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         // 生成token
         return tokenService.createToken(loginUser);

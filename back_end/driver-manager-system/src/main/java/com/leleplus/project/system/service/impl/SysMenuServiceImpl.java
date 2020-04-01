@@ -2,6 +2,7 @@ package com.leleplus.project.system.service.impl;
 
 
 import com.leleplus.common.constant.UserConstants;
+import com.leleplus.common.enums.RoleKeys;
 import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.web.domain.TreeSelect;
@@ -60,7 +61,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenu> selectMenuList(SysMenu menu, List<SysRole> roles) {
         List<SysMenu> menuList = null;
         // 管理员显示所有菜单信息
-        if (SysUser.isAdmin(roles)) {
+        if (SysUser.checkRole(roles, RoleKeys.ADMIN)) {
             menuList = menuMapper.selectMenuList(menu);
         } else {
             menu.getParams().put("userRoles", roles);

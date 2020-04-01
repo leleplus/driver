@@ -30,14 +30,13 @@ public class AsyncFactory {
     /**
      * 记录登陆信息
      *
-     * @param userInfoId 用户名
-     * @param status   状态
-     * @param message  消息
-     * @param args     列表
+     * @param account 用户登录时使用的账户
+     * @param status  状态
+     * @param message 消息
+     * @param args    列表
      * @return 任务task
      */
-    public static TimerTask recordLogininfor(final Long userInfoId, final String status, final String message,
-                                             final Object... args) {
+    public static TimerTask recordLogininfor(final String account, final String status, final String message, final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         return new TimerTask() {
@@ -47,7 +46,7 @@ public class AsyncFactory {
                 // 打印信息到日志
                 sys_user_logger.info(LogUtils.getBlock(ip) +
                         address +
-                        LogUtils.getBlock(userInfoId) +
+                        LogUtils.getBlock(account) +
                         LogUtils.getBlock(status) +
                         LogUtils.getBlock(message), args);
                 // 获取客户端操作系统
@@ -57,7 +56,7 @@ public class AsyncFactory {
                 // 封装对象
                 SysLogininfor logininfor =
                         new SysLogininfor()
-                                .setUserInfoId(userInfoId)
+                                .setAccount(account)
                                 .setIpaddr(ip)
                                 .setLoginLocation(address)
                                 .setBrowser(browser)

@@ -323,6 +323,11 @@ public class ReflectUtils {
     /**
      * 校验登陆凭证，只能有一种方式
      *
+     * type记录了登录的方式，已经有一个属性有值了，而且是永远有值的
+     * 另一个属性就是账户，一共两个属性有值，任何账户都是两个属性有值，所以这个类即使加入其他的校验方式，也永远只有两个属性有值。
+     *
+     *
+     *
      * @param obj
      * @return
      */
@@ -337,7 +342,7 @@ public class ReflectUtils {
                     flag++;
                 }
             }
-            if (flag == 1) {
+            if (flag == 2) {
                 return true;
             }
         } catch (IllegalAccessException ignored) {

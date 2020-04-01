@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 public enum LoginType {
     USERNAME(1, "用户名"),
-    IDCARD(1, "身份证号"),
+    IDCARD(2, "身份证号"),
     TELPHONE(3, "手机号"),
     EMAIL(4, "邮箱");
 
