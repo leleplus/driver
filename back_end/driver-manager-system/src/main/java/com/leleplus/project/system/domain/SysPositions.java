@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
  *
  * @author witt
  * @version 1.0
- * @className SysUserInfo
+ * @className SysPositions
  * @date 2020-02-17 08:03
  * @description 职位实体 sys_post
  */
