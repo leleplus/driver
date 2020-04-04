@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leleplus.project.system.mapper.SysUserInfoMapper">
+
+    <resultMap type="com.leleplus.project.system.domain.SysUserInfo" id="Base_Result_Map">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="national" jdbcType="VARCHAR" property="national"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="paper_file_number" jdbcType="VARCHAR" property="paperFileNumber"/>
+        <result column="driver_type" jdbcType="BIGINT" property="driverType"/>
+        <result column="medical_time" jdbcType="TIMESTAMP" property="medicalTime"/>
+        <result column="id_photo" jdbcType="VARCHAR" property="idPhoto"/>
+        <result column="car_info_id" jdbcType="BIGINT" property="carInfoId"/>
+        <result column="wage" jdbcType="VARCHAR" property="wage"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="agent" jdbcType="BIGINT" property="agent"/>
+        <result column="sign_date" jdbcType="BIGINT" property="signDate"/>
+        <result column="expiration_time" jdbcType="TIMESTAMP" property="expirationTime"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <!-- 公共属性 -->
+        <result column="search_value" jdbcType="VARCHAR" property="searchValue"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="data_scope" jdbcType="VARCHAR" property="dataScope"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+    </resultMap>
+    <sql id="Base_sql">
+        id, real_name, age, birthday, gender, national, address, paper_file_number, driver_type, medical_time,
+        id_photo, car_info_id, wage, dept_id, agent, sign_date, expiration_time, deleted,
+        search_value, create_by, create_time, update_by, update_time, remark, data_scope, begin_time, end_time
+    </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="Base_Result_Map" parameterType="long">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM sys_user_info
+        WHERE deleted = 0 AND id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectMaxRegisterType"
+            resultMap="com.leleplus.project.system.mapper.DriverLicenseMapper.Base_Result_Map">
+        select
+                id, code, allow_car_type, other_types, deleted, search_value, create_by, create_time, update_by,
+                update_time, remark, data_scope, begin_time, end_time
+        from (  select top 1 driver_type as id
+                from sys_user_info
+                group by driver_type
+                order by count(1) desc
+            ) temp ,driver_license dl
+        where dl.id = temp.id
+    </select>
+    <insert id="insert" parameterType="com.leleplus.project.system.domain.SysUserInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into sys_user_info(
+        <if test="realName != null ">
+            real_name,
+        </if>
+        <if test="age != null ">
+            age,
+        </if>
+        <if test="birthday != null ">
+            birthday,
+        </if>
+        <if test="gender != null ">
+            gender,
+        </if>
+        <if test="national != null ">
+            national,
+        </if>
+        <if test="address != null ">
+            address,
+        </if>
+        <if test="paperFileNumber != null ">
+            paper_file_number,
+        </if>
+        <if test="driverType != null ">
+            driver_type,
+        </if>
+        <if test="medicalTime != null ">
+            medical_time,
+        </if>
+        <if test="idPhoto != null ">
+            id_photo,
+        </if>
+        <if test="carInfoId != null ">
+            car_info_id,
+        </if>
+        <if test="wage != null ">
+            wage,
+        </if>
+        <if test="deptId != null ">
+            dept_id,
+        </if>
+        <if test="agent != null ">
+            agent,
+        </if>
+        <if test="signDate != null ">
+            sign_date,
+        </if>
+        <if test="expirationTime != null ">
+            expiration_time,
+        </if>
+        <if test="deleted != null ">
+            deleted,
+        </if>
+        <if test="searchValue != null ">
+            search_value,
+        </if>
+        create_by,
+        create_time,
+        <if test="updateBy != null ">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="remark != null ">
+            remark,
+        </if>
+        <if test="dataScope != null ">
+            data_scope,
+        </if>
+        <if test="beginTime != null ">
+            begin_time,
+        </if>
+        <if test="endTime != null ">
+            end_time,
+        </if>
+        )values(
+        <if test="realName != null ">
+            #{realName,jdbcType=VARCHAR},
+        </if>
+        <if test="age != null ">
+            #{age,jdbcType=INTEGER},
+        </if>
+        <if test="birthday != null ">
+            #{birthday,jdbcType=TIMESTAMP},
+        </if>
+        <if test="gender != null ">
+            #{gender,jdbcType=VARCHAR},
+        </if>
+        <if test="national != null ">
+            #{national,jdbcType=VARCHAR},
+        </if>
+        <if test="address != null ">
+            #{address,jdbcType=VARCHAR},
+        </if>
+        <if test="paperFileNumber != null ">
+            #{paperFileNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="driverType != null ">
+            #{driverType,jdbcType=BIGINT},
+        </if>
+        <if test="medicalTime != null ">
+            #{medicalTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="idPhoto != null ">
+            #{idPhoto,jdbcType=VARCHAR},
+        </if>
+        <if test="carInfoId != null ">
+            #{carInfoId,jdbcType=BIGINT},
+        </if>
+        <if test="wage != null ">
+            #{wage,jdbcType=VARCHAR}
+        </if>
+        <if test="deptId != null ">
+            #{deptId,jdbcType=BIGINT},
+        </if>
+        <if test="agent != null ">
+            #{agent,jdbcType=BIGINT},
+        </if>
+        <if test="signDate != null ">
+            #{signDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="expirationTime != null ">
+            #{expirationTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="deleted != null ">
+            #{deleted,jdbcType=BOOLEAN},
+        </if>
+        <if test="searchValue != null ">
+            #{searchValue,jdbcType=VARCHAR},
+        </if>
+        create_by,
+        sysdate(),
+        <if test="updateBy != null ">
+            #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="remark != null ">
+            #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="dataScope != null ">
+            #{dataScope,jdbcType=VARCHAR},
+        </if>
+        <if test="beginTime != null ">
+            #{beginTime,jdbcType=VARCHAR},
+        </if>
+        <if test="endTime != null ">
+            #{endTime,jdbcType=VARCHAR},
+        </if>
+        )
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update sys_user_info
+        set deleted = 1,
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_time = sysdate()
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteBatch" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update sys_user_info
+        SET deleted = 1,
+        <foreach collection="ids" item="item" index="index">
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate()
+            where id = #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <update id="update" parameterType="com.leleplus.project.system.domain.SysUserInfo">
+        update driver_license
+        <set>
+            <if test="realName != null ">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null ">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="birthday != null ">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gender != null ">
+                gender = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="national != null ">
+                national = #{national,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null ">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="paperFileNumber != null ">
+                paper_file_number = #{paperFileNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="driverType != null ">
+                driver_type = #{driverType,jdbcType=BIGINT},
+            </if>
+            <if test="medicalTime != null ">
+                medical_time = #{medicalTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="idPhoto != null ">
+                id_photo = #{idPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="carInfoId != null ">
+                car_info_id = #{carInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="wage != null ">
+                wage = #{wage,jdbcType=VARCHAR}
+            </if>
+            <if test="deptId != null ">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="agent != null ">
+                agent = #{agent,jdbcType=BIGINT},
+            </if>
+            <if test="signDate != null ">
+                sign_date = #{signDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expirationTime != null ">
+                expiration_time = #{expirationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null ">
+                deleted = #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null ">
+                search_value = #{searchValue,jdbcType=VARCHAR},
+            </if>
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate(),
+            <if test="remark != null ">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                data_scope = #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                begin_time = #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -29,9 +29,6 @@ public class SysUserInfo extends BaseEntity {
      * 公共属性
      */
 
-    // 记录id
-    private Long id;
-
     // 真实姓名
     private String realName;
 
@@ -55,7 +52,7 @@ public class SysUserInfo extends BaseEntity {
     private String paperFileNumber;
 
     // 驾照类型
-    private String driverType;
+    private Long driverType;
 
     // 体检时间
     private Date medicalTime;

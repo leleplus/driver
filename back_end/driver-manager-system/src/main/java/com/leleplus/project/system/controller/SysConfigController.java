@@ -45,7 +45,7 @@ public class SysConfigController extends BaseController {
     @GetMapping("/export")
     public AjaxResult export(SysConfig config) {
         List<SysConfig> list = configService.selectConfigList(config);
-        ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
+        ExcelUtil<SysConfig> util = new ExcelUtil<>(SysConfig.class);
         return util.exportExcel(list, "参数数据");
     }
 

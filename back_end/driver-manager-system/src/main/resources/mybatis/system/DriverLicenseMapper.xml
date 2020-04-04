@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leleplus.project.system.mapper.DriverLicenseMapper">
+
+    <resultMap type="com.leleplus.project.system.domain.DriverLicense" id="Base_Result_Map">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="allow_car_type" jdbcType="VARCHAR" property="allowCarType"/>
+        <result column="other_types" jdbcType="VARCHAR" property="otherTypes"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="search_value" jdbcType="VARCHAR" property="searchValue"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="data_scope" jdbcType="VARCHAR" property="dataScope"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+    </resultMap>
+    <sql id="Base_sql">
+        id, code, allow_car_type, other_types, deleted, search_value, create_by, create_time, update_by,
+        update_time, remark, data_scope, begin_time, end_time
+    </sql>
+
+    <select id="selectByCode" resultMap="Base_Result_Map" parameterType="string">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM driver_license
+        WHERE deleted = 0 AND code = #{code,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="Base_Result_Map" parameterType="long">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM driver_license
+        WHERE deleted = 0 AND id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="Base_Result_Map">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM driver_license
+        WHERE deleted = 0
+    </select>
+    <insert id="insert" parameterType="com.leleplus.project.system.domain.DriverLicense" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into driver_license(
+        <if test="code != null">
+            code,
+        </if>
+        <if test="allowCarType != null">
+            allow_car_type,
+        </if>
+        <if test="otherTypes != null">
+            other_types,
+        </if>
+        <if test="deleted != null">
+            deleted,
+        </if>
+        <if test="searchValue != null">
+            search_value,
+        </if>
+        <if test="createBy != null">
+            create_by,
+        </if>
+        create_time,
+        <if test="updateBy != null">
+            update_by,
+        </if>
+        <if test="updateTime != null">
+            update_time,
+        </if>
+        <if test="remark != null">
+            remark,
+        </if>
+        <if test="dataScope != null">
+            data_scope,
+        </if>
+        <if test="beginTime != null">
+            begin_time,
+        </if>
+        <if test="endTime != null">
+            end_time,
+        </if>
+        )values(
+        <if test="code != null">
+            #{code,jdbcType=VARCHAR},
+        </if>
+        <if test="allowCarType != null">
+            #{allowCarType,jdbcType=VARCHAR},
+        </if>
+        <if test="otherTypes != null">
+            #{otherTypes,jdbcType=VARCHAR},
+        </if>
+        <if test="deleted != null">
+            #{deleted,jdbcType=BOOLEAN},
+        </if>
+        <if test="searchValue != null">
+            #{searchValue,jdbcType=VARCHAR},
+        </if>
+        <if test="createBy != null">
+            #{createBy,jdbcType=VARCHAR},
+        </if>
+        sysdate(),
+        <if test="updateBy != null">
+            #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null">
+            #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="remark != null">
+            #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="dataScope != null">
+            #{dataScope,jdbcType=VARCHAR},
+        </if>
+        <if test="beginTime != null">
+            #{beginTime,jdbcType=VARCHAR},
+        </if>
+        <if test="endTime != null">
+            #{endTime,jdbcType=VARCHAR},
+        </if>
+        )
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update driver_license
+        set deleted = 1,
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate()
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteBatch" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update driver_license
+        SET deleted = 1,
+        <foreach collection="ids" item="item" index="index">
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate()
+            where id = #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <update id="update" parameterType="com.leleplus.project.system.domain.DriverLicense">
+        update driver_license
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="allowCarType != null">
+                allow_car_type = #{allowCarType,jdbcType=VARCHAR},
+            </if>
+            <if test="otherTypes != null">
+                other_types = #{otherTypes,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null">
+                search_value = #{searchValue,jdbcType=VARCHAR},
+            </if>
+
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate(),
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null">
+                data_scope = #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null">
+                begin_time = #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

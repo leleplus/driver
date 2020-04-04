@@ -1,6 +1,8 @@
 package com.leleplus.common.service;
 
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -45,6 +47,7 @@ public interface ICRUDService<T> {
      * @param obj
      * @return 主键id
      */
+    @Transactional
     Long addByObject(T obj);
 
     /**
@@ -53,6 +56,7 @@ public interface ICRUDService<T> {
      * @param objs
      * @return 添加条数
      */
+    @Transactional
     Long BatchAdd(List<T> objs);
 
     /**
@@ -61,6 +65,7 @@ public interface ICRUDService<T> {
      * @param id
      * @return 删除条数
      */
+    @Transactional
     Long deleteByPrimaryKey(Long id);
 
     /**
@@ -69,7 +74,8 @@ public interface ICRUDService<T> {
      * @param ids
      * @return 删除条数
      */
-    Long BatchDelete(String[] ids);
+    @Transactional
+    Long BatchDelete(String ids);
 
     /**
      * 单个更新
@@ -77,6 +83,7 @@ public interface ICRUDService<T> {
      * @param t 对象
      * @return 更新条数
      */
+    @Transactional
     Long updateByArg(T t);
 
     /**
@@ -85,6 +92,7 @@ public interface ICRUDService<T> {
      * @param objs 对象集合
      * @return 更新条数
      */
+    @Transactional
     Long BatchUpdate(List<T> objs);
 
 }

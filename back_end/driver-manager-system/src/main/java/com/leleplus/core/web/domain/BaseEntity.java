@@ -23,6 +23,11 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 主键id
+     */
+    private Long id;
+
+    /**
      * 搜索值
      */
     private String searchValue;
@@ -75,6 +80,13 @@ public class BaseEntity implements Serializable {
      * 请求参数
      */
     private Map<String, Object> params;
+
+    /**
+     * 批量删除id
+     */
+    private Long[] ids;
+
+
 
     public Map<String, Object> getParams() {
         return params == null ? new HashMap<>() : params;

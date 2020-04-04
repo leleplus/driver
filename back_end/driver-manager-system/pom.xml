@@ -34,6 +34,8 @@
         <poi.version>3.17</poi.version>
         <oshi.version>3.9.1</oshi.version>
         <velocity.version>1.7</velocity.version>
+        <lombok.version>1.18.12</lombok.version>
+        <beanutils.version>1.9.4</beanutils.version>
     </properties>
 
     <dependencies>
@@ -247,8 +249,15 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
             <scope>provided</scope>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!-- apache 转换工具类 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${beanutils.version}</version>
         </dependency>
 
 
