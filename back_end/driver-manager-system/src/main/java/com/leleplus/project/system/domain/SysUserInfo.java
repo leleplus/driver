@@ -103,4 +103,7 @@ public class SysUserInfo extends BaseEntity {
     // 毕业截止日期
     private Date expirationTime;
 
+    // RFID卡片的id
+    private Long RFIDId;
+
 }
