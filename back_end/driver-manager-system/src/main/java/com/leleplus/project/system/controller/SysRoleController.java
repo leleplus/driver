@@ -41,7 +41,7 @@ public class SysRoleController extends BaseController {
     @GetMapping("/export")
     public AjaxResult export(SysRole role) {
         List<SysRole> list = roleService.selectRoleList(role);
-        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
+        ExcelUtil<SysRole> util = new ExcelUtil<>(SysRole.class);
         return util.exportExcel(list, "角色数据");
     }
 

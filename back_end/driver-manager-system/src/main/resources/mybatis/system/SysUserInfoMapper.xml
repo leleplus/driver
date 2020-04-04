@@ -20,7 +20,7 @@
         <result column="wage" jdbcType="VARCHAR" property="wage"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="agent" jdbcType="BIGINT" property="agent"/>
-        <result column="sign_date" jdbcType="BIGINT" property="signDate"/>
+        <result column="sign_date" jdbcType="TIMESTAMP" property="signDate"/>
         <result column="expiration_time" jdbcType="TIMESTAMP" property="expirationTime"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
         <!-- 公共属性 -->

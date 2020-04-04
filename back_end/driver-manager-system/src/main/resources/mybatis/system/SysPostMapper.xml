@@ -50,16 +50,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select p.post_id
         from sys_post p
 	        left join sys_user_post up on up.post_id = p.post_id
-	        left join sys_user u on u.user_id = up.user_id
-	    where u.user_id = #{userId}
+	        left join sys_user u on u.id = up.user_id
+	    where u.id = #{userId}
 	</select>
 	
 	<select id="selectPostsByUserName" parameterType="String" resultMap="SysPostResult">
 		select p.post_id, p.post_name, p.post_code
 		from sys_post p
 			 left join sys_user_post up on up.post_id = p.post_id
-			 left join sys_user u on u.user_id = up.user_id
-		where u.user_name = #{userName}
+			 left join sys_user u on u.id = up.user_id
+		where u.username = #{userName}
 	</select>
 	
 	<select id="checkPostNameUnique" parameterType="String" resultMap="SysPostResult">

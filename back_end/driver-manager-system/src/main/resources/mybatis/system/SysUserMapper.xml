@@ -23,6 +23,7 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
+        <result property="userInfoId" column="user_info_id" jdbcType="BIGINT"/>
         <!--        <association property="dept" column="dept_id" javaType="com.leleplus.project.system.domain.SysDept"-->
         <!--                     resultMap="deptResult"/>-->
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
@@ -50,7 +51,7 @@ u.dept_id,
     -->
     <sql id="selectUserVo">
         select u.id,u.remark, u.username, u.nick_name, u.email,u.avatar, u.telphone,u.del_flag,
-          u.password, u.sex, u.status,  u.login_ip, u.login_date, u.create_by, u.create_time,
+          u.password, u.sex, u.status,  u.login_ip, u.login_date, u.create_by, u.create_time,u.user_info_id,
 <!--        d.dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.status as dept_status,-->
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         from sys_user u
@@ -61,7 +62,7 @@ u.dept_id,
 
     <select id="selectUserList" parameterType="com.leleplus.project.system.domain.SysUser" resultMap="SysUserResult">
         select u.id, <!--u.dept_id,--> u.nick_name, u.username, u.email, u.avatar, u.telphone, u.password, u.sex,
-        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,u.user_info_id
     <!--    d.dept_name, d.leader -->
         from sys_user u
        <!-- left join sys_dept d on u.dept_id = d.dept_id-->
@@ -126,6 +127,7 @@ u.dept_id,
         <if test="status != null and status != ''">status,</if>
         <if test="createBy != null and createBy != ''">create_by,</if>
         <if test="remark != null and remark != ''">remark,</if>
+        <if test="userInfoId != null">user_info_id,</if>
         create_time
         )values(
         <if test="id != null and id != ''">#{id},</if>
@@ -140,6 +142,7 @@ u.dept_id,
         <if test="status != null and status != ''">#{status},</if>
         <if test="createBy != null and createBy != ''">#{createBy},</if>
         <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="userInfoId != null">#{userInfoId,jdbcType=BIGINT},</if>
         sysdate()
         )
     </insert>

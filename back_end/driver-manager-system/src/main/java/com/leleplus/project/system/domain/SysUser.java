@@ -135,6 +135,11 @@ public class SysUser extends BaseEntity {
     private Long userInfoId;
 
 
+    /**
+     * 级联用户信息页面对象
+     */
+    private SysUserInfo userInfo;
+
     public SysUser() {
 
     }

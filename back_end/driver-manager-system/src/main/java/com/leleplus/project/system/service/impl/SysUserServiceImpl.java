@@ -11,15 +11,18 @@ import com.leleplus.project.system.domain.*;
 import com.leleplus.project.system.domain.vo.LoginCertificate;
 import com.leleplus.project.system.mapper.*;
 import com.leleplus.project.system.service.ISysConfigService;
+import com.leleplus.project.system.service.ISysUserInfoService;
 import com.leleplus.project.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理
@@ -45,8 +48,11 @@ public class SysUserServiceImpl implements ISysUserService {
     @Resource
     private SysUserPostMapper userPostMapper;
 
-    @Resource
+    @Autowired
     private ISysConfigService configService;
+
+    @Autowired
+    private ISysUserInfoService userInfoService;
 
     /**
      * 根据条件分页查询用户列表
@@ -57,7 +63,9 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user) {
-        return userMapper.selectUserList(user);
+        return userMapper.selectUserList(user)
+                .stream()
+                .map(item-> item.setUserInfo(userInfoService.selectById(item.getUserInfoId()))).collect(Collectors.toList());
     }
 
     /**
