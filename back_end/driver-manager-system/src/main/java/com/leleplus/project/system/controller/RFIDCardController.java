@@ -52,6 +52,20 @@ public class RFIDCardController extends BaseController {
     }
 
     /**
+     * 通过RFID物理卡号查询数据
+     *
+     * @param phyId
+     * @return
+     */
+    @GetMapping("rw/{phyId}")
+    public AjaxResult getRFID(@PathVariable(value = "phyId", required = false) String phyId) {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put(AjaxResult.DATA_TAG, rfidCardService.selectByPhyNumber(phyId));
+        return ajax;
+    }
+
+
+    /**
      * 登记RFID卡片信息
      *
      * @param rfidCard

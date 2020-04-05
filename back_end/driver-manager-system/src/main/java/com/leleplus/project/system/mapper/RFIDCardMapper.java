@@ -2,6 +2,7 @@ package com.leleplus.project.system.mapper;
 
 import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.system.domain.RFIDCard;
+import com.leleplus.project.system.domain.UserRFID;
 
 import java.util.List;
 
@@ -60,4 +61,48 @@ public interface RFIDCardMapper {
      * @return
      */
     Long deleteByPrimaryKey(BaseEntity entity);
+
+    /**
+     * 根据物理卡号查询
+     *
+     * @param phyId
+     * @return
+     */
+    RFIDCard selectByPhyNumber(String phyId);
+
+
+    /*************************************   用户和RFID关系操作    ************************************************/
+
+
+    /**
+     * 查询某个用户拥有的卡
+     *
+     * @param userInfoId
+     * @return
+     */
+    List<UserRFID> selectAllUserRFID(Long userInfoId);
+
+    /**
+     * 绑定用户和卡的新关系
+     *
+     * @param userRFID
+     * @return
+     */
+    Long insertUserRFID(UserRFID userRFID);
+
+    /**
+     * 更新用户持有的卡
+     *
+     * @param userRFID
+     * @return
+     */
+    Long updateUserRFID(UserRFID userRFID);
+
+    /**
+     * 禁用用户的卡
+     *
+     * @param entity
+     * @return
+     */
+    Long deleteUserRFID(BaseEntity entity);
 }

@@ -6,6 +6,7 @@ import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.system.domain.RFIDCard;
+import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.mapper.RFIDCardMapper;
 import com.leleplus.project.system.service.IRFIDCardService;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -198,5 +199,131 @@ public class RFIDServiceImpl implements IRFIDCardService {
     @Override
     public List<RFIDCard> getAll(RFIDCard rfidCard) {
         return mapper.selectByPage(rfidCard);
+    }
+
+    /**
+     * 通过物理卡号查询卡片信息，及刷卡操作
+     *
+     * @param phyId
+     * @return
+     */
+    @Override
+    public RFIDCard selectByPhyNumber(String phyId) {
+
+        if (StringUtils.isEmpty(phyId)) {
+            logger.error("物理卡号id为空");
+            throw new DriverException("RFID.rw.phyNumber");
+        }
+        RFIDCard card = mapper.selectByPhyNumber(phyId);
+
+        if (StringUtils.isNull(card)) {
+            logger.info("查询到的卡片信息为空");
+            throw new DriverException("RFID.rw.object.notFound");
+        }
+        if (!card.getDeleted()) {
+            logger.info("此卡已经被注销！");
+            throw new DriverException("RFID.rw.deleted");
+        }
+        if (StringUtils.isNotEmpty(card.getStatus())) {
+            logger.info("卡片状态提示！");
+            throw new DriverException(card.getStatus());
+        }
+        return card;
+    }
+
+
+    /**********************************          用户和RFID相关接口            *****************************/
+
+
+    /**
+     * 查询用户的RFID
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<UserRFID> selectUserRFID(Long id) {
+        if (id == null) {
+            logger.error("查询用户的RFID卡id不能为空");
+            throw new DriverException("userRFID.id.notFound");
+        }
+        return mapper.selectAllUserRFID(id);
+    }
+
+    /**
+     * 绑定用户与RFID
+     *
+     * @param userRFID
+     * @return
+     */
+    @Override
+    public Long addUserRFID(UserRFID userRFID) {
+        if (userRFID == null) {
+            logger.error("用户关联RFID对象为空");
+            throw new UserException("userRFID.object");
+        }
+
+        if (userRFID.getId() != null) {
+            logger.error("用户绑定RFID，id必须为空");
+            throw new UserException("userRFID.add.id");
+        }
+
+        if (StringUtils.isNull(userRFID.getUserInfoId())) {
+            logger.error("为用户绑定RFID，用户为空");
+            throw new UserException("userRFID.add.userInfoId");
+        }
+        if (StringUtils.isNull(userRFID.getRfidId())) {
+            logger.error("为用户绑定RFID，RFID为空！");
+            throw new UserException("userRFID.add.RFIDId");
+        }
+        // 初始化值
+        userRFID.setDeleted(false)
+                .setCreateBy(SecurityUtils.getUsername());
+
+        // 新增之前，停用其余所有的RFID
+//        new UserRFID().setUserInfoId(userRFID.getUserInfoId()).setDeleted(true).setUpdateBy(SecurityUtils.getUsername());
+//        updateUserRFID();
+
+        return mapper.insertUserRFID(userRFID);
+    }
+
+    /**
+     * 更新用户和RFID的关系
+     *
+     * @param userRFID
+     * @return
+     */
+    @Override
+    public Long updateUserRFID(UserRFID userRFID) {
+        if (userRFID == null) {
+            logger.error("用户关联RFID对象为空");
+            throw new DriverException("userRFID.object");
+        }
+        if (userRFID.getId() == null) {
+            logger.error("更新用户信息必须传id");
+            throw new DriverException("userRFID.update.id");
+        }
+
+        // 初始化默认值
+        userRFID.setUpdateBy(SecurityUtils.getUsername());
+
+        return mapper.updateUserRFID(userRFID);
+    }
+
+    /**
+     * 删除关系
+     *
+     * @param userRFID
+     * @return
+     */
+    @Override
+    public Long deleteUserRFID(UserRFID userRFID) {
+        if (id == null) {
+            logger.error("删除RFID信息，主键不能为空");
+            throw new UserException("RFID.delete.id");
+        }
+        return mapper.deleteByPrimaryKey(new BaseEntity()
+                .setId(id)
+                .setUpdateBy(SecurityUtils.getUsername()));
     }
 }
