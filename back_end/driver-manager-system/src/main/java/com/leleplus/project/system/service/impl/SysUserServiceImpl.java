@@ -7,7 +7,10 @@ import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
 import com.leleplus.common.utils.reflect.ReflectUtils;
 import com.leleplus.core.aspect.lang.annotation.DataScope;
-import com.leleplus.project.system.domain.*;
+import com.leleplus.project.system.domain.SysPositions;
+import com.leleplus.project.system.domain.SysRole;
+import com.leleplus.project.system.domain.SysUser;
+import com.leleplus.project.system.domain.SysUserRole;
 import com.leleplus.project.system.domain.vo.LoginCertificate;
 import com.leleplus.project.system.mapper.*;
 import com.leleplus.project.system.service.ISysConfigService;
@@ -22,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理
@@ -63,9 +65,9 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user) {
-        return userMapper.selectUserList(user)
-                .stream()
-                .map(item-> item.setUserInfo(userInfoService.selectById(item.getUserInfoId()))).collect(Collectors.toList());
+        return userMapper.selectUserList(user);
+//                .stream()
+//                .map(item-> item.setUserInfo(userInfoService.selectById(item.getUserInfoId()))).collect(Collectors.toList());
     }
 
     /**

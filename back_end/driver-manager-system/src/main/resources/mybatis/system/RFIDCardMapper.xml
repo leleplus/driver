@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leleplus.project.system.mapper.RFIDCardMapper">
+
+    <resultMap type="com.leleplus.project.system.domain.RFIDCard" id="Base_Result_Map">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="phy_number" jdbcType="VARCHAR" property="phyNumber"/>
+        <result column="color" jdbcType="INTEGER" property="color"/>
+        <result column="size" jdbcType="TIMESTAMP" property="size"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="deleted" jdbcType="VARCHAR" property="deleted"/>
+        <!-- 公共属性 -->
+        <result column="search_value" jdbcType="VARCHAR" property="searchValue"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="data_scope" jdbcType="VARCHAR" property="dataScope"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+    </resultMap>
+    <sql id="Base_sql">
+        id, phy_number, color, size, type, status, deleted, search_value, create_by, create_time, update_by,
+        update_time, remark, data_scope, begin_time, end_time
+    </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="Base_Result_Map" parameterType="long">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM rfid_card
+        WHERE deleted = 0 AND id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="com.leleplus.project.system.domain.RFIDCard" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into rfid_card(
+        <if test="phyNumber != null ">
+            phy_number,
+        </if>
+        <if test="color != null ">
+            color,
+        </if>
+        <if test="size != null ">
+            size,
+        </if>
+        <if test="type != null ">
+            type,
+        </if>
+        <if test="status != null ">
+            status,
+        </if>
+        <if test="deleted != null ">
+            deleted,
+        </if>
+        <if test="searchValue != null ">
+            search_value,
+        </if>
+        create_by,
+        create_time,
+        <if test="updateBy != null ">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="remark != null ">
+            remark,
+        </if>
+        <if test="dataScope != null ">
+            data_scope,
+        </if>
+        <if test="beginTime != null ">
+            begin_time,
+        </if>
+        <if test="endTime != null ">
+            end_time,
+        </if>
+        )values(
+        <if test="phyNumber != null ">
+            #{phyNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="color != null ">
+            #{color,jdbcType=VARCHAR},
+        </if>
+        <if test="size != null ">
+            #{size,jdbcType=VARCHAR},
+        </if>
+        <if test="type != null ">
+            #{type,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null ">
+            #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="deleted != null ">
+            #{deleted,jdbcType=BOOLEAN},
+        </if>
+        <if test="searchValue != null ">
+            #{searchValue,jdbcType=VARCHAR},
+        </if>
+        create_by,
+        sysdate(),
+        <if test="updateBy != null ">
+            #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="remark != null ">
+            #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="dataScope != null ">
+            #{dataScope,jdbcType=VARCHAR},
+        </if>
+        <if test="beginTime != null ">
+            #{beginTime,jdbcType=VARCHAR},
+        </if>
+        <if test="endTime != null ">
+            #{endTime,jdbcType=VARCHAR},
+        </if>
+        )
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update rfid_card
+        set deleted = 1,
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_time = sysdate()
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteBatch" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update rfid_card
+        SET deleted = 1,
+        <foreach collection="ids" item="item" index="index">
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate()
+            where id = #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <update id="update" parameterType="com.leleplus.project.system.domain.RFIDCard">
+        update rfid_card
+        <set>
+            <if test="phyNumber != null ">
+                phy_number = #{phyNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null ">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null ">
+                size = #{size,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null ">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null ">
+                deleted = #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null ">
+                search_value = #{searchValue,jdbcType=VARCHAR},
+            </if>
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate(),
+            <if test="remark != null ">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                data_scope = #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                begin_time = #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPage" resultMap="Base_Result_Map" parameterType="com.leleplus.project.system.domain.RFIDCard">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM rfid_card
+        WHERE deleted = 0
+        <if test="phyNumber != null">
+            AND phy_number = #{phyNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(create_time,'%y%m%d') &gt;= date_format(#{beginTime,jdbcType=VARCHAR},'%y%m%d')
+        </if>
+        <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(create_time,'%y%m%d') &lt;= date_format(#{endTime,jdbcType=VARCHAR},'%y%m%d')
+        </if>
+        <if test="status != null ">
+            AND status = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="deleted != null">
+            AND deleted = #{deleted,jdbcType=BOOLEAN}
+        </if>
+    </select>
+</mapper>

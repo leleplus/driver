@@ -230,7 +230,7 @@
         </foreach>
     </delete>
     <update id="update" parameterType="com.leleplus.project.system.domain.SysUserInfo">
-        update driver_license
+        update sys_user_info
         <set>
             <if test="realName != null ">
                 real_name = #{realName,jdbcType=VARCHAR},
