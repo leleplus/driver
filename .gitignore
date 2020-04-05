@@ -38,7 +38,9 @@ stm32_client/**/*.zip
 # 打包文件忽略
 **/back_end/driver-manager-system/deploy-bin/apps/*.jar
 
-
+#  Vue 忽略
+**/**/node_modules/
+package-lock.json
 
 HELP.md
 target/
