@@ -104,5 +104,5 @@ public interface RFIDCardMapper {
      * @param entity
      * @return
      */
-    Long deleteUserRFID(BaseEntity entity);
+    Long deleteUserRFID(UserRFID userRFID);
 }

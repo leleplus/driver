@@ -191,7 +191,7 @@
         <if test="searchValue != null ">
             #{searchValue,jdbcType=VARCHAR},
         </if>
-        create_by,
+        #{createBy,jdbcType=VARCHAR},
         sysdate(),
         <if test="updateBy != null ">
             #{updateBy,jdbcType=VARCHAR},

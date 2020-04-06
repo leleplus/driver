@@ -101,7 +101,7 @@
         <if test="searchValue != null ">
             #{searchValue,jdbcType=VARCHAR},
         </if>
-        create_by,
+        #{createBy,jdbcType=VARCHAR},
         sysdate(),
         <if test="updateBy != null ">
             #{updateBy,jdbcType=VARCHAR},
@@ -282,7 +282,7 @@
         <if test="searchValue != null ">
             #{searchValue,jdbcType=VARCHAR},
         </if>
-        create_by,
+        #{createBy,jdbcType=VARCHAR},
         sysdate(),
         <if test="updateBy != null ">
             #{updateBy,jdbcType=VARCHAR},
@@ -341,7 +341,17 @@
         set deleted = 1,
         update_by = #{updateBy,jdbcType=VARCHAR},
         update_time = sysdate()
-        where id = #{id,jdbcType=BIGINT}
+        <where>
+            <if test="id != null">
+                id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userInfoId != null ">
+                AND user_info_id = #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="rfidId != null ">
+                AND rfid_id = #{rfidId,jdbcType=BIGINT},
+            </if>
+        </where>
     </delete>
 
 </mapper>

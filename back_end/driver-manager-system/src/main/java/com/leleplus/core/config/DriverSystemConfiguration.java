@@ -45,6 +45,13 @@ public class DriverSystemConfiguration {
      */
     private static boolean addressEnabled;
 
+    // 刷卡存放redis中的key值
+    private static String swipeKey;
+
+    // 刷卡时间
+    private static Integer swipeTime;
+
+
     public void setProfile(String profile) {
         DriverSystemConfiguration.profile = profile;
     }
@@ -80,5 +87,24 @@ public class DriverSystemConfiguration {
      */
     public static String getUploadPath() {
         return getProfile() + "/upload";
+    }
+
+    /**
+     * 获取刷卡key
+     *
+     * @return
+     */
+    public static String getSwipeKey() {
+        return swipeKey;
+    }
+
+
+    /**
+     * 获取刷卡时间
+     *
+     * @return
+     */
+    public static Integer getSwipeTime() {
+        return swipeTime;
     }
 }

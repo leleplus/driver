@@ -4,9 +4,12 @@ import com.leleplus.core.web.controller.BaseController;
 import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.core.web.page.TableDataInfo;
 import com.leleplus.project.system.domain.RFIDCard;
+import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.service.IRFIDCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
@@ -101,5 +104,81 @@ public class RFIDCardController extends BaseController {
         rfidCardService.BatchDelete(ids);
         return AjaxResult.success();
     }
+
+    /**
+     * 查询用户绑定的RFID卡
+     *
+     * @param userInfoId
+     * @return
+     */
+    @GetMapping("/user/{userInfoId}")
+    public AjaxResult getUserRFID(@PathVariable(value = "userInfoId") Long userInfoId) {
+        List<UserRFID> userRFIDS = rfidCardService.selectUserRFID(userInfoId);
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put(AjaxResult.DATA_TAG, userRFIDS);
+        return ajax;
+    }
+
+
+    /**
+     * 用户绑定RFID
+     *
+     * @param userInfoId
+     * @return
+     */
+    @GetMapping("/user/add/{userInfoId}")
+    public AjaxResult bindUserRFID(@PathVariable("userInfoId") Long userInfoId) {
+        rfidCardService.bindUserRFID(userInfoId);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 用户换绑
+     *
+     * @param userRFID
+     * @return
+     */
+    @PutMapping("/user/change")
+    public AjaxResult changeUserRFID(@RequestBody UserRFID userRFID) {
+        rfidCardService.updateUserRFID(userRFID);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 解绑卡
+     *
+     * @param userRFID
+     * @return
+     */
+    @DeleteMapping("/user/delete/")
+    public AjaxResult untieUserRFID(@RequestBody UserRFID userRFID) {
+        rfidCardService.deleteUserRFID(userRFID);
+        return AjaxResult.success();
+    }
+
+
+    /**
+     * STM32刷卡，将卡id放进redis缓存
+     *
+     * @param number
+     * @return
+     */
+    @GetMapping("/swipe/{number}")
+    public AjaxResult swipe(@PathVariable("number") String number) {
+        rfidCardService.swipe(number);
+        return AjaxResult.success("刷卡成功！");
+    }
+
+    /**
+     * 前端获取卡id，从redis中获取
+     *
+     * @return
+     */
+    @GetMapping("/testing")
+    public AjaxResult testing() {
+        RFIDCard rfidCard = rfidCardService.testing();
+        return AjaxResult.success(rfidCard);
+    }
+
 
 }

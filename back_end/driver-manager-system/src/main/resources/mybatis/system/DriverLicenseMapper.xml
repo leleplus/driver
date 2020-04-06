@@ -61,9 +61,7 @@
         <if test="searchValue != null">
             search_value,
         </if>
-        <if test="createBy != null">
-            create_by,
-        </if>
+        create_by,
         create_time,
         <if test="updateBy != null">
             update_by,
@@ -99,9 +97,7 @@
         <if test="searchValue != null">
             #{searchValue,jdbcType=VARCHAR},
         </if>
-        <if test="createBy != null">
-            #{createBy,jdbcType=VARCHAR},
-        </if>
+        #{createBy,jdbcType=VARCHAR},
         sysdate(),
         <if test="updateBy != null">
             #{updateBy,jdbcType=VARCHAR},

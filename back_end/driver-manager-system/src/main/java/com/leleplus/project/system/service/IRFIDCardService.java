@@ -70,4 +70,26 @@ public interface IRFIDCardService extends ICRUDService<RFIDCard> {
      */
     Long deleteUserRFID(UserRFID userRFID);
 
+
+    /**
+     * 给用户绑定RFID
+     *
+     * @param userInfoId
+     * @return
+     */
+    Long bindUserRFID(Long userInfoId);
+
+    /**
+     * 刷卡方法
+     *
+     * @param number
+     */
+    void swipe(String number);
+
+    /**
+     * 前端轮询读卡方法
+     *
+     * @return
+     */
+    RFIDCard testing();
 }

@@ -4,8 +4,6 @@ import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
  *
@@ -32,7 +30,7 @@ public class UserRFID extends BaseEntity {
     private Boolean deleted;
 
     // 一对多关系
-    private List<RFIDCard> cards;
+    private RFIDCard cards;
 
 }
 

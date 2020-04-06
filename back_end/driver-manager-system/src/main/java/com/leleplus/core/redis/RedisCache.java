@@ -37,8 +37,8 @@ public class RedisCache {
      * @param key      缓存的键值
      * @param value    缓存的值
      * @param timeout  时间
-     * @param timeUnit 时间颗粒度
-     * @return 缓存的对象
+     * @param timeUnit 时间单位
+     * @return 缓存的对象 TimeUnit类型
      */
     public <T> ValueOperations<String, T> setCacheObject(String key, T value, Integer timeout, TimeUnit timeUnit) {
         ValueOperations<String, T> operation = redisTemplate.opsForValue();
@@ -85,9 +85,8 @@ public class RedisCache {
     public <T> ListOperations<String, T> setCacheList(String key, List<T> dataList) {
         ListOperations listOperation = redisTemplate.opsForList();
         if (null != dataList) {
-            int size = dataList.size();
-            for (int i = 0; i < size; i++) {
-                listOperation.leftPush(key, dataList.get(i));
+            for (T t : dataList) {
+                listOperation.leftPush(key, t);
             }
         }
         return listOperation;
@@ -163,8 +162,7 @@ public class RedisCache {
      * @return
      */
     public <T> Map<String, T> getCacheMap(String key) {
-        Map<String, T> map = redisTemplate.opsForHash().entries(key);
-        return map;
+        return (Map<String, T>) redisTemplate.opsForHash().entries(key);
     }
 
     /**

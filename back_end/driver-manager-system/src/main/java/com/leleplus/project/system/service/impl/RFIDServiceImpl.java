@@ -4,6 +4,8 @@ import com.leleplus.common.exception.driver.DriverException;
 import com.leleplus.common.exception.user.UserException;
 import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
+import com.leleplus.core.config.DriverSystemConfiguration;
+import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.system.domain.RFIDCard;
 import com.leleplus.project.system.domain.UserRFID;
@@ -12,11 +14,14 @@ import com.leleplus.project.system.service.IRFIDCardService;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
@@ -30,12 +35,16 @@ import java.util.List;
 
 @Service
 public class RFIDServiceImpl implements IRFIDCardService {
+    private static final String swipeKey = DriverSystemConfiguration.getSwipeKey();
 
     // logger日志全局初始化
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private RFIDCardMapper mapper;
+
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 查询所有
@@ -247,7 +256,10 @@ public class RFIDServiceImpl implements IRFIDCardService {
             logger.error("查询用户的RFID卡id不能为空");
             throw new DriverException("userRFID.id.notFound");
         }
-        return mapper.selectAllUserRFID(id);
+        return mapper.selectAllUserRFID(id)
+                .stream()
+                .map(item -> item.setCards(selectById(item.getRfidId())))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -318,12 +330,92 @@ public class RFIDServiceImpl implements IRFIDCardService {
      */
     @Override
     public Long deleteUserRFID(UserRFID userRFID) {
-        if (id == null) {
-            logger.error("删除RFID信息，主键不能为空");
-            throw new UserException("RFID.delete.id");
+        if (userRFID == null) {
+            logger.error("用户关联RFID对象为空");
+            throw new UserException("userRFID.object");
         }
-        return mapper.deleteByPrimaryKey(new BaseEntity()
-                .setId(id)
-                .setUpdateBy(SecurityUtils.getUsername()));
+
+
+        // id 和  userinfoId,RFIDId不能同时为空
+        if (userRFID.getId() == null && userRFID.getUserInfoId() == null && userRFID.getRfidId() == null) {
+            logger.error("删除用户关联RFID信息，必选唯一指定关系");
+            throw new DriverException("userRFID.delete");
+        }
+
+        userRFID.setUpdateBy(SecurityUtils.getUsername());
+        return mapper.deleteUserRFID(userRFID);
+    }
+
+    /**
+     * 给用户绑定RFID
+     *
+     * @param userInfoId
+     * @return
+     */
+    @Override
+    public Long bindUserRFID(Long userInfoId) {
+        // 1.判空
+        if (userInfoId == null) {
+            logger.error("用户绑定RFID信息，用户id不能为空");
+            throw new DriverException("userRFID.add.userInfoId");
+        }
+
+        // 2.轮询获取刷卡的物理卡号
+
+        // 3.确保获取到后，用物理卡号去查系统中卡的id ，查不到，说明这张卡未在系统中注册，能查到，下一步
+
+        // 4.获取到系统中的RFIDId，构建用户绑定卡对象，赋予默认值
+
+        // 5.保存数据
+        UserRFID userRFID = new UserRFID();
+        userRFID.setCreateBy(SecurityUtils.getUsername());
+        return addUserRFID(userRFID.setUserInfoId(userInfoId)
+                .setDeleted(false));
+
+    }
+
+    /**
+     * 刷卡方法
+     *
+     * @param number
+     */
+    @Override
+    public void swipe(String number) {
+
+        // 1. 查到RFID对象
+        final RFIDCard rfidCard = selectByPhyNumber(number);
+
+        // 2.获取存放在redis中的key值
+        final Integer swipeTime = DriverSystemConfiguration.getSwipeTime();
+
+        // 3.确保原来的key没有对应的值，删除之前key
+        redisCache.deleteObject(swipeKey);
+
+        // 4.将刷卡得到的对象缓存在redis中
+        /**
+         * redis中存放时间为S，时间动态获取
+         */
+        redisCache.setCacheObject(swipeKey, rfidCard, swipeTime, TimeUnit.SECONDS);
+
+        logger.info("Save to {} in redis cache,time -> {} ", rfidCard, swipeTime);
+
+    }
+
+    /**
+     * 前端轮询读卡方法
+     *
+     * @return
+     */
+    @Override
+    public RFIDCard testing() {
+
+        RFIDCard rfidCard = redisCache.getCacheObject(swipeKey);
+
+        if (StringUtils.isNull(rfidCard)) {
+            logger.info("查询到的卡片信息为空");
+            throw new DriverException("RFID.rw.object.notFound");
+        }
+
+        return rfidCard;
     }
 }
