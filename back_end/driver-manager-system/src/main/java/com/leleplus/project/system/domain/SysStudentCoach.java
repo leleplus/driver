@@ -24,7 +24,6 @@ import java.util.Date;
 public class SysStudentCoach extends BaseEntity {
 
     private static final long serialVersionUID = -7986259728749744343L;
-    private Long id;
 
     // 学员id（用户信息表，学员id）
     private Long studentId;
@@ -35,8 +34,7 @@ public class SysStudentCoach extends BaseEntity {
     // 绑定时间
     private Date bindTime;
 
-    // 状态
-    private String status;
-
+    // 是否解绑
+    private Boolean isUntieBind;
 
 }

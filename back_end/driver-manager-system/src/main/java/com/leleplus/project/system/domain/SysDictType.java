@@ -5,9 +5,8 @@ import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.aspect.lang.annotation.Excel.ColumnType;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysDictType extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -50,18 +50,4 @@ public class SysDictType extends BaseEntity {
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("dictId", getDictId())
-                .append("dictName", getDictName())
-                .append("dictType", getDictType())
-                .append("status", getStatus())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
-    }
 }
