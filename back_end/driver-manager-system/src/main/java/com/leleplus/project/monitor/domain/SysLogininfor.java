@@ -1,6 +1,7 @@
 package com.leleplus.project.monitor.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.aspect.lang.annotation.Excel.ColumnType;
 import com.leleplus.core.web.domain.BaseEntity;
@@ -71,6 +72,7 @@ public class SysLogininfor extends BaseEntity {
     /**
      * 访问时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 }

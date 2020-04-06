@@ -112,7 +112,7 @@ spring:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
+    com.leleplus: debug
     org.springframework: warn
 
 # 代码生成

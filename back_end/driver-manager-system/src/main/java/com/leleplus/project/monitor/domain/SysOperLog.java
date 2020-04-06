@@ -1,6 +1,7 @@
 package com.leleplus.project.monitor.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
@@ -117,6 +118,7 @@ public class SysOperLog extends BaseEntity {
     /**
      * 操作时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date operTime;
 

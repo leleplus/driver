@@ -140,6 +140,12 @@ public class SysUser extends BaseEntity {
      */
     private SysUserInfo userInfo;
 
+    // 登录code
+    private String code;
+
+    // 登录uuid
+    private String uuid;
+
     public SysUser() {
 
     }

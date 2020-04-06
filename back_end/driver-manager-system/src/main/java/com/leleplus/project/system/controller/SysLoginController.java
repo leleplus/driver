@@ -12,10 +12,10 @@ import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -45,18 +45,15 @@ public class SysLoginController {
     /**
      * 登录方法
      *
-     * @param username 用户名
-     * @param password 原始密码
-     * @param code     验证码
-     * @param uuid     唯一标识
+     * @param user 登录用户
      * @return 结果
      */
     @ApiOperation(value = "登录接口", notes = "username可以为用户名，身份证号，手机号，邮箱")
     @PostMapping("/login")
-    public AjaxResult login(String username, String password, @ApiParam("图片验证码") String code, @ApiParam("验证唯一标识") String uuid) {
+    public AjaxResult login(@RequestBody SysUser user) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
-        String token = loginService.login(username, password, code, uuid);
+        String token = loginService.login(user.getUsername(), user.getPassword(), user.getCode(), user.getUuid());
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }

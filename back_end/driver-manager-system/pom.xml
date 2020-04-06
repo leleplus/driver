@@ -5,7 +5,7 @@
 
     <groupId>com.leleplus</groupId>
     <artifactId>driver-manager-system</artifactId>
-    <version>0.0.1</version>
+    <version>2.2.1</version>
     <packaging>jar</packaging>
     <name>driver-manager-system</name>
     <description>基于STM32的驾校系统Java Server端</description>
