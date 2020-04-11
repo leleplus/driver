@@ -27,7 +27,7 @@
             </el-col>-->
             <!--用户数据-->
             <el-col>
-                <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+                <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="70px">
                     <el-form-item label="用户名称" prop="username">
                         <el-input
                                 v-model="queryParams.username"
@@ -211,16 +211,16 @@
             </el-steps>
 
             <div class="stepsContent">
-                <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+                <el-form ref="form" :model="userForm" :rules="rules" label-width="130px">
                     <el-row>
                         <el-col :span="10">
                             <el-form-item v-show="activeSteps == 1" label="用户名称" prop="username">
-                                <el-input v-model="form.username" placeholder="请输入用户名称" :disabled="form.username !== null"/>
+                                <el-input v-model="userForm.username" placeholder="请输入用户名称" :disabled="userForm.username !== null"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item v-show="activeSteps == 1" label="用户昵称" prop="nickName">
-                                <el-input v-model="form.nickName" placeholder="请输入用户昵称"/>
+                                <el-input v-model="userForm.nickName" placeholder="请输入用户昵称"/>
                             </el-form-item>
                             <!--                        <el-form-item label="归属部门" prop="deptId">-->
                             <!--                            <treeselect v-model="form.deptId" :options="deptOptions" placeholder="请选择归属部门" />-->
@@ -228,48 +228,122 @@
                         </el-col>
                         <el-col :span="10">
                             <el-form-item v-show="activeSteps === 1" label="手机号码" prop="telphone">
-                                <el-input v-model="form.telphone" placeholder="请输入手机号码" maxlength="11"/>
+                                <el-input v-model="userForm.telphone" placeholder="请输入手机号码" maxlength="11"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item v-show="activeSteps === 1" label="用户邮箱" prop="email">
-                                <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50"/>
+                                <el-input v-model="userForm.email" placeholder="请输入邮箱" maxlength="50"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item v-show="activeSteps === 1" label="身份证号" prop="idCard">
-                                <el-input v-model="form.idCard" placeholder="请输入身份证号"/>
+                                <el-input v-model="userForm.idCard" placeholder="请输入身份证号"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
-                            <el-form-item v-show="activeSteps === 1 && form.id === undefined" label="用户密码" prop="password">
-                                <el-input v-model="form.password" placeholder="请输入密码" type="password"/>
+                            <el-form-item v-show="activeSteps === 1 && userForm.id === undefined" label="用户密码" prop="password">
+                                <el-input v-model="userForm.password" placeholder="请输入密码" type="password"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item label="账号状态" v-show="activeSteps === 1">
-                                <el-radio-group v-model="form.status">
+                                <el-radio-group v-model="userForm.status">
                                     <el-radio v-for="dict in statusOptions" :key="dict.dictValue" :label="dict.dictValue">{{dict.dictLabel}}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
-                            <el-form-item label="最后登录IP" v-show="activeSteps === 1 && form.id !== undefined">
-                                <el-input v-model="form.loginIp" disabled/>
+                            <el-form-item label="最后登录IP" v-show="activeSteps === 1 && userForm.id !== undefined">
+                                <el-input v-model="userForm.loginIp" disabled/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
-                            <el-form-item label="最后登录时间" v-show="activeSteps === 1 && form.id !== undefined">
-                                <el-input :value="parseTime(form.loginDate)" disabled/>
+                            <el-form-item label="最后登录时间" v-show="activeSteps === 1 && userForm.id !== undefined">
+                                <el-input :value="parseTime(userForm.loginDate)" disabled/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item label="用户角色" v-show="activeSteps === 1">
-                                <el-select v-model="form.roleIds" multiple placeholder="请选择角色(默认为学员)">
+                                <el-select v-model="userForm.roleIds" multiple placeholder="请选择角色(默认为学员)">
                                     <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"/>
                                 </el-select>
                             </el-form-item>
                         </el-col>
+                        <!-- 第二步开始 -->
+                        <!-- 公共属性 -->
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="用户姓名" prop="realName">
+                                <el-input v-model="userInfoForm.realName" placeholder="请输入姓名" type="text"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="用户年龄" prop="age">
+                                <el-input-number v-model="userInfoForm.age" :min="18" :max="70" label="请选择年龄" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="出生日期" prop="birthday">
+                                <el-date-picker v-model="userInfoForm.birthday" type="date" placeholder="请选择出生日期" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="用户性别" prop="gender">
+                                <el-radio v-model="userInfoForm.gender" label="男">男</el-radio>
+                                <el-radio v-model="userInfoForm.gender" label="女">女</el-radio>
+                                <el-radio v-model="userInfoForm.gender" label="未知">未知</el-radio>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="用户民族" prop="national">
+                                <el-select v-model="userInfoForm.national" placeholder="请选择民族">
+                                    <el-option v-for="item in nationalOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue" />
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="联系地址" prop="address">
+                                <el-input v-model="userInfoForm.address" placeholder="请输入联系地址" type="text"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2 " label="档案编号" prop="paperFileNumber">
+                                <el-input v-model="userInfoForm.paperFileNumber" placeholder="请输入档案编号" type="text"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="驾照类型" prop="driverType">
+                                <el-select v-model="userInfoForm.driverType" placeholder="请选择驾驶证类型">
+                                    <el-option v-for="item in driverLicenseOptions" :key="item.code" :label="item.code + item.allowCarType" :value="item.code" />
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="体检日期" prop="medicalTime">
+                                <el-date-picker v-model="userInfoForm.medicalTime" type="date" placeholder="请选择体检日期" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item v-show="activeSteps === 2" label="报到日期" prop="signDate">
+                                <el-date-picker v-model="userInfoForm.signDate" type="date" placeholder="请选择报名日期" />
+                            </el-form-item>
+                        </el-col>
+<!--                        <el-col :span="10">-->
+<!--                            <el-form-item v-show="activeSteps === 2" label="证件照片" prop="realName">-->
+<!--                                <el-input v-model="userInfoForm.idPhoto" placeholder="XX" type="text"/>-->
+<!--                                <el-upload-->
+<!--                                        :action="uploadPhotoURL"-->
+<!--                                        list-type="picture-card"-->
+<!--                                        :on-preview="handlePictureCardPreview"-->
+<!--                                        :on-remove="handleRemove">-->
+<!--                                    <i class="el-icon-plus"/>-->
+<!--                                </el-upload>-->
+<!--                                <el-dialog :visible.sync="photoDialogVisible">-->
+<!--                                    <img width="100%" :src="photoDialogUrl" alt="">-->
+<!--                                </el-dialog>-->
+<!--                            </el-form-item>-->
+<!--                        </el-col>-->
+                        <!-- 第二步结束 -->
                         <!--                    <el-col :span="8">-->
                         <!--                        <el-form-item label="用户性别">-->
                         <!--                            <el-select v-model="form.sex" placeholder="请选择">-->
@@ -360,11 +434,15 @@
 
 <script>
     import {listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate} from "@/api/system/user";
+    import {listRole} from "@/api/system/role"
     import {getToken} from "@/utils/auth";
     import {treeselect} from "@/api/system/dept";
     import Treeselect from "@riophae/vue-treeselect";
     import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-    import userBindRFID from "@/api/system/rfid"
+    import userBindRFID from "@/api/system/rfid";
+    import {getUserInfo} from "@/api/system/userInfo";
+    import {getDicts} from "@/api/system/dict/data";
+    import {getAllDriverLicense} from "@/api/system/driverlicense"
 
     export default {
         name: "User",
@@ -408,13 +486,20 @@
                 postOptions: [],
                 // 角色选项
                 roleOptions: [],
+                // 民族选项
+                nationalOptions: [],
+                // 驾驶证类型选项
+                driverLicenseOptions: [],
+
+                // 上传图片
+                uploadPhotoURL: this.BASE_URL,
+                photoDialogVisible: false,
+                photoDialogUrl: '',
+
+
                 // 表单参数
-                form: {
-                    userInfo: {
-                        id: undefined,
-                        RFIDId: undefined
-                    }
-                },
+                userForm: {},
+                userInfoForm:{},
                 defaultProps: {
                     children: "children",
                     label: "label"
@@ -518,6 +603,16 @@
             this.getConfigKey("sys.user.initPassword").then(response => {
                 this.initPassword = response.msg;
             });
+            listRole().then(response=>{
+                this.roleOptions = response.rows;
+            });
+            getDicts("nationa_type").then(response => {
+                this.nationalOptions = response.data;
+            });
+            getAllDriverLicense().then(response =>{
+                this.driverLicenseOptions = response.data;
+            })
+
         },
         methods: {
             /** 查询用户列表 */
@@ -569,7 +664,28 @@
             },
             // 表单重置
             reset() {
-                this.form = {
+                this.userInfoForm = {
+                    realName: undefined,
+                    age: undefined,
+                    birthday: undefined,
+                    gender: undefined,
+                    national: undefined,
+                    address: undefined,
+                    paperFileNumber: undefined,
+                    driverType: undefined,
+                    medicalTime: undefined,
+                    deleted: undefined,
+                    idPhoto: undefined,
+                    carInfoId: undefined,
+                    wage: undefined,
+                    deptId: undefined,
+                    positionIds: [],
+                    agent: undefined,
+                    signDate: undefined,
+                    expirationTime: undefined,
+                    RFIDId: undefined
+                };
+                this.userForm = {
                     userId: undefined,
                     deptId: undefined,
                     username: undefined,
@@ -582,12 +698,10 @@
                     remark: undefined,
                     postIds: [],
                     roleIds: [],
-                    userInfo: {
-                        id: undefined,
-                        RFIDId: undefined
-                    }
+                    userInfoId:undefined
                 };
-                this.resetForm("form");
+                this.resetForm("userForm");
+                this.resetForm("userInfoForm");
             },
             /** 搜索按钮操作 */
             handleQuery() {
@@ -609,29 +723,28 @@
             /** 新增按钮操作 */
             handleAdd() {
                 this.reset();
-                this.getTreeselect();
+                // this.getTreeselect();
                 getUser().then(response => {
-                    this.postOptions = response.posts;
-                    this.roleOptions = response.roles;
+                    // this.postOptions = response.posts;
+                    // this.roleOptions = response.roles;
                     this.open = true;
                     this.title = "添加用户";
-                    this.form.password = this.initPassword;
+                    this.userForm.password = this.initPassword;
                 });
             },
             /** 修改按钮操作 */
             handleUpdate(row) {
                 this.reset();
                 this.getTreeselect();
+                getUserInfo(row.userInfoId).then(response => {
+                    this.userInfoForm = response.data;
+                })
                 // const userId = row.id || this.ids;
                 // getUser(userId).then(response => {
-                this.form = row;
-                // this.postOptions = response.posts;
-                // this.roleOptions = response.roles;
-                // this.form.postIds = response.postIds;
-                // this.form.roleIds = response.roleIds;
+                this.userForm = row;
+
                 this.open = true;
                 this.title = "修改用户";
-                this.form.password = "";
                 // });
             },
             // 点击步骤条跳转
@@ -861,6 +974,13 @@
             // 提交上传文件
             submitFileForm() {
                 this.$refs.upload.submit();
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePictureCardPreview(file) {
+                this.photoDialogUrl = file.url;
+                this.dialogVisible = true;
             }
         }
     };

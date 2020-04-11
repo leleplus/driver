@@ -72,9 +72,6 @@ public class SysUserInfo extends BaseEntity {
 
     // 管理员教练公共属性
 
-    // 教练车外键
-    private Long carInfoId;
-
     // 工资
     private String wage;
 

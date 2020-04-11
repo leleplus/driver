@@ -57,6 +57,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LoginType loginType = loginCertificate.getType();
         // 通过凭证查询数据
         SysUser user = userService.selectByLoginCertificate(loginCertificate);
+
+        log.debug("loadUserByCertificate ： {}",user );
+
         if (StringUtils.isNull(user)) {
             log.info(loginType.getDescription() + "：{} 不存在.", certificate);
             throw new UsernameNotFoundException(loginType.getDescription() + " ：" + certificate + " 不存在");

@@ -16,7 +16,6 @@
         <result column="driver_type" jdbcType="BIGINT" property="driverType"/>
         <result column="medical_time" jdbcType="TIMESTAMP" property="medicalTime"/>
         <result column="id_photo" jdbcType="VARCHAR" property="idPhoto"/>
-        <result column="car_info_id" jdbcType="BIGINT" property="carInfoId"/>
         <result column="wage" jdbcType="VARCHAR" property="wage"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="agent" jdbcType="BIGINT" property="agent"/>
@@ -36,7 +35,7 @@
     </resultMap>
     <sql id="Base_sql">
         id, real_name, age, birthday, gender, national, address, paper_file_number, driver_type, medical_time,
-        id_photo, car_info_id, wage, dept_id, agent, sign_date, expiration_time, deleted,
+        id_photo, wage, dept_id, agent, sign_date, expiration_time, deleted,
         search_value, create_by, create_time, update_by, update_time, remark, data_scope, begin_time, end_time
     </sql>
 
@@ -91,9 +90,6 @@
         </if>
         <if test="idPhoto != null ">
             id_photo,
-        </if>
-        <if test="carInfoId != null ">
-            car_info_id,
         </if>
         <if test="wage != null ">
             wage,
@@ -166,9 +162,6 @@
         </if>
         <if test="idPhoto != null ">
             #{idPhoto,jdbcType=VARCHAR},
-        </if>
-        <if test="carInfoId != null ">
-            #{carInfoId,jdbcType=BIGINT},
         </if>
         <if test="wage != null ">
             #{wage,jdbcType=VARCHAR}
@@ -261,9 +254,6 @@
             </if>
             <if test="idPhoto != null ">
                 id_photo = #{idPhoto,jdbcType=VARCHAR},
-            </if>
-            <if test="carInfoId != null ">
-                car_info_id = #{carInfoId,jdbcType=BIGINT},
             </if>
             <if test="wage != null ">
                 wage = #{wage,jdbcType=VARCHAR}

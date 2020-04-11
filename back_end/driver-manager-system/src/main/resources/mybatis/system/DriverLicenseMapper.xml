@@ -10,19 +10,17 @@
         <result column="allow_car_type" jdbcType="VARCHAR" property="allowCarType"/>
         <result column="other_types" jdbcType="VARCHAR" property="otherTypes"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
-        <result column="search_value" jdbcType="VARCHAR" property="searchValue"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="data_scope" jdbcType="VARCHAR" property="dataScope"/>
         <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
         <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
     </resultMap>
     <sql id="Base_sql">
-        id, code, allow_car_type, other_types, deleted, search_value, create_by, create_time, update_by,
-        update_time, remark, data_scope, begin_time, end_time
+        id, code, allow_car_type, other_types, deleted, create_by, create_time, update_by,
+        update_time, remark, begin_time, end_time
     </sql>
 
     <select id="selectByCode" resultMap="Base_Result_Map" parameterType="string">
@@ -45,79 +43,85 @@
     </select>
     <insert id="insert" parameterType="com.leleplus.project.system.domain.DriverLicense" useGeneratedKeys="true"
             keyProperty="id">
-        insert into driver_license(
-        <if test="code != null">
-            code,
-        </if>
-        <if test="allowCarType != null">
-            allow_car_type,
-        </if>
-        <if test="otherTypes != null">
-            other_types,
-        </if>
-        <if test="deleted != null">
-            deleted,
-        </if>
-        <if test="searchValue != null">
-            search_value,
-        </if>
-        create_by,
-        create_time,
-        <if test="updateBy != null">
-            update_by,
-        </if>
-        <if test="updateTime != null">
-            update_time,
-        </if>
-        <if test="remark != null">
-            remark,
-        </if>
-        <if test="dataScope != null">
-            data_scope,
-        </if>
-        <if test="beginTime != null">
-            begin_time,
-        </if>
-        <if test="endTime != null">
-            end_time,
-        </if>
-        )values(
-        <if test="code != null">
-            #{code,jdbcType=VARCHAR},
-        </if>
-        <if test="allowCarType != null">
-            #{allowCarType,jdbcType=VARCHAR},
-        </if>
-        <if test="otherTypes != null">
-            #{otherTypes,jdbcType=VARCHAR},
-        </if>
-        <if test="deleted != null">
-            #{deleted,jdbcType=BOOLEAN},
-        </if>
-        <if test="searchValue != null">
-            #{searchValue,jdbcType=VARCHAR},
-        </if>
-        #{createBy,jdbcType=VARCHAR},
-        sysdate(),
-        <if test="updateBy != null">
-            #{updateBy,jdbcType=VARCHAR},
-        </if>
-        <if test="updateTime != null">
-            #{updateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="remark != null">
-            #{remark,jdbcType=VARCHAR},
-        </if>
-        <if test="dataScope != null">
-            #{dataScope,jdbcType=VARCHAR},
-        </if>
-        <if test="beginTime != null">
-            #{beginTime,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime != null">
-            #{endTime,jdbcType=VARCHAR},
-        </if>
-        )
+        insert into driver_license
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">
+                create_by,
+            </if>
+                create_time,
+            <if test="code != null">
+                code,
+            </if>
+            <if test="allowCarType != null">
+                allow_car_type,
+            </if>
+            <if test="otherTypes != null">
+                other_types,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="searchValue != null">
+                search_value,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="dataScope != null">
+                data_scope,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+                sysdate(),
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="allowCarType != null">
+                #{allowCarType,jdbcType=VARCHAR},
+            </if>
+            <if test="otherTypes != null">
+                #{otherTypes,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="searchValue != null">
+                #{searchValue,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null">
+                #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
         update driver_license

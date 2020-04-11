@@ -5,6 +5,7 @@ import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.project.system.domain.SysUserInfo;
 import com.leleplus.project.system.service.ISysUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,7 +30,7 @@ public class SysUserInfoController extends BaseController {
      * @param id
      * @return
      */
-//    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @PreAuthorize ("@ss.hasPermi('system:userinfo:query')")
     @GetMapping("/{userInfoId}")
     public AjaxResult getUserInfo(@PathVariable(value = "userInfoId", required = false) Long id) {
         AjaxResult ajax = AjaxResult.success();
