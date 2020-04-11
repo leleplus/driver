@@ -120,7 +120,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public String selectUserPostGroup(String userName) {
         List<SysPositions> list = postMapper.selectPostsByUserName(userName);
-        StringBuffer idsStr = new StringBuffer();
+        StringBuilder idsStr = new StringBuilder();
         for (SysPositions post : list) {
             idsStr.append(post.getPostName()).append(",");
         }
@@ -153,9 +153,9 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public String checkPhoneUnique(SysUser user) {
-        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
+        long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
         SysUser info = userMapper.checkPhoneUnique(user.getTelphone());
-        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
+        if (StringUtils.isNotNull(info) && info.getId() != userId) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -169,9 +169,9 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public String checkEmailUnique(SysUser user) {
-        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
+        long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
         SysUser info = userMapper.checkEmailUnique(user.getEmail());
-        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
+        if (StringUtils.isNotNull(info) && info.getId() != userId) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -380,20 +380,20 @@ public class SysUserServiceImpl implements ISysUserService {
                     user.setCreateBy(operName);
                     this.insertUser(user);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUsername() + " 导入成功");
+                    successMsg.append("<br/>").append(successNum).append("、账号 ").append(user.getUsername()).append(" 导入成功");
                 } else if (isUpdateSupport) {
                     user.setUpdateBy(operName);
                     this.updateUser(user);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUsername() + " 更新成功");
+                    successMsg.append("<br/>").append(successNum).append("、账号 ").append(user.getUsername()).append(" 更新成功");
                 } else {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、账号 " + user.getUsername() + " 已存在");
+                    failureMsg.append("<br/>").append(failureNum).append("、账号 ").append(user.getUsername()).append(" 已存在");
                 }
             } catch (Exception e) {
                 failureNum++;
                 String msg = "<br/>" + failureNum + "、账号 " + user.getUsername() + " 导入失败：";
-                failureMsg.append(msg + e.getMessage());
+                failureMsg.append(msg).append(e.getMessage());
                 log.error(msg, e);
             }
         }
@@ -422,6 +422,17 @@ public class SysUserServiceImpl implements ISysUserService {
 
         log.error("校验用户登录凭证出现错误！");
         throw new LoginCertificateErrorException();
+    }
+
+    /**
+     * 根据角色查询用户
+     *
+     * @param roleKey
+     * @return
+     */
+    @Override
+    public SysUser selectByRole(String roleKey) {
+        return userMapper.selectUserByRoleKey(roleKey);
     }
 
 }

@@ -118,4 +118,12 @@ public interface SysUserMapper {
      * @return
      */
     SysUser selectUserByLoginCertificate(LoginCertificate loginCertificate);
+
+    /**
+     * 查询用户，根据角色
+     *
+     * @param roleKey
+     * @return
+     */
+    SysUser selectUserByRoleKey(String roleKey);
 }

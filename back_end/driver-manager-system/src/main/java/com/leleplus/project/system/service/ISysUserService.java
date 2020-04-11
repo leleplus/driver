@@ -174,4 +174,13 @@ public interface ISysUserService {
      * @return 系统用户
      */
     SysUser selectByLoginCertificate(LoginCertificate loginCertificate);
+
+
+    /**
+     * 根据角色查询用户
+     *
+     * @param roleKey
+     * @return
+     */
+    SysUser selectByRole(String roleKey);
 }

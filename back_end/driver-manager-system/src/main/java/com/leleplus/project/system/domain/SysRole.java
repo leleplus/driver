@@ -2,7 +2,6 @@ package com.leleplus.project.system.domain;
 
 
 import com.leleplus.common.enums.RoleKeys;
-import com.leleplus.common.utils.StringUtils;
 import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
@@ -93,20 +92,34 @@ public class SysRole extends BaseEntity {
         this.roleId = roleId;
     }
 
+    public SysRole(String roleName, String roleKey, String roleSort, String dataScope, String status, String delFlag) {
+        this.roleName = roleName;
+        this.roleKey = roleKey;
+        this.roleSort = roleSort;
+        this.dataScope = dataScope;
+        this.status = status;
+        this.delFlag = delFlag;
+    }
+
+
+    public void setRoleKey(RoleKeys roleKey) {
+        this.roleKey = roleKey.getRole().getRoleKey();
+    }
+
     public boolean isAdmin() {
-        return isAdmin(this.roleKey);
+        return isAdmin(this);
     }
 
     /**
      * 判断是不是管理员
      *
-     * @param roleKey
+     * @param role
      * @return
      */
-    public static boolean isAdmin(String roleKey) {
-        if (StringUtils.isEmpty(roleKey)) {
+    public static boolean isAdmin(SysRole role) {
+        if (role == null) {
             return false;
         }
-        return RoleKeys.ADMIN.getRole().getRoleKey().equals(roleKey);
+        return RoleKeys.ADMIN.getRole().getRoleKey().equals(role.getRoleKey());
     }
 }

@@ -211,5 +211,18 @@ u.dept_id,
         </if>
 
     </select>
+    <select id="selectUserByRoleKey" resultMap="SysUserResult" parameterType="string">
+        SELECT u.id, u.username, u.nick_name, u.user_type, u.email, u.telphone, u.sex, u.avatar, u.password, u.status, u.del_flag, u.login_ip, u.login_date,
+                u.create_by, u.create_time, u.update_by, u.update_time, u.remark, u.id_card, u.user_info_id
+        FROM (
+                SELECT role_id
+                FROM sys_role
+                WHERE
+                    <if test="_parameter != null and _parameter != ''">
+                        role_key = #{roleKey,jdbcType=VARCHAR}
+                    </if>
+            )role,sys_user_role sur LEFT JOIN sys_user u ON u.id = user_id
+        WHERE sur.role_id = role.role_id
+    </select>
 
 </mapper> 
