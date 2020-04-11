@@ -47,4 +47,7 @@ public class CoachCar extends BaseEntity {
 
     // 数据是否有效
     private Boolean isValid;
+
+    // 是否删除记录
+    private Boolean deleted;
 }

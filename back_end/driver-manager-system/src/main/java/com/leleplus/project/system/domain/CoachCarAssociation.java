@@ -15,18 +15,20 @@ import lombok.experimental.Accessors;
  */
 
 @Data
-@Accessors(chain = true)
+@Accessors (chain = true)
 public class CoachCarAssociation extends BaseEntity {
 
-    private static final long serialVersionUID = -6109540712519121311L;
+	private static final long serialVersionUID = - 6109540712519121311L;
 
-    // 教练id
-    private Long coachId;
+	// 教练id
+	private Long coachId;
 
-    // 车辆id
-    private Long carId;
+	// 车辆id
+	private Long carId;
 
-    // 级联车信息
-    private CoachCar car;
+	// 是否删除
+	private Boolean deleted;
 
+	// 级联车信息
+	private CoachCar car;
 }
