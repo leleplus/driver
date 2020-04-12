@@ -7,12 +7,13 @@ import com.leleplus.common.utils.VerifyCodeUtils;
 import com.leleplus.common.utils.sign.Base64;
 import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.web.domain.AjaxResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author witt
  */
+
+@Api(tags = "验证码接口")
 @RestController
 @Slf4j
 public class CaptchaController {
@@ -31,8 +34,9 @@ public class CaptchaController {
     /**
      * 生成验证码
      */
+    @ApiOperation("获取验证码")
     @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException {
+    public AjaxResult getCode() throws IOException {
         // 生成随机字串
         String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
         // 唯一标识

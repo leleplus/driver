@@ -12,6 +12,8 @@ import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.core.web.page.TableDataInfo;
 import com.leleplus.project.monitor.domain.SysUserOnline;
 import com.leleplus.project.system.service.ISysUserOnlineService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,8 @@ import java.util.List;
  *
  * @author witt
  */
+
+@Api("在线用户监控接口")
 @RestController
 @RequestMapping("/monitor/online")
 public class SysUserOnlineController extends BaseController {
@@ -35,6 +39,7 @@ public class SysUserOnlineController extends BaseController {
     @Autowired
     private RedisCache redisCache;
 
+    @ApiOperation("查询在线用户监控列表")
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo list(String ipaddr, String userName) {
@@ -66,6 +71,8 @@ public class SysUserOnlineController extends BaseController {
     /**
      * 强退用户
      */
+
+    @ApiOperation("强制退出用户接口")
     @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
     @Log(title = "在线用户", businessType = BusinessType.DELETE)
     @DeleteMapping("/{tokenId}")

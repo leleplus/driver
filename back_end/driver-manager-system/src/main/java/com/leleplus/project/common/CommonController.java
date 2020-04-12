@@ -8,6 +8,8 @@ import com.leleplus.common.utils.file.FileUtils;
 import com.leleplus.core.config.DriverSystemConfiguration;
 import com.leleplus.core.config.ServerConfig;
 import com.leleplus.core.web.domain.AjaxResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author witt
  */
+
+@Api(tags = "通用请求接口")
 @RestController
 public class CommonController {
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);
@@ -37,6 +41,8 @@ public class CommonController {
      * @param fileName 文件名称
      * @param delete   是否删除
      */
+
+    @ApiOperation("文件下载")
     @GetMapping("common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
         try {
@@ -62,6 +68,8 @@ public class CommonController {
     /**
      * 通用上传请求
      */
+
+    @ApiOperation("文件上传")
     @PostMapping("/common/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception {
         try {
@@ -82,6 +90,8 @@ public class CommonController {
     /**
      * 本地资源通用下载
      */
+
+    @ApiOperation("本地资源下载")
     @GetMapping("/common/download/resource")
     public void resourceDownload(String name, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 本地资源路径

@@ -21,7 +21,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://www.leleplus.fun:3306/facts_driver?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://47.103.215.243:3306/facts_driver_prd?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         username: root
         password: lele
       # 从库数据源
@@ -125,3 +125,8 @@ logging:
 #  autoRemovePre: false
 #  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
 #  tablePrefix: sys_
+
+# 项目配置
+driver:
+  # 文件路径 示例（ Windows配置D:/uploadPath，Linux配置 /home/uploadPath）
+  profile: ~/driver/driver_temp/files

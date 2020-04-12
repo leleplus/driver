@@ -17,6 +17,8 @@ import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysPostService;
 import com.leleplus.project.system.service.ISysRoleService;
 import com.leleplus.project.system.service.ISysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/user")
+@Api(tags = "系统用户接口")
 public class SysUserController extends BaseController {
     @Autowired
     private ISysUserService userService;
@@ -48,6 +51,7 @@ public class SysUserController extends BaseController {
     /**
      * 获取用户列表
      */
+    @ApiOperation(value = "查询用户列表",notes = "支持分页查询")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysUser user) {
@@ -86,6 +90,7 @@ public class SysUserController extends BaseController {
     /**
      * 根据用户编号获取详细信息
      */
+    @ApiOperation(value = "根据id查询用户",notes = "id拼接在URL用户")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = {"/", "/{userId}"})
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
@@ -103,6 +108,7 @@ public class SysUserController extends BaseController {
     /**
      * 新增用户
      */
+    @ApiOperation("添加用户")
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -122,6 +128,7 @@ public class SysUserController extends BaseController {
     /**
      * 修改用户
      */
+    @ApiOperation("修改用户")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -139,9 +146,10 @@ public class SysUserController extends BaseController {
     /**
      * 删除用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userIds}")
+    @ApiOperation (value = "批量删除用户", notes = "id类型是数组")
+    @PreAuthorize ("@ss.hasPermi('system:user:remove')")
+    @Log (title = "用户管理", businessType = BusinessType.DELETE)
+    @DeleteMapping ("/{userIds}")
     public AjaxResult remove(@PathVariable Long[] userIds) {
         return toAjax(userService.deleteUserByIds(userIds));
     }
@@ -149,6 +157,7 @@ public class SysUserController extends BaseController {
     /**
      * 重置密码
      */
+    @ApiOperation("密码重置")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/resetPwd")
@@ -162,6 +171,7 @@ public class SysUserController extends BaseController {
     /**
      * 状态修改
      */
+    @ApiOperation("更改用户状态")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")

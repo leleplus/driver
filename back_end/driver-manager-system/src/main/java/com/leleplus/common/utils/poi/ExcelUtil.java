@@ -83,10 +83,7 @@ public class ExcelUtil<T> {
     }
 
     public void init(List<T> list, String sheetName, Type type) {
-        if (list == null) {
-            list = new ArrayList<T>();
-        }
-        this.list = list;
+        this.list = list == null ? new ArrayList<>() : list;
         this.sheetName = sheetName;
         this.type = type;
         createExcelField();
@@ -113,7 +110,7 @@ public class ExcelUtil<T> {
     public List<T> importExcel(String sheetName, InputStream is) throws Exception {
         this.type = Type.IMPORT;
         this.wb = WorkbookFactory.create(is);
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         Sheet sheet = null;
         if (StringUtils.isNotEmpty(sheetName)) {
             // 如果指定sheet名,则取指定sheet中的内容.
@@ -385,7 +382,7 @@ public class ExcelUtil<T> {
      * 创建表格样式
      */
     public void setDataValidation(Excel attr, Row row, int column) {
-        if (attr.name().indexOf("注：") >= 0) {
+        if (attr.name().contains("注：")) {
             sheet.setColumnWidth(column, 6000);
         } else {
             // 设置列宽
@@ -659,7 +656,7 @@ public class ExcelUtil<T> {
      */
     public Object getCellValue(Row row, int column) {
         if (row == null) {
-            return row;
+            return null;
         }
         Object val = "";
         try {

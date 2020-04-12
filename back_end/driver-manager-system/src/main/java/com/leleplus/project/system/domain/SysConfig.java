@@ -5,9 +5,8 @@ import com.leleplus.core.aspect.lang.annotation.Excel;
 import com.leleplus.core.aspect.lang.annotation.Excel.ColumnType;
 import com.leleplus.core.web.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Data
 @Accessors(chain = true)
+@ToString
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -58,20 +58,4 @@ public class SysConfig extends BaseEntity {
     @Excel(name = "系统内置", readConverterExp = "Y=是,N=否")
     private String configType;
 
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("configId", getConfigId())
-                .append("configName", getConfigName())
-                .append("configKey", getConfigKey())
-                .append("configValue", getConfigValue())
-                .append("configType", getConfigType())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
-    }
 }

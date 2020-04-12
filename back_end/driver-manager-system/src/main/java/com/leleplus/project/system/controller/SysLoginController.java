@@ -26,7 +26,7 @@ import java.util.Set;
  *
  * @author witt
  */
-@Api(value = "SysLoginController", tags = "系统登录接口")
+@Api(tags = "系统登录接口")
 @RestController
 public class SysLoginController {
 
@@ -48,7 +48,7 @@ public class SysLoginController {
      * @param user 登录用户
      * @return 结果
      */
-    @ApiOperation(value = "登录接口", notes = "username可以为用户名，身份证号，手机号，邮箱")
+    @ApiOperation(value = "登录接口", notes = "登录账户可以为用户名，身份证号，手机号，邮箱")
     @PostMapping("/login")
     public AjaxResult login(@RequestBody SysUser user) {
         AjaxResult ajax = AjaxResult.success();
@@ -63,6 +63,8 @@ public class SysLoginController {
      *
      * @return 用户信息
      */
+
+    @ApiOperation("获取用户信息")
     @GetMapping("getInfo")
     public AjaxResult getInfo() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
@@ -83,6 +85,8 @@ public class SysLoginController {
      *
      * @return 路由信息
      */
+
+    @ApiOperation("获取路由信息")
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());

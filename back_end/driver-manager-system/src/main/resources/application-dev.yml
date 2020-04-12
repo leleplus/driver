@@ -125,3 +125,10 @@ gen:
   autoRemovePre: false
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
   tablePrefix: sys_
+
+# 项目配置
+driver:
+  # 文件路径 示例（ Windows配置D:/uploadPath，Linux配置 /home/uploadPath）
+  profile: D:/driver_files
+  swagger:
+    package: com.leleplus.project.system.controller;com.leleplus.project.monitor.controller;com.leleplus.project.common;

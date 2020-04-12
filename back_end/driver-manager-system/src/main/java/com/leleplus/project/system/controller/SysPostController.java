@@ -48,7 +48,7 @@ public class SysPostController extends BaseController
     public AjaxResult export(SysPositions post)
     {
         List<SysPositions> list = postService.selectPostList(post);
-        ExcelUtil<SysPositions> util = new ExcelUtil<SysPositions>(SysPositions.class);
+        ExcelUtil<SysPositions> util = new ExcelUtil<>(SysPositions.class);
         return util.exportExcel(list, "岗位数据");
     }
 

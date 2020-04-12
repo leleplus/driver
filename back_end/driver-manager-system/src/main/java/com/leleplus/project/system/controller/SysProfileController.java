@@ -12,6 +12,8 @@ import com.leleplus.core.web.controller.BaseController;
 import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.project.system.domain.SysUser;
 import com.leleplus.project.system.service.ISysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,8 @@ import java.io.IOException;
  *
  * @author witt
  */
+
+@Api(tags = "用户个人信息接口")
 @RestController
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController {
@@ -68,13 +72,15 @@ public class SysProfileController extends BaseController {
     /**
      * 重置密码
      */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
-    @PutMapping("/updatePwd")
+
+    @ApiOperation ("重置密码")
+    @Log (title = "个人信息", businessType = BusinessType.UPDATE)
+    @PutMapping ("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword) {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
-        if (!SecurityUtils.matchesPassword(oldPassword, password)) {
+        if (! SecurityUtils.matchesPassword(oldPassword, password)) {
             return AjaxResult.error("修改密码失败，旧密码错误");
         }
         if (SecurityUtils.matchesPassword(newPassword, password)) {
@@ -92,6 +98,8 @@ public class SysProfileController extends BaseController {
     /**
      * 头像上传
      */
+
+    @ApiOperation("修改用户头像")
     @Log(title = "用户头像", businessType = BusinessType.UPDATE)
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws IOException {
