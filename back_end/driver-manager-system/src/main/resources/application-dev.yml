@@ -132,3 +132,5 @@ driver:
   profile: D:/driver_files
   swagger:
     package: com.leleplus.project.system.controller;com.leleplus.project.monitor.controller;com.leleplus.project.common;
+  log:
+    path: ./logs

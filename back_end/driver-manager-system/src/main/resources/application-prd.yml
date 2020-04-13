@@ -1,7 +1,7 @@
-# 开发环境配置
+# 生产环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 6666
+  port: 9999
   servlet:
     # 应用的访问路径
     context-path: /
@@ -110,10 +110,6 @@ spring:
         max-wait: -1ms
 
 # 日志配置
-logging:
-  level:
-    com.leleplus: info
-    org.springframework: info
 
 ## 代码生成
 #gen:
@@ -128,5 +124,15 @@ logging:
 
 # 项目配置
 driver:
-  # 文件路径 示例（ Windows配置D:/uploadPath，Linux配置 /home/uploadPath）
+  # 上传下载文件路径
   profile: ~/driver/driver_temp/files
+  # swagger扫描哪些包中的接口
+  swagger:
+    package: com.leleplus.project.system.controller;com.leleplus.project.monitor.controller;com.leleplus.project.common;
+  # 日志文件路径
+  log:
+    path: ./driver_temp/logs
+# 日志级别
+logging:
+  level:
+    root: info

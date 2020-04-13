@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!--
+说明：
+    1. 文件的命名和加载顺序有关
+       logback.xml早于application.yml加载，logback-spring.xml晚于application.yml加载
+       如果logback配置需要使用application.yml中的属性，需要命名为logback-spring.xml
+    2. logback使用application.yml中的属性
+       使用springProperty才可使用application.yml中的值 可以设置默认值
+
+-->
+
+    <!-- 读取application.yml配置 -->
+    <springProperty scope="context" name="logPath" source="driver.log.path" defaultValue="logs"/>
+
     <!-- 日志存放路径 -->
-    <property name="log.path" value="./logs"/>
+    <property name="log.path" value="${logPath}"/>
     <!-- 日志输出格式 -->
     <!--    <property name="log.pattern" value="%highlight(%date{yyyy-MM-dd HH:mm:ss.SSS}) %boldYellow([%thread]) %highlight([%-5level])  %boldCyan([%replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''}]) %msg%n"/>-->
 
@@ -83,9 +96,11 @@
     -->
 
     <!-- 系统模块日志级别控制  -->
+<!--
     <logger name="com.leleplus" level="debug"/>
-    <!-- Spring日志级别控制  -->
+    &lt;!&ndash; Spring日志级别控制  &ndash;&gt;
     <logger name="org.springframework" level="debug"/>
+-->
 
     <root level="debug">
         <appender-ref ref="console"/>
