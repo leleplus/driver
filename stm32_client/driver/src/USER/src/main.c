@@ -8,62 +8,54 @@
 #include "led.h"
 #include "key.h"
 #include "usart1.h"
+#include "NVIC.h"
 
 
 /**
 *
-* è®¾å¤‡åˆå§‹åŒ–å‡½æ•°
+* Éè±¸³õÊ¼»¯º¯Êı
 *
 */
 
 void init(void){
-	// å»¶æ—¶å‡½æ•°åˆå§‹åŒ– 
+// ÑÓÊ±º¯Êı³õÊ¼»¯ 
 //	delayInit(72);
-	// ledè®¾å¤‡åˆå§‹åŒ–
+// ledÉè±¸³õÊ¼»¯
 //	ledInit();
-	
-	delayInit();	    	 //å»¶æ—¶å‡½æ•°åˆå§‹åŒ–	  
-	ledInit();		  	//åˆå§‹åŒ–ä¸LEDè¿æ¥çš„ç¡¬ä»¶æ¥å£
+	NVICGroupInit(2);
+	delayInit();	    //ÑÓÊ±º¯Êı³õÊ¼»¯	  
+	ledInit();		  	//³õÊ¼»¯ÓëLEDÁ¬½ÓµÄÓ²¼ş½Ó¿Ú
 	keyInit();
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	usart1Init(9600);
+//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    
+	Usart1Init(72,57600);
 }
 
 
 /**
 *
-*ç¨‹åºä¸»å…¥å£
+*³ÌĞòÖ÷Èë¿Ú
 *
 */
 int main(void){
-	int key = 0;
-	
-	// åˆå§‹åŒ–è®¾å¤‡
+
+	// ³õÊ¼»¯Éè±¸
 	init();
+    
 	
 	
 	while(1){
-		
-		closeLed(LED_ALL);
-		key = getKeyValue(0);
-		
-		switch(key){
-			case 1:
-				sendStr("input key s1");
-				openLed(LED_S1);
-				break;
-			case 2:
-				sendStr("input key s2");
-				openLed(LED_S2);
-				break;
-			case 3:
-				sendStr("input key s3");
-				openLed(LED_S3);
-				break;
-			default:break;
-		}
-		
-		delayMs(600);
-		
-	}
+        
+        sendStr("²âÊÔ´®¿Ú¹¤×÷\r\n");
+        delayMs(200);
+        openLed(LED_S1);
+        delaySec(1);
+        closeLed(LED_S1);
+        openLed(LED_S2);
+        delaySec(1);
+        closeLed(LED_S2);
+        openLed(LED_S3);
+        delaySec(1);
+        closeLed(LED_S3);
+    }
 }
