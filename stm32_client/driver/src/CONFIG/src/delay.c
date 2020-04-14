@@ -16,8 +16,7 @@ static u16 fac_ms=0;//ms延时倍乘数
 
 
 // 初始化延时函数
-void delayInit(void)
-{
+void delayInit(void){
 	//选择外部时钟  HCLK/8
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);	
 	//为系统时钟的1/8
@@ -30,8 +29,7 @@ void delayInit(void)
 
 // 按照微妙延时
 		    								   
-void delay_Us(u32 us)
-{		
+void delayUs(u32 us){		
 	u32 temp = 0;
 	//时间加载	  	
 	SysTick->LOAD=us * fac_us;
@@ -61,8 +59,7 @@ void delay_Us(u32 us)
 * 对72M条件下,ms<=1864 
 * 
 */
-void delayMs(u16 ms)
-{	 		  	  
+void delayMs(u16 ms){	 		  	  
 	u32 temp = 0;	 
 	//时间加载(SysTick -> LOAD为24bit)
 	SysTick -> LOAD = (u32)ms * fac_ms;
