@@ -12,6 +12,8 @@
 
 #include <stm32f10x.h>
 #include <stdio.h>
+#include "usart2.h"
+#include "usart1.h"
 
 
 /**
@@ -41,6 +43,10 @@ u8 strCompare(u8 *p);
  */
 void clearCache(void);
 
+
+void uart2_send_char(u8 temp);
+
+char tostr(u16 len, u8 *buf);
 
 #endif
 

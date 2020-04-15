@@ -43,6 +43,7 @@ void init(void){
 
     // 串口1初始化
 	Usart1Init(72,115200);
+    // 串口2初始化为115200波特率，esp8266是115200
     Usart2Init(115200);
     //RC522模块所需外设的初始化配置
     RC522_Init ();     
@@ -60,7 +61,7 @@ void init(void){
  *
  * @return 返回值为1时，读取到数据。
  */
-u8 readPhyNumber ( void ){
+int readPhyNumber ( void ){
 
     //先后存放IC卡的类型和UID(IC卡序列号)
     u8 ucArray_ID [ 4 ];    
@@ -122,8 +123,14 @@ int main(void){
             sendStr("按键2\r\n");
             openLed(LED_S2);
             esp8266_init();
+            
 
         }
+//        if(readPhyNumber() == 1){
+//                sendStr("刷卡成功 ，卡号为 :");
+//                sendStr(phyNumber);
+//                sendStr("\r\n");
+//        }
         
     }
 }

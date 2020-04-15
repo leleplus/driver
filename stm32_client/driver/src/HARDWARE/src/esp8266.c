@@ -26,45 +26,109 @@ extern 	u8 RX_num;
  */
 void esp8266_init(void){
 
-
-    u8  esp_at[]="AT\r\n";
-    u8  esp_cwmode[]="AT+CWMODE=3\r\n";
-    u8  esp_cifsr[]="AT+CIFSR\r\n";
-    u8  esp_cipsend[]="AT+CIPSEND=6\r\n";
-    u8  esp_test[]="sunny\r\n";
-    u8  esp_cipserver[]="AT+CIPSERVER=1,5000\r\n";
-    u8  esp_cipmux[]="AT+CIPMUX=1\r\n";
-    u8  esp_rst[]="AT+RST\r\n";
+    int flag = 1;
 
 
+    // 发送 AT  返回OK
+    u8 esp_at[]="AT\r\n";
+    // 设置为AP兼Station模式。
+    u8 esp_cwmode[]="AT+CWMODE=1\r\n";//OK
+    // 设置连接的wifi和密码 响应OK
+    u8 esp_wifi[]="AT+CWJAP=\"home\",\"198@qq.com\"\r\n";
+    // 查看是否获得IP 返回设备IP
+    u8 esp_ip[]="AT+CIFSR\r\n";
+    // 设置连接模式为单一连接
+    u8 esp_mode[] = "AT+CIPMUX=0\r\n";
+    // 建立远程TCP连接(连接服务器) 返回OK
+    u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
+    // 发送数据，多少个字节 返回SEND OK
+    u8 esp_cipsend[]="AT+CIPSEND=32\r\n";
+    u8 esp_test[]="sunny\r\n";
+    //u8 esp_cipserver[]="AT+CIPSERVER=1,5000\r\n";
+    // u8 esp_cipmux[]="AT+CIPMUX=1\r\n";
+    // 重启指令，响应OK
+    u8 esp_reset[]="AT+RST\r\n";
 
 
-
+    clearCache();
+    // 发送AT指令
 	while(1){
         // 串口发送AT指令初始化ESP8266
         Uart2SendStr(esp_at);
-        delayUs(10);
+        delaySec(1);
         if(strCompare("OK"))
             break;
-        else  sendStr("ERROR1 \r\n");
+        else
+            sendStr("again send AT \r\n");
         delayMs(600);
     }
 
-    sendStr("OK,mcu connection success with ESP8266! \r\n");
+    sendStr("esp8266_init successful ! \r\n");
 	clearCache();
 
-
     // 设置工作模式
-    while(1){
+    while(flag){
         Uart2SendStr(esp_cwmode);
-        delayUs(10);
-        if(strCompare("OK") || strCompare("no change"))
+        delaySec(1);
+        if(strCompare("OK")){
+            sendStr("change model successful.\r\n");
             break;
-        else  sendStr("ERROR2 \r\n");
+           while(1){
+               clearCache();
+               // 重启
+               Uart2SendStr(esp_reset);
+               // 重启完成，跳出循环
+               delayUs(10);
+               if(strCompare("")){
+                   sendStr("restart ....\r\n");
+                   flag = 0;
+                   delaySec(2);
+                   break;
+               }else{
+                   sendStr("restart again \r\n");
+               }
+               delaySec(2);
+           }
+        }else if(strCompare("no change")){
+            sendStr("same mode .\r\n");
+            break;
+        }else{
+            sendStr("change mode again. \r\n");
+        }
         delayMs(600);
     }
-    sendStr("OK,set mode as AP+Station with ESP8266! \r\n");
+    sendStr("setting mode finished. \r\n");
     clearCache();
+
+    delaySec(3);
+
+    // 连接WiFi
+    while(1){
+        Uart2SendStr(esp_wifi);
+        delaySec(10);
+        if(strCompare("OK")){
+            sendBuffer(tbuf,RX_buffer);
+            sendStr("\r\n");
+            break;
+        }else{
+            sendStr("connect WIFI again .\r\n");
+        }
+        delayMs(600);
+    }
+
+    sendStr("connect wifi successful. \r\n");
+    clearCache();
+
+    // 查看已经连接的IP地址
+    Uart2SendStr(esp_ip);
+    delayMs(40);
+    sendStr("Connected IP Address :");
+
+    sendBuffer(tbuf,RX_buffer);
+    sendStr("\r\n");
+
+    clearCache();
+
 
 }
 

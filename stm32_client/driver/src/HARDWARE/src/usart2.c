@@ -77,6 +77,8 @@ void Uart2SendStr(u8 *str){
     }
 }
 
+
+
 void USART2_IRQHandler(void){
 
  	//接收到数据

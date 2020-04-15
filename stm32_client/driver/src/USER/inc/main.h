@@ -18,7 +18,7 @@
  * 从RC522读取物理卡号
  *
  */
-u8 readPhyNumber(void);
+int readPhyNumber(void);
 
 #endif
 

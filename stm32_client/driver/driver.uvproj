@@ -592,6 +592,26 @@
               <FileType>1</FileType>
               <FilePath>.\src\HARDWARE\src\NVIC.c</FilePath>
             </File>
+            <File>
+              <FileName>rc522_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\HARDWARE\src\rc522_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>rc522_function.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\HARDWARE\src\rc522_function.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\HARDWARE\src\usart2.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\HARDWARE\src\esp8266.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
