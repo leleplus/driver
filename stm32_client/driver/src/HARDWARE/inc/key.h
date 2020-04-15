@@ -29,7 +29,12 @@
 //按键的IO初始化
 void keyInit(void);
 
-//检测按下的按键
+/**
+* 检测按键的值
+* @param mode->0 表示不支持按键长按  mode->1 支持按键长按
+* @return 按键值
+* 
+*/
 int getKeyValue(u8 mode);
 
 #endif

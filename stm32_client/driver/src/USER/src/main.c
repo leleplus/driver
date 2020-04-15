@@ -13,12 +13,17 @@
 #include "rc522_config.h"
 #include "rc522_function.h"
 #include <stdbool.h>
+#include "usart2.h"
+#include "esp8266.h"
 
 
 
-    
+
+
 // 读取到的结果，转为字符串
 char phyNumber [ 30 ];
+
+
 
 
 /**
@@ -38,6 +43,7 @@ void init(void){
 
     // 串口1初始化
 	Usart1Init(72,115200);
+    Usart2Init(115200);
     //RC522模块所需外设的初始化配置
     RC522_Init ();     
     
@@ -78,28 +84,47 @@ u8 readPhyNumber ( void ){
 }
 
 
+
+
+
 /**
 *
 *程序主入口
 *
 */
 int main(void){
-
+    int key = -1; 
     init();
 
     sendStr("test ....\r\n");
     PcdReset ();
-	M500PcdConfigISOType ( 'A' );//设置工作方式
+    //设置Rc522工作方式
+	M500PcdConfigISOType ( 'A' );
+    
+
+    
  
-	
     while (1){
-        if(readPhyNumber() == 1){
-           openLed(LED_S2);
-            sendStr("读取到卡号 ");
-            sendStr(phyNumber);
-            sendStr("\r\n");
-           closeLed(LED_S2);
+        key  = getKeyValue(0);
+//        if(readPhyNumber() == 1){
+//           openLed(LED_S2);
+//            sendStr("读取到卡号 ");
+//            sendStr(phyNumber);
+//            sendStr("\r\n");
+//           closeLed(LED_S2);
+//        }
+        
+        if(key == 1){
+            openLed(LED_S1);
+        }else if(key == 3){
+            closeLed(LED_ALL);
+        }else if(key == 2){
+            sendStr("按键2\r\n");
+            openLed(LED_S2);
+            esp8266_init();
+
         }
+        
     }
 }
 

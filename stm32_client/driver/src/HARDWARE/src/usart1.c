@@ -26,10 +26,8 @@ volatile u8 U1RxFlag = 0;
 
 #pragma import( __use_no_semihosting)
 
-struct __FILE
-{
+struct __FILE{
     int out;
-
 };
 
 FILE __stdout;
