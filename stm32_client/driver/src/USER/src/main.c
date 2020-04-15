@@ -9,6 +9,16 @@
 #include "key.h"
 #include "usart1.h"
 #include "NVIC.h"
+#include "main.h"
+#include "rc522_config.h"
+#include "rc522_function.h"
+#include <stdbool.h>
+
+
+
+    
+// 读取到的结果，转为字符串
+char phyNumber [ 30 ];
 
 
 /**
@@ -18,17 +28,53 @@
 */
 
 void init(void){
-// 延时函数初始化 
-//	delayInit(72);
-// led设备初始化
-//	ledInit();
 	NVICGroupInit(2);
-	delayInit();	    //延时函数初始化	  
-	ledInit();		  	//初始化与LED连接的硬件接口
+    //延时函数初始化
+	delayInit();	    	
+    //初始化与LED连接的硬件接口
+	ledInit();
+    // 按键初始化
 	keyInit();
-//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+
+    // 串口1初始化
+	Usart1Init(72,115200);
+    //RC522模块所需外设的初始化配置
+    RC522_Init ();     
     
-	Usart1Init(72,57600);
+    // 延时保证初始化结束
+    delayMs(200);
+}
+
+
+
+
+/**
+ * 读到的数据存放在全局变量phyNumber中，已经转换为字符串存储
+ *
+ *
+ * @return 返回值为1时，读取到数据。
+ */
+u8 readPhyNumber ( void ){
+
+    //先后存放IC卡的类型和UID(IC卡序列号)
+    u8 ucArray_ID [ 4 ];    
+    //返回状态    
+    u8 ucStatusReturn;                                                                                               
+
+    //寻卡(未找到卡，再次寻卡)
+    if ((ucStatusReturn = PcdRequest (PICC_REQALL, ucArray_ID)) != MI_OK){
+            ucStatusReturn = PcdRequest ( PICC_REQALL, ucArray_ID );		                                                 //若失败再次寻卡
+    }
+    // 寻找到卡
+    if (ucStatusReturn == MI_OK){
+        //防冲撞（当有多张卡进入读写器操作范围时，防冲突机制会从其中选择一张进行操作）
+        if (PcdAnticoll(ucArray_ID) == MI_OK){
+            // 将读到的卡号数组格式化转为字符串result
+            sprintf ( phyNumber, "%02X%02X%02X%02X", ucArray_ID [0], ucArray_ID [1], ucArray_ID [2], ucArray_ID [3] );
+            return 1;            
+        }
+    }
+    return 0;
 }
 
 
@@ -39,23 +85,22 @@ void init(void){
 */
 int main(void){
 
-	// 初始化设备
-	init();
-    
+    init();
+
+    sendStr("test ....\r\n");
+    PcdReset ();
+	M500PcdConfigISOType ( 'A' );//设置工作方式
+ 
 	
-	
-	while(1){
-        
-        sendStr("测试串口工作\r\n");
-        delayMs(200);
-        openLed(LED_S1);
-        delaySec(1);
-        closeLed(LED_S1);
-        openLed(LED_S2);
-        delaySec(1);
-        closeLed(LED_S2);
-        openLed(LED_S3);
-        delaySec(1);
-        closeLed(LED_S3);
+    while (1){
+        if(readPhyNumber() == 1){
+           openLed(LED_S2);
+            sendStr("读取到卡号 ");
+            sendStr(phyNumber);
+            sendStr("\r\n");
+           closeLed(LED_S2);
+        }
     }
 }
+
+
