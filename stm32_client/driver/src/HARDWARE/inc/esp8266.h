@@ -28,10 +28,34 @@ void esp8266_init(void);
 void espConnectServer(void);
 
 /**
+* esp8266 设置单链接模式
+ */
+void setSingleLinkMode(void);
+
+/**
+* esp8266 设置透传模式
+ */
+void openTansparentMode(void);
+
+/**
+* esp8266 退出透传模式
+ */
+void closeTansparentMode(void);
+
+/**
+* esp8266 关闭TCP/UDP连接
+ */
+void closeIPConnection(void);
+
+/**
  * esp8266发送get
  */
 void esp8266SendGet(void);
 
+/**
+ * 重启ESP8266
+ */
+void reStartEsp8266(void);
 
 /**
  * 字符串比较
@@ -46,11 +70,6 @@ u8 strCompare(u8 *p);
  *  清理计数
  */
 void clearCache(void);
-
-
-void uart2_send_char(u8 temp);
-
-char tostr(u16 len, u8 *buf);
 
 #endif
 

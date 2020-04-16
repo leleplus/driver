@@ -15,7 +15,7 @@
 #include "delay.h"
 
 //声明接收DMA数据的数组
-#define RX_MAX_LEN 256
+#define RX_MAX_LEN 1024
 volatile u8 U1RxBuffer[RX_MAX_LEN] = {0};
 
 //接收标记量
@@ -137,8 +137,7 @@ void sendChar(u8 ch)
 }
 
 //发送一个字符串
-void sendStr(char * str)
-{
+void sendStr(char * str){
     u16 len = strlen(str);
     DMA1_Channel4->CCR &= ~(1<<0);
     DMA1_Channel4->CNDTR = len;

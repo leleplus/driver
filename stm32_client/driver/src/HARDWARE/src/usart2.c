@@ -58,6 +58,8 @@ void Usart2Init(u32 bound){
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
 
+//    NVICPriorityConfig(3,3,USART2_IRQn);
+
     USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启中断	 接收到数据进入中断
 //#endif
 
@@ -76,8 +78,6 @@ void Uart2SendStr(u8 *str){
 		USART_SendData(USART2,*str++);
     }
 }
-
-
 
 void USART2_IRQHandler(void){
 
