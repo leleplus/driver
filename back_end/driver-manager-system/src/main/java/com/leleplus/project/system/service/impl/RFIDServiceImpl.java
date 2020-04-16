@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -380,24 +379,26 @@ public class RFIDServiceImpl implements IRFIDCardService {
      * @param number
      */
     @Override
-    public void swipe(String number) {
+    public void swipe(String machineId,String number) {
 
-        // 1. 查到RFID对象
-        final RFIDCard rfidCard = selectByPhyNumber(number);
+        logger.debug("当前刷卡设备号: {}，当前卡号: {}",machineId,number);
 
-        // 2.获取存放在redis中的key值
-        final Integer swipeTime = DriverSystemConfiguration.getSwipeTime();
-
-        // 3.确保原来的key没有对应的值，删除之前key
-        redisCache.deleteObject(swipeKey);
-
-        // 4.将刷卡得到的对象缓存在redis中
-        /**
-         * redis中存放时间为S，时间动态获取
-         */
-        redisCache.setCacheObject(swipeKey, rfidCard, swipeTime, TimeUnit.SECONDS);
-
-        logger.info("Save to {} in redis cache,time -> {} ", rfidCard, swipeTime);
+//        // 1. 查到RFID对象
+//        final RFIDCard rfidCard = selectByPhyNumber(number);
+//
+//        // 2.获取存放在redis中的key值
+//        final Integer swipeTime = DriverSystemConfiguration.getSwipeTime();
+//
+//        // 3.确保原来的key没有对应的值，删除之前key
+//        redisCache.deleteObject(swipeKey);
+//
+//        // 4.将刷卡得到的对象缓存在redis中
+//        /**
+//         * redis中存放时间为S，时间动态获取
+//         */
+//        redisCache.setCacheObject(swipeKey, rfidCard, swipeTime, TimeUnit.SECONDS);
+//
+//        logger.info("Save to {} in redis cache,time -> {} ", rfidCard, swipeTime);
 
     }
 

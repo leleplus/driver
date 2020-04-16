@@ -181,17 +181,17 @@ public class RFIDCardController extends BaseController {
 
 
     /**
-     * STM32刷卡，将卡id放进redis缓存
-     *
-     * @param number
-     * @return
+     * STM32刷卡接口
+     * @param machineId 刷卡设备
+     * @param number 当前卡的物理卡号
+     * @return 请求
      */
 
     @ApiOperation("RFID刷卡接口")
-    @GetMapping("/swipe/{number}")
-    public AjaxResult swipe(@PathVariable("number") String number) {
-        rfidCardService.swipe(number);
-        return AjaxResult.success("刷卡成功！");
+    @GetMapping("/swipe/{machineId}/{number}")
+    public AjaxResult swipe(@PathVariable("machineId") String machineId, @PathVariable("number") String number) {
+        rfidCardService.swipe(machineId,number);
+        return AjaxResult.success("OK!");
     }
 
     /**

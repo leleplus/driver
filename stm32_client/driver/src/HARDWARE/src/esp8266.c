@@ -7,6 +7,9 @@
 *
 ***************************************************************************/
 
+#include <stdio.h>
+//#include <stdbool.h>
+#include <stdlib.h>
 #include "esp8266.h"
 #include "usart2.h"
 #include "delay.h"
@@ -17,6 +20,9 @@
 extern  u8 RX_buffer[tbuf];
 // 接收计数变量
 extern 	u8 RX_num;
+
+// 循环标志
+int flag = 1;
 
 /*******************************************    ESP8266AT指令集   ***********************************************/
 // 发送 AT  返回OK
@@ -41,6 +47,19 @@ u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.31.198\",8080\r\n";
 // u8 esp_cipmux[]="AT+CIPMUX=1\r\n";
 // 重启指令，响应OK
 u8 esp_reset[]="AT+RST\r\n";
+// 服务器超时时间
+u8 esp_timeOut[]="AT+CIPSTO=3\r\n";
+
+/**
+ * esp8266AT指令开启
+ * 
+ */
+void esp8266AT(void){
+    // 串口发送AT指令初始化ESP8266
+    clearCache();
+    Uart2SendStr(esp_at);
+    delayMs(100);
+}
 
 /**
  * esp8266初始化
@@ -48,18 +67,12 @@ u8 esp_reset[]="AT+RST\r\n";
  *
  */
 void esp8266_init(void){
-    int flag = 1;
+
 
     clearCache();
     // 发送AT指令
 	while(1){
-        // 串口发送AT指令初始化ESP8266
-        clearCache();
-        Uart2SendStr(esp_at);
-        delaySec(2);
-        sendStr("\r\n ESP8266 AT :");
-        sendBuffer(tbuf,RX_buffer);
-        sendStr("\r\n");
+        esp8266AT();
         if(strCompare("OK"))
             break;
         else{
@@ -102,7 +115,7 @@ void esp8266_init(void){
 
     flag =0;
     // 连接WiFi
-    sendStr(" ESP8266 connect WIFI -> \r\n");
+    sendStr(" ESP8266 connect WIFI begin \r\n");
     while(1){
         clearCache();
         Uart2SendStr(esp_wifi);
@@ -191,21 +204,31 @@ void espConnectServer(void){
 void openTansparentMode(void){
     clearCache();
     Uart2SendStr("AT+CIPMODE=1\r\n");
-    delaySec(3);
+    delayMs(50);
     sendStr("\r\n Transparent mode begin... \r\n ");
-    sendBuffer(tbuf,RX_buffer);
     clearCache();
 }
 /**
-* esp8266 退出透传模式
+ * esp8266 退出透传模式
+ * 调用该方法前，flag 质1
  */
 void closeTansparentMode(void){
+    // 三次未退出透传模式，结束方法，没救了
+    if(flag > 3) {
+        flag++;
+        return;
+    }
     clearCache();
     Uart2SendStr("+++");
-    delaySec(3);
+    delayMs(40);
     sendStr("\r\n Transparent mode end... \r\n ");
-    sendBuffer(tbuf,RX_buffer);
     clearCache();
+    esp8266AT();
+    delayMs(20);
+    if(strCompare("OK")){
+        return;
+    }
+    closeTansparentMode();
 }
 
 /**
@@ -224,24 +247,24 @@ void reStartEsp8266(void){
     clearCache();
     sendStr("\r\nrun restart ...\r\n");
     sendStr("\r\n----------------------------------------------------\r\n");
-    sendStr("\r\n\r\n");
+    sendStr("\r\n");
     Uart2SendStr(esp_reset);
-    sendBuffer(tbuf,RX_buffer);
-    delaySec(10);
-    sendStr("\r\n\r\n");
-    sendStr("\r\n----------------------------------------------------\r\n");
-    sendStr("\r\n\r\n\r\n");
+    delaySec(5);
+    sendStr("\r\n");
     sendStr("\r\n--------------------    restart ESP8266 finished!      -----------------\r\n");
     clearCache();
 }
 
 // 发送get请求
-void esp8266SendGet(void){
-    int i ;
-    // get请求内容
-//    u8 get[]="GET http://47.103.215.243:9999/captchaImage HTTP/1.0\r\n";
+u8 esp8266SendGet(char * cardId){
+    u8 get[100];
+    flag = 1;
+    // 实例请求http://127.0.0.1:8080/rfid/swipe/1/1
+    // get请求内容 
+//    u8 get[]="GET http://47.103.215.243:9999/rfid/swipe// HTTP/1.0\r\n";
     //u8 get[]="GET /captchaImage HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n";
-    u8 get[]="GET /captchaImage HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n";
+    
+    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n","register",cardId);
     // 发送内容
 //    u8 esp_content_size[sizeof(get)];
 
@@ -250,24 +273,38 @@ void esp8266SendGet(void){
     clearCache();
     
     openTansparentMode();
-    
+    delayMs(20);
     clearCache();
     // 将要发送的字节数
     Uart2SendStr("AT+CIPSEND\r\n");
-    delayMs(200);
-    sendStr("\r\n send size -----> \r\n ");
-    sendBuffer(tbuf,RX_buffer);
+    delayMs(20);
+    if(strCompare("ERROR")){
+        return 0;
+    }
+    sendStr("\r\n trans begin \r\n ");
     
     clearCache();
-    // 发送内容
-    Uart2SendStr(get);
-    sendBuffer(tbuf,RX_buffer);
-    delaySec(2);
-    sendStr("\r\n send get -----> \r\n ");
-    sendBuffer(tbuf,RX_buffer);
+    // 发送请求去刷卡
+    // 刷卡逻辑，刷一次，如果失败，请求三次，三次失败，请重刷
+    while(1){
+        Uart2SendStr(get);
+        delayMs(600);
+        //sendBuffer(tbuf,RX_buffer);
+        if(strCompare("\"code\":200")){
+            closeTansparentMode();
+            return 1;
+        }else{
+            flag ++;
+            if(flag >= 3){
+                closeTansparentMode();
+                return 0;
+            }
+            delayMs(99);
+        }
+    }
     
-    
-    closeTansparentMode();
+//    flag = 1;
+//    closeTansparentMode();
     //closeIPConnection();
 }
 

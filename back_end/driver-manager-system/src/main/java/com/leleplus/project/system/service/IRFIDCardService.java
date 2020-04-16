@@ -80,11 +80,11 @@ public interface IRFIDCardService extends ICRUDService<RFIDCard> {
     Long bindUserRFID(Long userInfoId);
 
     /**
-     * 刷卡方法
-     *
+     * 刷卡方法接口
+     * @param machineId
      * @param number
      */
-    void swipe(String number);
+    void swipe(String machineId,String number);
 
     /**
      * 前端轮询读卡方法

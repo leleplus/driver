@@ -15,7 +15,7 @@
 
 u8  RX_buffer[tbuf];
 
-u8 RX_num=0;   //接收计数变量
+u8 RX_num = 0;   //接收计数变量
 
 void Usart2Init(u32 bound){
 

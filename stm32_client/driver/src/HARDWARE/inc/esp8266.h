@@ -12,9 +12,16 @@
 
 #include <stm32f10x.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "usart2.h"
 #include "usart1.h"
 
+
+/**
+ * esp8266AT指令开启
+ * 
+ */
+void esp8266AT(void);
 
 /**
  * esp8266初始化连接
@@ -50,7 +57,7 @@ void closeIPConnection(void);
 /**
  * esp8266发送get
  */
-void esp8266SendGet(void);
+u8 esp8266SendGet(char * cardId);
 
 /**
  * 重启ESP8266
