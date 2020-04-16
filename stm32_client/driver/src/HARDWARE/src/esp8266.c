@@ -48,8 +48,6 @@ u8 esp_reset[]="AT+RST\r\n";
  */
 void esp8266_init(void){
     int flag = 1;
-    
-
 
     clearCache();
     // 发送AT指令
@@ -139,6 +137,10 @@ void esp8266_init(void){
     sendStr(" ----------------------------------- \r\n\r\n");
 }
 
+/**
+ * ESP8266连接服务器函数
+ *
+ */
 void espConnectServer(void){
     sendStr("\r\n\r\n -------- Connect To Server ---------- \r\n\r\n");
     clearCache();
@@ -156,6 +158,7 @@ void espConnectServer(void){
     clearCache();
     sendStr("\r\n\r\n -------- Connected Server Ready !!---------- \r\n\r\n");
 }
+
 
 void esp8266SendGet(void){
 
