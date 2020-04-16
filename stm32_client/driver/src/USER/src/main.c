@@ -102,6 +102,8 @@ int main(void){
     //设置Rc522工作方式
 	M500PcdConfigISOType ( 'A' );
     
+    // 初始化ESP8266
+    esp8266_init();
 
     
  
@@ -122,7 +124,8 @@ int main(void){
         }else if(key == 2){
             sendStr("按键2\r\n");
             openLed(LED_S2);
-            esp8266_init();
+            
+            espConnectServer();
             
 
         }
