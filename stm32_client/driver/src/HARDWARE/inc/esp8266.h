@@ -22,6 +22,10 @@
  */
 void esp8266_init(void);
 
+/**
+* esp8266 连接服务器
+ */
+void espConnectServer(void);
 
 /**
  * esp8266发送get

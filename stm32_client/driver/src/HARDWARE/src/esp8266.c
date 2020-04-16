@@ -38,12 +38,14 @@ void esp8266_init(void){
     // 查看是否获得IP 返回设备IP
     u8 esp_ip[]="AT+CIFSR\r\n";
     // 设置连接模式为单一连接
-    u8 esp_mode[] = "AT+CIPMUX=0\r\n";
+//    u8 esp_mode[] = "AT+CIPMUX=0\r\n";
+    // 查看连接状态和连接参数
+//    u8 esp_status[] ="AT+CIPSTATUS\r\n";
     // 建立远程TCP连接(连接服务器) 返回OK
-    u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
+//    u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
     // 发送数据，多少个字节 返回SEND OK
-    u8 esp_cipsend[]="AT+CIPSEND=32\r\n";
-    u8 esp_test[]="sunny\r\n";
+//    u8 esp_cipsend[]="AT+CIPSEND=32\r\n";
+//    u8 esp_test[]="sunny\r\n";
     //u8 esp_cipserver[]="AT+CIPSERVER=1,5000\r\n";
     // u8 esp_cipmux[]="AT+CIPMUX=1\r\n";
     // 重启指令，响应OK
@@ -59,11 +61,11 @@ void esp8266_init(void){
         if(strCompare("OK"))
             break;
         else
-            sendStr("again send AT \r\n");
+            sendStr("Send AT  again ... \r\n");
         delayMs(600);
     }
 
-    sendStr("esp8266_init successful ! \r\n");
+    sendStr("Esp8266 init successful ! \r\n");
 	clearCache();
 
     // 设置工作模式
@@ -72,17 +74,16 @@ void esp8266_init(void){
         delaySec(1);
         if(strCompare("OK")){
             sendStr("change model successful.\r\n");
-            break;
-           while(1){
+            while(1){
                clearCache();
                // 重启
                Uart2SendStr(esp_reset);
                // 重启完成，跳出循环
-               delayUs(10);
+               delayUs(30);
                if(strCompare("")){
-                   sendStr("restart ....\r\n");
+                   sendStr("ESP8266 restart ing ....\r\n");
                    flag = 0;
-                   delaySec(2);
+                   delaySec(5);
                    break;
                }else{
                    sendStr("restart again \r\n");
@@ -90,7 +91,6 @@ void esp8266_init(void){
                delaySec(2);
            }
         }else if(strCompare("no change")){
-            sendStr("same mode .\r\n");
             break;
         }else{
             sendStr("change mode again. \r\n");
@@ -100,15 +100,14 @@ void esp8266_init(void){
     sendStr("setting mode finished. \r\n");
     clearCache();
 
-    delaySec(3);
+    delaySec(1);
 
     // 连接WiFi
+    sendStr(" ESP8266 connect WIFI -> \r\n");
     while(1){
         Uart2SendStr(esp_wifi);
-        delaySec(10);
+        delaySec(15);
         if(strCompare("OK")){
-            sendBuffer(tbuf,RX_buffer);
-            sendStr("\r\n");
             break;
         }else{
             sendStr("connect WIFI again .\r\n");
@@ -121,17 +120,27 @@ void esp8266_init(void){
 
     // 查看已经连接的IP地址
     Uart2SendStr(esp_ip);
-    delayMs(40);
-    sendStr("Connected IP Address :");
-
+    delayMs(400);
+    sendStr("\r\n Connected info -----> \r\n ");
     sendBuffer(tbuf,RX_buffer);
-    sendStr("\r\n");
+    sendStr("<--------\r\n");
 
     clearCache();
 
+    // 查看连接状态
+//    Uart2SendStr(esp_status);
+//    delayMs(4000);
+//    sendStr("Connected STATUS : ");
+//    sendBuffer(tbuf,RX_buffer);
+//    sendStr("\r\n");
+//    clearCache();
 
+    sendStr("\r\n\r\n ----------------------------------- \r\n");
+    sendStr("  ESP8266 Ready !! \r\n");
+    sendStr(" ----------------------------------- \r\n\r\n");
 }
 
+void espConnectServer(void){}
 
 void esp8266SendGet(void){
 
