@@ -57,7 +57,7 @@ void closeIPConnection(void);
 /**
  * esp8266发送get
  */
-u8 esp8266SendGet(char * cardId);
+u8 esp8266SendGet(char * type,char * cardId);
 
 /**
  * 重启ESP8266

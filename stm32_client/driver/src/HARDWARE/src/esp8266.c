@@ -192,7 +192,6 @@ void espConnectServer(void){
         clearCache();
         Uart2SendStr(esp_tcp);
         delaySec(2);
-        sendBuffer(tbuf,RX_buffer);
         if(strCompare("ALREAY CONNECT") || strCompare("OK")){
             break;
         }else if(strCompare("ERROR")){
@@ -209,6 +208,7 @@ void espConnectServer(void){
         delayMs(600);
     }while(1);
     clearCache();
+    delaySec(2);
     sendStr("\r\n\r\n -------- Connected Server Ready !! ---------- \r\n\r\n");
 }
 
@@ -274,7 +274,7 @@ void reStartEsp8266(void){
  * @param  cardId 卡号，拼接在URL后的参数
  * @return 1 刷卡成功 0 刷卡失败 （预计还有其它返回值）
  */
-u8 esp8266SendGet(char * cardId){
+u8 esp8266SendGet(char * type,char * cardId){
     u8 get[100];
     int response;
     
@@ -282,7 +282,7 @@ u8 esp8266SendGet(char * cardId){
     
     // 封装get请求http协议格式（此格式为最小格式）
     //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n","register",cardId);
-    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n","register",cardId);
+    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n",type,cardId);
     // 发送内容大小
 //    u8 esp_content_size[sizeof(get)];
 
