@@ -15,7 +15,7 @@
 #include "delay.h"
 
 //声明接收DMA数据的数组
-#define RX_MAX_LEN 1024
+#define RX_MAX_LEN 2048
 volatile u8 U1RxBuffer[RX_MAX_LEN] = {0};
 
 //接收标记量

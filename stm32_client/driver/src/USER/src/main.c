@@ -16,15 +16,8 @@
 #include "usart2.h"
 #include "esp8266.h"
 
-
-
-
-
 // 读取到的结果，转为字符串
-char phyNumber [ 1 ];
-
-
-
+char phyNumber [1];
 
 /**
 *
@@ -50,6 +43,12 @@ void init(void){
     
     // 延时保证初始化结束
     delayMs(200);
+    // 万一上次没退出透传，凉凉，以防万一
+    closeTansparentMode();
+    // 初始化ESP8266
+    esp8266_init();
+    // 连接服务器
+    espConnectServer();
 }
 
 
@@ -97,19 +96,13 @@ int main(void){
     
     int key = -1; 
     int flag = 1;
+    int keepCount = 0;
     init();
      
     PcdReset ();
     //设置Rc522工作方式
 	M500PcdConfigISOType ( 'A' );
-   
-    // 初始化ESP8266
-    closeTansparentMode();
-    esp8266_init();
-
-//    // 连接服务器
-    espConnectServer();
- 
+    
     while (1){
         if(flag == 1){
             sendStr("主菜单\r\n");
@@ -139,7 +132,6 @@ int main(void){
             openLed(LED_S2);
              
             while(1){
-                
                 if(flag == 1){
                     sendStr("请刷卡\r\n");
                     flag ++;
@@ -161,11 +153,17 @@ int main(void){
                     }
                     flag = 1;
                 }
+                delayMs(800);
+                keepCount ++;
+                // 每十秒左右 保持一次连接
+                if(keepCount >= 10){
+                    keepConnected();
+                    keepCount = 0;
+                    flag = 1;
+                }
             }
         }
     }
-    
- 
 }
 
 

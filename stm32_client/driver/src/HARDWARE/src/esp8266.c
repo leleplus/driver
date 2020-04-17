@@ -24,6 +24,9 @@ extern 	u8 RX_num;
 // 循环标志
 int flag = 1;
 
+// 回调停止标志
+long call = 0;
+
 /*******************************************    ESP8266AT指令集   ***********************************************/
 // 发送 AT  返回OK
 u8 esp_at[]="AT\r\n";
@@ -36,7 +39,7 @@ u8 esp_ip[]="AT+CIFSR\r\n";
 // 设置连接模式为单一连接
 u8 esp_mode[] = "AT+CIPMUX=0\r\n";
 // 查看连接状态和连接参数
-//    u8 esp_status[] ="AT+CIPSTATUS\r\n";
+u8 esp_status[] ="AT+CIPSTATUS\r\n";
 // 建立远程TCP连接(连接服务器) 返回OK
 //u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
 u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.31.198\",8080\r\n";
@@ -67,8 +70,6 @@ void esp8266AT(void){
  *
  */
 void esp8266_init(void){
-
-
     clearCache();
     // 发送AT指令
 	while(1){
@@ -78,6 +79,7 @@ void esp8266_init(void){
         else{
             flag ++;
             if(flag >= 3) break;
+            clearCache();
             sendStr("Send AT  again ... \r\n");
         }
         delaySec(2);
@@ -90,9 +92,10 @@ void esp8266_init(void){
     // 设置工作模式
     while(1){
         Uart2SendStr(esp_cwmode);
-        delaySec(1);
+        delayMs(50);
         if(strCompare("OK")){
-            sendStr("change model successful.\r\n");
+            // 修改了工作模式，理论上重启ESP8266才能生效
+            sendStr("Change model successful.\r\n");
             reStartEsp8266();
             break;
         }else if(strCompare("no change")){
@@ -108,20 +111,21 @@ void esp8266_init(void){
         }
         delayMs(600);
     }
-    sendStr("setting mode finished. \r\n");
+    sendStr("Setting mode finished. \r\n");
     clearCache();
 
     delaySec(1);
 
-    flag =0;
-    // 连接WiFi
-    sendStr(" ESP8266 connect WIFI begin \r\n");
+    flag = 0;
+    // 连接WiFi(15秒连接一次WiFi)
+    sendStr("\r\nESP8266 connect WIFI begin \r\n");
     while(1){
         clearCache();
         Uart2SendStr(esp_wifi);
         delaySec(15);
         sendBuffer(tbuf,RX_buffer);
-        if(strCompare("OK")){
+        if(strCompare("OK") || strCompare("CONNECTED")){
+            delayMs(5);
             break;
         }else{
             ++ flag;
@@ -131,20 +135,21 @@ void esp8266_init(void){
                 //flag = 0;
                 break;
             }
-            sendStr("connect WIFI again .\r\n");
+            sendStr("Connect WIFI again .\r\n");
         }
         delayMs(600);
     }
 
-    sendStr("connect wifi successful. \r\n");
+    sendStr("Connect wifi successful. \r\n");
     clearCache();
 
     // 查看已经连接的IP地址
     Uart2SendStr(esp_ip);
     delayMs(400);
-    sendStr("\r\n Connected info -----> \r\n ");
+    sendStr("\r\n Internet Connected info  \r\n ");
+    sendStr("-----------------------------------\r\n");
     sendBuffer(tbuf,RX_buffer);
-    sendStr("\r\n");
+    sendStr("-----------------------------------\r\n");
 
     clearCache();
 
@@ -166,7 +171,8 @@ void setSingleLinkMode(void){
     clearCache();
     Uart2SendStr(esp_mode);
     delayMs(400);
-    sendStr("\r\n set signle mode -----> \r\n ");
+    clearCache();
+    sendStr("\r\n Set signle mode \r\n ");
     sendBuffer(tbuf,RX_buffer);
     sendStr("\r\n");
     clearCache();
@@ -177,27 +183,33 @@ void setSingleLinkMode(void){
  *
  */
 void espConnectServer(void){
-    int i =0;
-    setSingleLinkMode();
-    sendStr("\r\n\r\n -------- Connect To Server ---------- \r\n\r\n");
+    int i = 0;
     clearCache();
-    while(1){
-        
+    setSingleLinkMode();
+    sendStr("\r\n\r\n -------- Begin Connect To Server ---------- \r\n\r\n");
+    
+    do{
+        clearCache();
         Uart2SendStr(esp_tcp);
-        delaySec(10);
-        if(strCompare("OK")){
+        delaySec(2);
+        sendBuffer(tbuf,RX_buffer);
+        if(strCompare("ALREAY CONNECT") || strCompare("OK")){
             break;
-        }else{
+        }else if(strCompare("ERROR")){
+            delayMs(200);
+            espConnectServer();
+            return;
+        }else {
             i ++;
+            clearCache();
             sendStr("\r\n Connected Server fail !  again ... \r\n");
             // 失败次数过多，跳出，证明已经连接
             if(i >= 3) break;
         }
-        delaySec(1);
-    }
-    
+        delayMs(600);
+    }while(1);
     clearCache();
-    sendStr("\r\n\r\n -------- Connected Server Ready !!---------- \r\n\r\n");
+    sendStr("\r\n\r\n -------- Connected Server Ready !! ---------- \r\n\r\n");
 }
 
 // 开启透传模式
@@ -205,7 +217,7 @@ void openTansparentMode(void){
     clearCache();
     Uart2SendStr("AT+CIPMODE=1\r\n");
     delayMs(50);
-    sendStr("\r\n Transparent mode begin... \r\n ");
+    sendStr("\r\n Open Transparent mode ! \r\n ");
     clearCache();
 }
 /**
@@ -215,19 +227,20 @@ void openTansparentMode(void){
 void closeTansparentMode(void){
     // 三次未退出透传模式，结束方法，没救了
     if(flag > 3) {
-        flag++;
         return;
     }
     clearCache();
     Uart2SendStr("+++");
     delayMs(40);
-    sendStr("\r\n Transparent mode end... \r\n ");
+    sendStr("\r\n Close Transparent mode ! \r\n ");
     clearCache();
     esp8266AT();
     delayMs(20);
     if(strCompare("OK")){
         return;
-    }
+    }else
+        flag++;
+    // 递归再来一次
     closeTansparentMode();
 }
 
@@ -243,29 +256,34 @@ void closeIPConnection(void){
     clearCache();
 }
 
+
+/**
+ * 重启ESP8266
+ */
 void reStartEsp8266(void){
     clearCache();
-    sendStr("\r\nrun restart ...\r\n");
-    sendStr("\r\n----------------------------------------------------\r\n");
-    sendStr("\r\n");
+    sendStr("\r\n--------------------    Run ESP8266 restart ----------------- \r\n");
     Uart2SendStr(esp_reset);
     delaySec(5);
-    sendStr("\r\n");
-    sendStr("\r\n--------------------    restart ESP8266 finished!      -----------------\r\n");
+    sendStr("\r\n--------------------    restart ESP8266 finished!   ----------------- \r\n");
     clearCache();
 }
 
-// 发送get请求
+/**
+ * ESP8266发送get请求
+ * @param  cardId 卡号，拼接在URL后的参数
+ * @return 1 刷卡成功 0 刷卡失败 （预计还有其它返回值）
+ */
 u8 esp8266SendGet(char * cardId){
     u8 get[100];
-    flag = 1;
-    // 实例请求http://127.0.0.1:8080/rfid/swipe/1/1
-    // get请求内容 
-//    u8 get[]="GET http://47.103.215.243:9999/rfid/swipe// HTTP/1.0\r\n";
-    //u8 get[]="GET /captchaImage HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n";
+    int response;
     
+    // 实例请求http://127.0.0.1:8080/rfid/swipe/1/1
+    
+    // 封装get请求http协议格式（此格式为最小格式）
+    //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n","register",cardId);
     sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n","register",cardId);
-    // 发送内容
+    // 发送内容大小
 //    u8 esp_content_size[sizeof(get)];
 
 //    sprintf(esp_content_size,"AT+CIPSEND=%02X\r\n",sizeof(get));
@@ -279,40 +297,73 @@ u8 esp8266SendGet(char * cardId){
     Uart2SendStr("AT+CIPSEND\r\n");
     delayMs(20);
     if(strCompare("ERROR")){
+        // 出现ERROR，服务器掉线
+        espConnectServer();
         return 0;
     }
-    sendStr("\r\n trans begin \r\n ");
     
-    clearCache();
     // 发送请求去刷卡
-    // 刷卡逻辑，刷一次，如果失败，请求三次，三次失败，请重刷
-    while(1){
-        Uart2SendStr(get);
-        delayMs(600);
-        //sendBuffer(tbuf,RX_buffer);
+    clearCache();
+    // 发请求
+    Uart2SendStr(get);
+    delayMs(800);
+    // 交给回调处理结果
+    call = 0;
+    response = esp8266CallBack();
+    flag = 1;
+    closeTansparentMode();
+    clearCache();
+    return response;
+}
+
+/**
+ *
+ * 请求完成的回调函数
+ */
+int esp8266CallBack(void){
+    
+    if(strCompare("es: 0")){
+        // 请求回来了
+        sendBuffer(tbuf,RX_buffer);
         if(strCompare("\"code\":200")){
-            closeTansparentMode();
+            // 请求成功，正正意义的请求成功
             return 1;
         }else{
-            flag ++;
-            if(flag >= 3){
-                closeTansparentMode();
-                return 0;
-            }
-            delayMs(99);
+            // 请求确实回来了，但是不是200 同时刷卡失败,业务失败
+            return 0;
         }
     }
+    // 请求未回来
+    // 等了10S 请求还回不来 娃，没刷成功
+    if(call >= (50 * 10)) {
+        return -1;
+    }
+    // 延时20ms 再看回来没有
+    delayMs(20);
+    call ++;
+    esp8266CallBack();
     
-//    flag = 1;
-//    closeTansparentMode();
-    //closeIPConnection();
+}
+/**
+ *  防止连接掉线，需要保持连接
+ *  
+ */
+void keepConnected(void){
+    clearCache();
+    Uart2SendStr(esp_status);
+    delayMs(20);
+    // 失去连接
+    if(strCompare("STATUS:4")){
+        espConnectServer();
+        keepConnected();
+    }
 }
 
 
 /**
- * 字符串比较
+ * 字符串比较(ESP8266发送指令后接收到的内容与参数字符串作比较，看包含关系)
  * @param  p 要比较的字符串的指针
- * @return 1 相同字符串 0 不同字符串
+ * @return 1 包含此字符串 0 不包含此字符串
  */
 u8 strCompare(u8 *p){
 	if(strstr(RX_buffer,p) != NULL)

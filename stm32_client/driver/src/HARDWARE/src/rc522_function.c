@@ -194,17 +194,11 @@ void ClearBitMask ( u8 ucReg, u8 ucMask )
  * 返回  : 无
  * 调用  ：内部调用
  */
-void PcdAntennaOn ( void )
-{
+void PcdAntennaOn ( void ){
     u8 uc;
-	
-	
-    uc = ReadRawRC ( TxControlReg );
-	
-    if ( ! ( uc & 0x03 ) )
+    uc = ReadRawRC(TxControlReg);
+    if (!(uc & 0x03))
 			SetBitMask(TxControlReg, 0x03);
-
-		
 }
 
 
@@ -215,11 +209,8 @@ void PcdAntennaOn ( void )
  * 返回  : 无
  * 调用  ：内部调用
  */
-void PcdAntennaOff ( void )
-{
+void PcdAntennaOff ( void ){
   ClearBitMask ( TxControlReg, 0x03 );
-	
-	
 }
 
 
@@ -250,16 +241,21 @@ void PcdReset ( void )
 	
 	delayUs ( 1 );
 	
-  WriteRawRC ( ModeReg, 0x3D );            //定义发送和接收常用模式 和Mifare卡通讯，CRC初始值0x6363
+    //定义发送和接收常用模式 和Mifare卡通讯，CRC初始值0x6363
+    WriteRawRC ( ModeReg, 0x3D );            
 	
-  WriteRawRC ( TReloadRegL, 30 );          //16位定时器低位    
-	WriteRawRC ( TReloadRegH, 0 );			     //16位定时器高位
+    //16位定时器低位
+    WriteRawRC ( TReloadRegL, 30 );  
+    //16位定时器高位
+	WriteRawRC ( TReloadRegH, 0 );			     
 	
-  WriteRawRC ( TModeReg, 0x8D );				   //定义内部定时器的设置
+    //定义内部定时器的设置
+    WriteRawRC ( TModeReg, 0x8D );				   
 	
-  WriteRawRC ( TPrescalerReg, 0x3E );			 //设置定时器分频系数
-	
-	WriteRawRC ( TxAutoReg, 0x40 );				   //调制发送信号为100%ASK	
+    //设置定时器分频系数
+    WriteRawRC ( TPrescalerReg, 0x3E );			 
+	//调制发送信号为100%ASK
+	WriteRawRC ( TxAutoReg, 0x40 );				   	
 	
 
 }

@@ -65,12 +65,23 @@ u8 esp8266SendGet(char * cardId);
 void reStartEsp8266(void);
 
 /**
+ *
+ * 请求完成的回调函数
+ */
+int esp8266CallBack(void);
+
+/**
  * 字符串比较
  * @param  p 字符串指针
  * @return   [description]
  */
 u8 strCompare(u8 *p);
 
+/**
+ *  防止连接掉线，需要保持连接
+ *  
+ */
+void keepConnected(void);
 
 /**
  *  清理缓存
