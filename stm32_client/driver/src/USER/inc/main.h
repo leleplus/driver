@@ -20,6 +20,13 @@
  */
 int readPhyNumber(void);
 
+// 管理员模式
+void adminMode(void);
+
+void normalMode(void);
+
+void swipe(char * type);
+
 #endif
 
 

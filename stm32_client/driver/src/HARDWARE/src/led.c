@@ -11,8 +11,7 @@
 #include "led.h"
 
 // 初始化LED
-void ledInit(void)
-{
+void ledInit(void){
  
 	//定义GPIO结构体
 	GPIO_InitTypeDef  GPIO_InitStructure;					 

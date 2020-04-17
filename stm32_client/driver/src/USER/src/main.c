@@ -18,7 +18,8 @@
 
 // 读取到的结果，转为字符串
 char phyNumber [1];
-
+int mflag = 1;
+int keepCount = 0;
 /**
 *
 * 设备初始化函数
@@ -58,7 +59,7 @@ void init(void){
  * 读到的数据存放在全局变量phyNumber中，已经转换为字符串存储
  *
  *
- * @return 返回值为1时，读取到数据。
+ * @return 返回值为1时，读取到数据。返回 0，没有读取到数据，返回-1 未找到卡
  */
 int readPhyNumber ( void ){
 
@@ -79,90 +80,129 @@ int readPhyNumber ( void ){
             sprintf ( phyNumber, "%02X%02X%02X%02X", ucArray_ID[0], ucArray_ID[1], ucArray_ID[2], ucArray_ID[3] );
             return 1;            
         }
+        return 0;
     }
-    return 0;
+    return -1;
 }
 
 
 
+/**
+ *
+ * 管理员模式
+ *
+ */
+void adminMode(void){
+    while(mflag){
+        if(getKeyValue(0) == 3) break;
+        openLed(LED_S1);
+        delayMs(400);
+        if(mflag == 1){
+            closeLed(LED_ALL);
+            sendStr("\r\n  ------------- 管理员模式 ----------------  \r\n");
+            sendStr("\r\n  切换模式，请摁S3  \r\n\r\n");
+            mflag ++;
+        }
+        swipe("register");
+        closeLed(LED_S1);
+        delayMs(400);
+    }
+}
 
+/**
+ *
+ * 普通模式(刷卡待机模式)
+ *
+ */
+void normalMode(void){
+    while(mflag){
+        if(getKeyValue(0) == 3) break;
+        openLed(LED_S2);
+        delayMs(400);
+        if(mflag == 1){
+            closeLed(LED_ALL);
+            delayMs(200);
+            sendStr("\r\n  ------------- Swipe模式 ----------------  \r\n");
+            sendStr("\r\n  切换模式，请摁S3  \r\n\r\n");
+            mflag ++;
+        }
+        swipe("normal");
+        closeLed(LED_S2);
+        delayMs(400);
+    }
+}
 
+/**
+ *
+ * 刷卡方法
+ *
+ */
+void swipe(char * type){
+    int value = readPhyNumber();
+    if(value == 1){
+        openLed(LED_S3);
+        delayMs(200);
+        sendStr("debug card : ");
+        sendStr(phyNumber);
+        sendStr("\r\n");
+
+        // 发送get请求
+        if(esp8266SendGet(type,phyNumber) == 1) {
+            sendStr("刷卡成功！\r\n");
+        }else{
+            sendStr("刷卡失败！\r\n");
+        }
+    }else if(value == 0){
+        sendStr("debug 读卡错误！请重刷！ \r\n");
+    }
+    keepCount ++;
+    // 每十秒左右 保持一次连接
+    if(keepCount >= 10){
+        keepConnected();
+        keepCount = 0;
+    }
+    closeLed(LED_S3);
+}
 /**
 *
 *程序主入口
 *
 */
 int main(void){
-    
-    int key = -1; 
-    int flag = 1;
-    int keepCount = 0;
+    int key;
+    // 初始化设备
     init();
-     
     PcdReset ();
     //设置Rc522工作方式
 	M500PcdConfigISOType ( 'A' );
-    
+    sendStr("正在启动....\r\n");
+    delaySec(3);
+    sendStr("\r\n\r\n\r\n");
     while (1){
-        if(flag == 1){
-            sendStr("主菜单\r\n");
-            flag++;
+        openLed(LED_ALL);
+        key = getKeyValue(0);
+        delayMs(200);
+        if(mflag == 1){
+            sendStr("\r\n------------- 请选择模式----------------  \r\n");
+            sendStr("\r\n----   按键 1  --->  管理员模式     ----  \r\n");
+            sendStr("\r\n----   按键 2  --->  Swipe 模式     ----  \r\n");
+            sendStr("\r\n----------------------------------------  \r\n");
+            mflag++;
         }
-        
-        key  = getKeyValue(0);
-//        if(readPhyNumber() == 1){
-//           openLed(LED_S2);
-//            sendStr("读取到卡号 ");
-//            sendStr(phyNumber);
-//            sendStr("\r\n");
-//           closeLed(LED_S2);
-//        }
-        
         if(key == 1){
-            openLed(LED_S1);
-            
-            
-        }else if(key == 3){
-            closeLed(LED_ALL);
-            // 重启ESP8266
-            reStartEsp8266();
+            mflag = 1;
+            adminMode();
+            mflag = 1;
         }else if(key == 2){
-            flag =1;
-            sendStr("刷卡模式\r\n");
-            openLed(LED_S2);
-             
-            while(1){
-                if(flag == 1){
-                    sendStr("请刷卡\r\n");
-                    flag ++;
-                }
-                if(getKeyValue(0) == 1 || getKeyValue(0) == 3){
-                    flag = 1;
-                    break;
-                }
-                if(readPhyNumber() == 1){
-                    sendStr("刷卡成功 ，卡号为 :");
-                    sendStr(phyNumber);
-                    sendStr("\r\n");
-
-                    // 发送get请求
-                    if(esp8266SendGet(phyNumber) == 1) {
-                        sendStr("刷卡成功！\r\n");
-                    }else{
-                        sendStr("刷卡失败！\r\n");
-                    }
-                    flag = 1;
-                }
-                delayMs(800);
-                keepCount ++;
-                // 每十秒左右 保持一次连接
-                if(keepCount >= 10){
-                    keepConnected();
-                    keepCount = 0;
-                    flag = 1;
-                }
-            }
+            mflag = 1;
+            normalMode();
+            mflag = 1;
+            break;
+        }else if(key == 3){
+            sendStr("无效按键！\r\n");
         }
+        closeLed(LED_ALL);
+        delayMs(200);
     }
 }
 
