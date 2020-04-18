@@ -11,6 +11,7 @@ import com.leleplus.project.system.domain.RFIDCard;
 import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.mapper.RFIDCardMapper;
 import com.leleplus.project.system.service.IRFIDCardService;
+import com.leleplus.project.system.service.ISwipeService;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,9 @@ public class RFIDServiceImpl implements IRFIDCardService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private ISwipeService SwipeService;
 
     /**
      * 查询所有
@@ -222,21 +226,20 @@ public class RFIDServiceImpl implements IRFIDCardService {
             logger.error("物理卡号id为空");
             throw new DriverException("RFID.rw.phyNumber");
         }
-        RFIDCard card = mapper.selectByPhyNumber(phyId);
 
-        if (StringUtils.isNull(card)) {
-            logger.info("查询到的卡片信息为空");
-            throw new DriverException("RFID.rw.object.notFound");
-        }
-        if (!card.getDeleted()) {
-            logger.info("此卡已经被注销！");
-            throw new DriverException("RFID.rw.deleted");
-        }
-        if (StringUtils.isNotEmpty(card.getStatus())) {
-            logger.info("卡片状态提示！");
-            throw new DriverException(card.getStatus());
-        }
-        return card;
+//        if (StringUtils.isNull(card)) {
+//            logger.info("查询到的卡片信息为空");
+//            throw new DriverException("RFID.rw.object.notFound");
+//        }
+//        if (!card.getDeleted()) {
+//            logger.info("此卡已经被注销！");
+//            throw new DriverException("RFID.rw.deleted");
+//        }
+//        if (StringUtils.isNotEmpty(card.getStatus())) {
+//            logger.info("卡片状态提示！");
+//            throw new DriverException(card.getStatus());
+//        }
+        return mapper.selectByPhyNumber(phyId);
     }
 
 
@@ -383,23 +386,15 @@ public class RFIDServiceImpl implements IRFIDCardService {
 
         logger.debug("当前刷卡设备号: {}，当前卡号: {}",machineId,number);
 
-//        // 1. 查到RFID对象
-//        final RFIDCard rfidCard = selectByPhyNumber(number);
-//
-//        // 2.获取存放在redis中的key值
-//        final Integer swipeTime = DriverSystemConfiguration.getSwipeTime();
-//
-//        // 3.确保原来的key没有对应的值，删除之前key
-//        redisCache.deleteObject(swipeKey);
-//
-//        // 4.将刷卡得到的对象缓存在redis中
-//        /**
-//         * redis中存放时间为S，时间动态获取
-//         */
-//        redisCache.setCacheObject(swipeKey, rfidCard, swipeTime, TimeUnit.SECONDS);
-//
-//        logger.info("Save to {} in redis cache,time -> {} ", rfidCard, swipeTime);
+	    switch (machineId) {
+		    case ISwipeService.REGISTER:
+		    	SwipeService.registerSwipe(machineId,number);
 
+			    break;
+		    case ISwipeService.NORMAL:
+			    SwipeService.swipe(machineId,number);
+			    break;
+	    }
     }
 
     /**
@@ -418,5 +413,22 @@ public class RFIDServiceImpl implements IRFIDCardService {
         }
 
         return rfidCard;
+    }
+
+    /**
+     * 通过RFID的id查询 查询这张卡的所有持有者
+     *
+     * @param rfidId
+     * @return
+     */
+    @Override
+    public List<UserRFID> getUserByRFID(Long rfidId) {
+
+        if(rfidId == null){
+            logger.error("查询卡片持有者，卡片id不能为空");
+            throw new DriverException("RFID.select.id.notFound");
+        }
+
+        return mapper.selectByRFID(rfidId);
     }
 }

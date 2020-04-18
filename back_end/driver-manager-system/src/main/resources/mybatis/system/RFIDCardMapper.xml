@@ -353,5 +353,10 @@
             </if>
         </where>
     </delete>
-
+    <select id="selectByRFID" resultMap="Base_UserRFRID_Result_Map" parameterType="long">
+        SELECT
+        <include refid="Base_user_rfid_sql"/>
+        FROM user_rfid
+        WHERE rfid_id = #{RFIDId,jdbcType=BIGINT}
+    </select>
 </mapper>

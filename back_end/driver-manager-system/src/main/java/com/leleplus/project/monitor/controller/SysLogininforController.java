@@ -23,7 +23,7 @@ import java.util.List;
  * @author witt
  */
 
-@Api("系统访问记录")
+@Api(tags = "系统访问记录")
 @RestController
 @RequestMapping("/monitor/logininfor")
 public class SysLogininforController extends BaseController {

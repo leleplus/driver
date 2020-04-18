@@ -92,4 +92,11 @@ public interface IRFIDCardService extends ICRUDService<RFIDCard> {
      * @return
      */
     RFIDCard testing();
+
+    /**
+     * 通过RFID的id查询 查询这张卡的所有持有者
+     * @param rfidId
+     * @return
+     */
+    List<UserRFID> getUserByRFID(Long rfidId);
 }

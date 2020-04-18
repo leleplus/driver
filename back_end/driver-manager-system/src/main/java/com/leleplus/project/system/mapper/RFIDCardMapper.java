@@ -105,4 +105,12 @@ public interface RFIDCardMapper {
      * @return
      */
     Long deleteUserRFID(UserRFID userRFID);
+
+
+    /**
+     * 根据RFID的id查询所有用户，包括已经解绑的用户
+     * @param RFIDId
+     * @return
+     */
+    List<UserRFID> selectByRFID(Long RFIDId);
 }

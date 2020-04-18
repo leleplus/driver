@@ -37,4 +37,7 @@ public class RFIDCard extends BaseEntity {
     // 删除标志
     private Boolean deleted;
 
+    // 管理员刷卡message()
+    private Boolean isNew;
+
 }

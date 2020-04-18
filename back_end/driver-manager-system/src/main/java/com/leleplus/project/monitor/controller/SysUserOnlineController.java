@@ -29,7 +29,7 @@ import java.util.List;
  * @author witt
  */
 
-@Api("在线用户监控接口")
+@Api(tags = "在线用户监控接口")
 @RestController
 @RequestMapping("/monitor/online")
 public class SysUserOnlineController extends BaseController {

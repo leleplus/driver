@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class SwipeRFIDRecord extends BaseEntity {
+public class SwipeRecord extends BaseEntity {
     private static final long serialVersionUID = 7311903055885283542L;
 
     // RFID主键
@@ -42,8 +42,8 @@ public class SwipeRFIDRecord extends BaseEntity {
      *
      * @return
      */
-    public static SwipeRFIDRecord getInstance() {
-        return new SwipeRFIDRecord();
+    public static SwipeRecord getInstance() {
+        return new SwipeRecord();
     }
 
     /**
@@ -57,8 +57,8 @@ public class SwipeRFIDRecord extends BaseEntity {
      * @param remark
      * @return
      */
-    public static SwipeRFIDRecord swipe(Long userInfoId, Long rfidId, SwipeType type, String status, String action, String remark) {
-        SwipeRFIDRecord swipe = getInstance()
+    public static SwipeRecord swipe(Long userInfoId, Long rfidId, SwipeType type, String status, String action, String remark) {
+        SwipeRecord swipe = getInstance()
                 .setUserInfoId(userInfoId)
                 .setRfidId(rfidId)
                 .setSwipeType(type.getCode())

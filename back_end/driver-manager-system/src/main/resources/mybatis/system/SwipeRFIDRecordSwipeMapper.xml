@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leleplus.project.system.mapper.SwipeRFIDRecordSwipeMapper">
+
+    <resultMap type="com.leleplus.project.monitor.domain.SwipeRecord" id="Base_Result_Map">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rfid_id" jdbcType="VARCHAR" property="rfidId"/>
+        <result column="user_info_id" jdbcType="INTEGER" property="userInfoId"/>
+        <result column="swipe_type" jdbcType="TIMESTAMP" property="swipeType"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="action" jdbcType="VARCHAR" property="action"/>
+        <!-- 公共属性 -->
+        <result column="search_value" jdbcType="VARCHAR" property="searchValue"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="data_scope" jdbcType="VARCHAR" property="dataScope"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+    </resultMap>
+    <sql id="Base_sql">
+        id, rfid_id, user_info_id, swipe_type, status, action, create_by, create_time, update_by, update_time,
+        begin_time, end_time, remark
+    </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="Base_Result_Map" parameterType="long">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM swipe_rfid_record
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="com.leleplus.project.monitor.domain.SwipeRecord" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into rfid_card(
+        <if test=" rfidId != null ">
+            rfid_id,
+        </if>
+        <if test=" userInfoId != null ">
+            user_info_id,
+        </if>
+        <if test="swipeType  != null ">
+            swipe_type,
+        </if>
+        <if test=" status != null ">
+            status,
+        </if>
+        <if test="action  != null ">
+            action,
+        </if>
+        <if test="searchValue != null ">
+            search_value,
+        </if>
+        <if test="createBy != null ">
+            create_by,
+        </if>
+        create_time,
+        <if test="updateBy != null ">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="remark != null ">
+            remark,
+        </if>
+        <if test="dataScope != null ">
+            data_scope,
+        </if>
+        <if test="beginTime != null ">
+            begin_time,
+        </if>
+        <if test="endTime != null ">
+            end_time,
+        </if>
+        )values(
+        <if test="rfidId != null ">
+            #{rfidId,jdbcType=BIGINT},
+        </if>
+        <if test="userInfoId != null ">
+            #{userInfoId,jdbcType=BIGINT},
+        </if>
+        <if test="swipeType != null ">
+            #{swipeType,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null ">
+            #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="action != null ">
+            #{action,jdbcType=VARCHAR},
+        </if>
+        <if test="searchValue != null ">
+            #{searchValue,jdbcType=VARCHAR},
+        </if>
+        <if test="createBy != null ">
+            #{createBy,jdbcType=VARCHAR},
+        </if>
+        sysdate(),
+        <if test="updateBy != null ">
+            #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="remark != null ">
+            #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="dataScope != null ">
+            #{dataScope,jdbcType=VARCHAR},
+        </if>
+        <if test="beginTime != null ">
+            #{beginTime,jdbcType=VARCHAR},
+        </if>
+        <if test="endTime != null ">
+            #{endTime,jdbcType=VARCHAR},
+        </if>
+        )
+    </insert>
+    <!--<delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update rfid_card
+        set deleted = 1,
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_time = sysdate()
+        where id = #{id,jdbcType=BIGINT}
+    </delete>-->
+    <delete id="deleteBatch" parameterType="com.leleplus.core.web.domain.BaseEntity">
+        update swipe_rfid_record
+        SET deleted = 1,
+        <foreach collection="ids" item="item" index="index">
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate()
+            WHERE id = #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+<!--    <update id="update" parameterType="com.leleplus.project.system.domain.RFIDCard">
+        update swipe_rfid_record
+        <set>
+            <if test="phyNumber != null ">
+                phy_number = #{phyNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null ">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null ">
+                size = #{size,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null ">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null ">
+                deleted = #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null ">
+                search_value = #{searchValue,jdbcType=VARCHAR},
+            </if>
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = sysdate(),
+            <if test="remark != null ">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                data_scope = #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                begin_time = #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>-->
+    <select id="select" resultMap="Base_Result_Map">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM swipe_rfid_record
+    </select>
+    <select id="selectByPage" resultMap="Base_Result_Map" parameterType="com.leleplus.project.monitor.domain.SwipeRecord">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM swipe_rfid_record
+        WHERE 1 = 1
+            <if test="beginTime != null">
+                AND create_time >= #{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;= #{endTime,jdbcType=VARCHAR}
+            </if>
+            <if test="userInfoId != null">
+                AND user_info_id = #{userInfoId,jdbcType=BIGINT}
+            </if>
+    </select>
+</mapper>
