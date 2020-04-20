@@ -5,17 +5,26 @@ package com.leleplus.project.system.service.impl;
 import com.leleplus.common.exception.driver.DriverException;
 import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.common.utils.StringUtils;
+import com.leleplus.core.config.DriverSystemConfiguration;
+import com.leleplus.core.redis.RedisCache;
 import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.monitor.domain.SwipeRecord;
+import com.leleplus.project.monitor.enums.SwipeType;
+import com.leleplus.project.system.domain.RFIDCard;
+import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.mapper.SwipeRFIDRecordSwipeMapper;
+import com.leleplus.project.system.service.IRFIDService;
 import com.leleplus.project.system.service.ISwipeRecordService;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
@@ -38,6 +47,15 @@ public class SwipeRFIDRecordServiceImpl implements ISwipeRecordService {
 	@Resource
 	private SwipeRFIDRecordSwipeMapper mapper;
 
+	@Autowired
+	private RedisCache redisCache;
+
+	@Autowired
+	private IRFIDService rfidService;
+
+	@Autowired
+	private DriverSystemConfiguration configuration;
+
 
 	/**
 	 * 查询所有
@@ -59,6 +77,77 @@ public class SwipeRFIDRecordServiceImpl implements ISwipeRecordService {
 	@Override
 	public List<SwipeRecord> selectAllByPage(SwipeRecord record) {
 		return mapper.selectByPage(record);
+	}
+
+	/**
+	 * 注册卡
+	 *
+	 * @param machineId
+	 * @param number
+	 */
+	@Override
+	public void registerSwipe(String machineId, String number) {
+		// 1. 查到RFID对象
+		RFIDCard rfidCard = rfidService.selectByPhyNumber(number);
+
+		// 卡存在，直接返回，不存在，新增再返回
+		if(rfidCard == null){
+			rfidCard = new RFIDCard()
+					.setPhyNumber(number)
+					.setStatus("管理员授权")
+					.setDeleted(false)
+					.setIsNew(true);
+			rfidCard.setRemark("自动创建");
+			rfidService.addByObject(rfidCard);
+		}
+
+
+		// 2.获取存放在redis中的key值
+		String swipeKey = configuration.getSwipeKey();
+		Integer swipeTime = configuration.getSwipeTime();
+
+		// 3.确保原来的key没有对应的值，删除之前key
+		redisCache.deleteObject(swipeKey);
+
+		// 4.将刷卡得到的对象缓存在redis中
+		/**
+		 * redis中存放时间为S，时间动态获取
+		 */
+		redisCache.setCacheObject(swipeKey, rfidCard, swipeTime, TimeUnit.SECONDS);
+
+		logger.info("Save {} in redis cache,time -> {} ", rfidCard, swipeTime);
+	}
+
+	/**
+	 * 普通刷卡记录
+	 *
+	 * @param machineId
+	 * @param number
+	 */
+	@Override
+	public void swipe(String machineId, String number) {
+
+		// 查到卡片信息
+		RFIDCard rfidCard = rfidService.selectByPhyNumber(number);
+
+
+		// 查询卡片持有者
+		UserRFID userRFID = rfidService.selectUserRFID(rfidCard.getId())
+				.stream()
+				.filter(item -> ! item.getDeleted())
+				.collect(Collectors.toList())
+				.get(0);
+
+		if (userRFID == null) {
+			logger.error("该卡片没有持有者");
+			throw new DriverException("RFID.swipe.user.null");
+		}
+		// 保存刷卡记录
+		SwipeRecord swipe = SwipeRecord
+				.swipe(userRFID.getUserInfoId(), rfidCard.getId(), SwipeType.DOOR, "正常", "普通刷卡", "");
+
+		// 刷卡记录保存到数据库
+		logger.info("新增刷卡记录 --> {}", addByObject(swipe));
 	}
 
 	/**

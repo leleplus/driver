@@ -36,89 +36,91 @@
     </select>
     <insert id="insert" parameterType="com.leleplus.project.monitor.domain.SwipeRecord" useGeneratedKeys="true"
             keyProperty="id">
-        insert into rfid_card(
-        <if test=" rfidId != null ">
-            rfid_id,
-        </if>
-        <if test=" userInfoId != null ">
-            user_info_id,
-        </if>
-        <if test="swipeType  != null ">
-            swipe_type,
-        </if>
-        <if test=" status != null ">
-            status,
-        </if>
-        <if test="action  != null ">
-            action,
-        </if>
-        <if test="searchValue != null ">
-            search_value,
-        </if>
-        <if test="createBy != null ">
-            create_by,
-        </if>
-        create_time,
-        <if test="updateBy != null ">
-            update_by,
-        </if>
-        <if test="updateTime != null ">
-            update_time,
-        </if>
-        <if test="remark != null ">
-            remark,
-        </if>
-        <if test="dataScope != null ">
-            data_scope,
-        </if>
-        <if test="beginTime != null ">
-            begin_time,
-        </if>
-        <if test="endTime != null ">
-            end_time,
-        </if>
-        )values(
-        <if test="rfidId != null ">
-            #{rfidId,jdbcType=BIGINT},
-        </if>
-        <if test="userInfoId != null ">
-            #{userInfoId,jdbcType=BIGINT},
-        </if>
-        <if test="swipeType != null ">
-            #{swipeType,jdbcType=VARCHAR},
-        </if>
-        <if test="status != null ">
-            #{status,jdbcType=VARCHAR},
-        </if>
-        <if test="action != null ">
-            #{action,jdbcType=VARCHAR},
-        </if>
-        <if test="searchValue != null ">
-            #{searchValue,jdbcType=VARCHAR},
-        </if>
-        <if test="createBy != null ">
-            #{createBy,jdbcType=VARCHAR},
-        </if>
-        sysdate(),
-        <if test="updateBy != null ">
-            #{updateBy,jdbcType=VARCHAR},
-        </if>
-        <if test="updateTime != null ">
-            #{updateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="remark != null ">
-            #{remark,jdbcType=VARCHAR},
-        </if>
-        <if test="dataScope != null ">
-            #{dataScope,jdbcType=VARCHAR},
-        </if>
-        <if test="beginTime != null ">
-            #{beginTime,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime != null ">
-            #{endTime,jdbcType=VARCHAR},
-        </if>
-        )
+        insert into rfid_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" rfidId != null ">
+                rfid_id,
+            </if>
+            <if test=" userInfoId != null ">
+                user_info_id,
+            </if>
+            <if test="swipeType  != null ">
+                swipe_type,
+            </if>
+            <if test=" status != null ">
+                status,
+            </if>
+            <if test="action  != null ">
+                action,
+            </if>
+            <if test="searchValue != null ">
+                search_value,
+            </if>
+            <if test="createBy != null ">
+                create_by,
+            </if>
+            create_time,
+            <if test="updateBy != null ">
+                update_by,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="remark != null ">
+                remark,
+            </if>
+            <if test="dataScope != null ">
+                data_scope,
+            </if>
+            <if test="beginTime != null ">
+                begin_time,
+            </if>
+            <if test="endTime != null ">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rfidId != null ">
+                #{rfidId,jdbcType=BIGINT},
+            </if>
+            <if test="userInfoId != null ">
+                #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="swipeType != null ">
+                #{swipeType,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="action != null ">
+                #{action,jdbcType=VARCHAR},
+            </if>
+            <if test="searchValue != null ">
+                #{searchValue,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null ">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            sysdate(),
+            <if test="updateBy != null ">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null ">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
     </insert>
     <!--<delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
         update rfid_card

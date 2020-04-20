@@ -5,7 +5,7 @@ import com.leleplus.core.web.domain.AjaxResult;
 import com.leleplus.core.web.page.TableDataInfo;
 import com.leleplus.project.system.domain.RFIDCard;
 import com.leleplus.project.system.domain.UserRFID;
-import com.leleplus.project.system.service.IRFIDCardService;
+import com.leleplus.project.system.service.IRFIDService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.List;
 public class RFIDCardController extends BaseController {
 
     @Autowired
-    private IRFIDCardService rfidCardService;
+    private IRFIDService rfidService;
 
 
     /**
@@ -43,7 +43,7 @@ public class RFIDCardController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo getAllRFID(RFIDCard rfidCard) {
         startPage();
-        return getDataTable(rfidCardService.getAll(rfidCard));
+        return getDataTable(rfidService.getAll(rfidCard));
     }
 
     /**
@@ -58,7 +58,7 @@ public class RFIDCardController extends BaseController {
     @GetMapping("/{id}")
     public AjaxResult getRFID(@PathVariable(value = "id", required = false) Long id) {
         AjaxResult ajax = AjaxResult.success();
-        ajax.put(AjaxResult.DATA_TAG, rfidCardService.selectById(id));
+        ajax.put(AjaxResult.DATA_TAG, rfidService.selectById(id));
         return ajax;
     }
 
@@ -73,7 +73,7 @@ public class RFIDCardController extends BaseController {
     @GetMapping("rw/{phyId}")
     public AjaxResult getRFID(@PathVariable(value = "phyId", required = false) String phyId) {
         AjaxResult ajax = AjaxResult.success();
-        ajax.put(AjaxResult.DATA_TAG, rfidCardService.selectByPhyNumber(phyId));
+        ajax.put(AjaxResult.DATA_TAG, rfidService.selectByPhyNumber(phyId));
         return ajax;
     }
 
@@ -89,7 +89,7 @@ public class RFIDCardController extends BaseController {
     @PostMapping
     public AjaxResult newRFID(@RequestBody RFIDCard rfidCard) {
         AjaxResult ajax = AjaxResult.success();
-        ajax.put(AjaxResult.DATA_TAG, rfidCardService.addByObject(rfidCard));
+        ajax.put(AjaxResult.DATA_TAG, rfidService.addByObject(rfidCard));
         return ajax;
     }
 
@@ -103,7 +103,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("更新RFID卡数据")
     @PutMapping
     public AjaxResult updateRFID(@RequestBody RFIDCard rfidCard) {
-        rfidCardService.updateByArg(rfidCard);
+        rfidService.updateByArg(rfidCard);
         return AjaxResult.success();
     }
 
@@ -117,7 +117,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("删除RFID卡数据")
     @DeleteMapping
     public AjaxResult delRFID(@RequestBody String ids) {
-        rfidCardService.BatchDelete(ids);
+        rfidService.BatchDelete(ids);
         return AjaxResult.success();
     }
 
@@ -130,7 +130,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("查询用户绑定的RFID卡信息")
     @GetMapping("/user/{userInfoId}")
     public AjaxResult getUserRFID(@PathVariable(value = "userInfoId") Long userInfoId) {
-        List<UserRFID> userRFIDS = rfidCardService.selectUserRFID(userInfoId);
+        List<UserRFID> userRFIDS = rfidService.selectUserRFID(userInfoId);
         AjaxResult ajax = AjaxResult.success();
         ajax.put(AjaxResult.DATA_TAG, userRFIDS);
         return ajax;
@@ -147,7 +147,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("为用户绑定RFID")
     @GetMapping("/user/add/{userInfoId}")
     public AjaxResult bindUserRFID(@PathVariable("userInfoId") Long userInfoId) {
-        rfidCardService.bindUserRFID(userInfoId);
+        rfidService.bindUserRFID(userInfoId);
         return AjaxResult.success();
     }
 
@@ -161,7 +161,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("为用户换绑RFID卡数据")
     @PutMapping("/user/change")
     public AjaxResult changeUserRFID(@RequestBody UserRFID userRFID) {
-        rfidCardService.updateUserRFID(userRFID);
+        rfidService.updateUserRFID(userRFID);
         return AjaxResult.success();
     }
 
@@ -175,7 +175,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("解绑用户RFID卡数据")
     @DeleteMapping("/user/delete/")
     public AjaxResult untieUserRFID(@RequestBody UserRFID userRFID) {
-        rfidCardService.deleteUserRFID(userRFID);
+        rfidService.deleteUserRFID(userRFID);
         return AjaxResult.success();
     }
 
@@ -190,7 +190,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("RFID刷卡接口")
     @GetMapping("/swipe/{machineId}/{number}")
     public AjaxResult swipe(@PathVariable("machineId") String machineId, @PathVariable("number") String number) {
-        rfidCardService.swipe(machineId,number);
+        rfidService.swipe(machineId,number);
         return AjaxResult.success("OK!");
     }
 
@@ -203,7 +203,7 @@ public class RFIDCardController extends BaseController {
     @ApiOperation("前端轮询卡数据接口")
     @GetMapping("/testing")
     public AjaxResult testing() {
-        RFIDCard rfidCard = rfidCardService.testing();
+        RFIDCard rfidCard = rfidService.testing();
         return AjaxResult.success(rfidCard);
     }
 

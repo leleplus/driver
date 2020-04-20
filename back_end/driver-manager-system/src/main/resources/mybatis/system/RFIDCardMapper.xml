@@ -24,8 +24,8 @@
         <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
     </resultMap>
     <sql id="Base_sql">
-        id, phy_number, color, size, type, status, deleted, search_value, create_by, create_time, update_by,
-        update_time, remark, data_scope, begin_time, end_time
+        id, phy_number, color, size, type, status, deleted, create_by, create_time, update_by,
+        update_time, remark, begin_time, end_time
     </sql>
 
 
@@ -37,91 +37,97 @@
     </select>
     <insert id="insert" parameterType="com.leleplus.project.system.domain.RFIDCard" useGeneratedKeys="true"
             keyProperty="id">
-        insert into rfid_card(
-        <if test="phyNumber != null ">
-            phy_number,
-        </if>
-        <if test="color != null ">
-            color,
-        </if>
-        <if test="size != null ">
-            size,
-        </if>
-        <if test="type != null ">
-            type,
-        </if>
-        <if test="status != null ">
-            status,
-        </if>
-        <if test="deleted != null ">
-            deleted,
-        </if>
-        <if test="searchValue != null ">
-            search_value,
-        </if>
-        create_by,
-        create_time,
-        <if test="updateBy != null ">
-            update_by,
-        </if>
-        <if test="updateTime != null ">
-            update_time,
-        </if>
-        <if test="remark != null ">
-            remark,
-        </if>
-        <if test="dataScope != null ">
-            data_scope,
-        </if>
-        <if test="beginTime != null ">
-            begin_time,
-        </if>
-        <if test="endTime != null ">
-            end_time,
-        </if>
-        )values(
-        <if test="phyNumber != null ">
-            #{phyNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="color != null ">
-            #{color,jdbcType=VARCHAR},
-        </if>
-        <if test="size != null ">
-            #{size,jdbcType=VARCHAR},
-        </if>
-        <if test="type != null ">
-            #{type,jdbcType=VARCHAR},
-        </if>
-        <if test="status != null ">
-            #{status,jdbcType=VARCHAR},
-        </if>
-        <if test="deleted != null ">
-            #{deleted,jdbcType=BOOLEAN},
-        </if>
-        <if test="searchValue != null ">
-            #{searchValue,jdbcType=VARCHAR},
-        </if>
-        #{createBy,jdbcType=VARCHAR},
-        sysdate(),
-        <if test="updateBy != null ">
-            #{updateBy,jdbcType=VARCHAR},
-        </if>
-        <if test="updateTime != null ">
-            #{updateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="remark != null ">
-            #{remark,jdbcType=VARCHAR},
-        </if>
-        <if test="dataScope != null ">
-            #{dataScope,jdbcType=VARCHAR},
-        </if>
-        <if test="beginTime != null ">
-            #{beginTime,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime != null ">
-            #{endTime,jdbcType=VARCHAR},
-        </if>
-        )
+        insert into rfid_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phyNumber != null ">
+                phy_number,
+            </if>
+            <if test="color != null ">
+                color,
+            </if>
+            <if test="size != null ">
+                size,
+            </if>
+            <if test="type != null ">
+                type,
+            </if>
+            <if test="status != null ">
+                status,
+            </if>
+            <if test="deleted != null ">
+                deleted,
+            </if>
+            <if test="searchValue != null ">
+                search_value,
+            </if>
+            <if test="createTime != null">
+                create_by,
+            </if>
+            create_time,
+            <if test="updateBy != null ">
+                update_by,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="remark != null ">
+                remark,
+            </if>
+            <if test="dataScope != null ">
+                data_scope,
+            </if>
+            <if test="beginTime != null ">
+                begin_time,
+            </if>
+            <if test="endTime != null ">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phyNumber != null ">
+                #{phyNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null ">
+                #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null ">
+                #{size,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null ">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null ">
+                #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null ">
+                #{searchValue,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            sysdate(),
+            <if test="updateBy != null ">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null ">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
         update rfid_card
@@ -225,8 +231,7 @@
         <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
     </resultMap>
     <sql id="Base_user_rfid_sql">
-        id,user_info_id,rfid_id,deleted,search_value, create_by, create_time, update_by, update_time, remark,
-        data_scope, begin_time, end_time
+        id,user_info_id,rfid_id,deleted, create_by, create_time, update_by, update_time, remark, begin_time, end_time
     </sql>
     <select id="selectAllUserRFID" resultType="com.leleplus.project.system.domain.UserRFID" parameterType="long">
         SELECT

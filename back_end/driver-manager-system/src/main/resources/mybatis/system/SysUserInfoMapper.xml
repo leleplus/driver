@@ -60,151 +60,153 @@
     </select>
     <insert id="insert" parameterType="com.leleplus.project.system.domain.SysUserInfo" useGeneratedKeys="true"
             keyProperty="id">
-        insert into sys_user_info(
-        <if test="realName != null ">
-            real_name,
-        </if>
-        <if test="age != null ">
-            age,
-        </if>
-        <if test="birthday != null ">
-            birthday,
-        </if>
-        <if test="gender != null ">
-            gender,
-        </if>
-        <if test="national != null ">
-            national,
-        </if>
-        <if test="address != null ">
-            address,
-        </if>
-        <if test="paperFileNumber != null ">
-            paper_file_number,
-        </if>
-        <if test="driverType != null ">
-            driver_type,
-        </if>
-        <if test="medicalTime != null ">
-            medical_time,
-        </if>
-        <if test="idPhoto != null ">
-            id_photo,
-        </if>
-        <if test="wage != null ">
-            wage,
-        </if>
-        <if test="deptId != null ">
-            dept_id,
-        </if>
-        <if test="agent != null ">
-            agent,
-        </if>
-        <if test="signDate != null ">
-            sign_date,
-        </if>
-        <if test="expirationTime != null ">
-            expiration_time,
-        </if>
-        <if test="deleted != null ">
-            deleted,
-        </if>
-        <if test="searchValue != null ">
-            search_value,
-        </if>
-        create_by,
-        create_time,
-        <if test="updateBy != null ">
-            update_by,
-        </if>
-        <if test="updateTime != null ">
-            update_time,
-        </if>
-        <if test="remark != null ">
-            remark,
-        </if>
-        <if test="dataScope != null ">
-            data_scope,
-        </if>
-        <if test="beginTime != null ">
-            begin_time,
-        </if>
-        <if test="endTime != null ">
-            end_time,
-        </if>
-        )values(
-        <if test="realName != null ">
-            #{realName,jdbcType=VARCHAR},
-        </if>
-        <if test="age != null ">
-            #{age,jdbcType=INTEGER},
-        </if>
-        <if test="birthday != null ">
-            #{birthday,jdbcType=TIMESTAMP},
-        </if>
-        <if test="gender != null ">
-            #{gender,jdbcType=VARCHAR},
-        </if>
-        <if test="national != null ">
-            #{national,jdbcType=VARCHAR},
-        </if>
-        <if test="address != null ">
-            #{address,jdbcType=VARCHAR},
-        </if>
-        <if test="paperFileNumber != null ">
-            #{paperFileNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="driverType != null ">
-            #{driverType,jdbcType=BIGINT},
-        </if>
-        <if test="medicalTime != null ">
-            #{medicalTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="idPhoto != null ">
-            #{idPhoto,jdbcType=VARCHAR},
-        </if>
-        <if test="wage != null ">
-            #{wage,jdbcType=VARCHAR}
-        </if>
-        <if test="deptId != null ">
-            #{deptId,jdbcType=BIGINT},
-        </if>
-        <if test="agent != null ">
-            #{agent,jdbcType=BIGINT},
-        </if>
-        <if test="signDate != null ">
-            #{signDate,jdbcType=TIMESTAMP},
-        </if>
-        <if test="expirationTime != null ">
-            #{expirationTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="deleted != null ">
-            #{deleted,jdbcType=BOOLEAN},
-        </if>
-        <if test="searchValue != null ">
-            #{searchValue,jdbcType=VARCHAR},
-        </if>
-        #{createBy,jdbcType=VARCHAR},
-        sysdate(),
-        <if test="updateBy != null ">
-            #{updateBy,jdbcType=VARCHAR},
-        </if>
-        <if test="updateTime != null ">
-            #{updateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="remark != null ">
-            #{remark,jdbcType=VARCHAR},
-        </if>
-        <if test="dataScope != null ">
-            #{dataScope,jdbcType=VARCHAR},
-        </if>
-        <if test="beginTime != null ">
-            #{beginTime,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime != null ">
-            #{endTime,jdbcType=VARCHAR},
-        </if>
-        )
+        insert into sys_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="realName != null ">
+                real_name,
+            </if>
+            <if test="age != null ">
+                age,
+            </if>
+            <if test="birthday != null ">
+                birthday,
+            </if>
+            <if test="gender != null ">
+                gender,
+            </if>
+            <if test="national != null ">
+                national,
+            </if>
+            <if test="address != null ">
+                address,
+            </if>
+            <if test="paperFileNumber != null ">
+                paper_file_number,
+            </if>
+            <if test="driverType != null ">
+                driver_type,
+            </if>
+            <if test="medicalTime != null ">
+                medical_time,
+            </if>
+            <if test="idPhoto != null ">
+                id_photo,
+            </if>
+            <if test="wage != null ">
+                wage,
+            </if>
+            <if test="deptId != null ">
+                dept_id,
+            </if>
+            <if test="agent != null ">
+                agent,
+            </if>
+            <if test="signDate != null ">
+                sign_date,
+            </if>
+            <if test="expirationTime != null ">
+                expiration_time,
+            </if>
+            <if test="deleted != null ">
+                deleted,
+            </if>
+            <if test="searchValue != null ">
+                search_value,
+            </if>
+            create_by,
+            create_time,
+            <if test="updateBy != null ">
+                update_by,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="remark != null ">
+                remark,
+            </if>
+            <if test="dataScope != null ">
+                data_scope,
+            </if>
+            <if test="beginTime != null ">
+                begin_time,
+            </if>
+            <if test="endTime != null ">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="realName != null ">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null ">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="birthday != null ">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gender != null ">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="national != null ">
+                #{national,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null ">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="paperFileNumber != null ">
+                #{paperFileNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="driverType != null ">
+                #{driverType,jdbcType=BIGINT},
+            </if>
+            <if test="medicalTime != null ">
+                #{medicalTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="idPhoto != null ">
+                #{idPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="wage != null ">
+                #{wage,jdbcType=VARCHAR}
+            </if>
+            <if test="deptId != null ">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="agent != null ">
+                #{agent,jdbcType=BIGINT},
+            </if>
+            <if test="signDate != null ">
+                #{signDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expirationTime != null ">
+                #{expirationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null ">
+                #{deleted,jdbcType=BOOLEAN},
+            </if>
+            <if test="searchValue != null ">
+                #{searchValue,jdbcType=VARCHAR},
+            </if>
+            #{createBy,jdbcType=VARCHAR},
+            sysdate(),
+            <if test="updateBy != null ">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null ">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dataScope != null ">
+                #{dataScope,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null ">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null ">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="com.leleplus.core.web.domain.BaseEntity">
         update sys_user_info

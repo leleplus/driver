@@ -10,8 +10,8 @@ import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.system.domain.RFIDCard;
 import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.mapper.RFIDCardMapper;
-import com.leleplus.project.system.service.IRFIDCardService;
-import com.leleplus.project.system.service.ISwipeService;
+import com.leleplus.project.system.service.IRFIDService;
+import com.leleplus.project.system.service.ISwipeRecordService;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class RFIDServiceImpl implements IRFIDCardService {
-    private static final String swipeKey = DriverSystemConfiguration.getSwipeKey();
+public class RFIDServiceImpl implements IRFIDService {
 
     // logger日志全局初始化
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -47,7 +46,10 @@ public class RFIDServiceImpl implements IRFIDCardService {
     private RedisCache redisCache;
 
     @Autowired
-    private ISwipeService SwipeService;
+    private ISwipeRecordService swipeRecordService;
+
+    @Autowired
+    private DriverSystemConfiguration configuration;
 
     /**
      * 查询所有
@@ -110,8 +112,8 @@ public class RFIDServiceImpl implements IRFIDCardService {
         }
 
         // 初始化值
-        obj.setDeleted(false)
-                .setCreateBy(SecurityUtils.getUsername());
+        obj.setDeleted(false);
+               // .setCreateBy(SecurityUtils.getUsername());
 
         return mapper.insert(obj);
     }
@@ -387,12 +389,12 @@ public class RFIDServiceImpl implements IRFIDCardService {
         logger.debug("当前刷卡设备号: {}，当前卡号: {}",machineId,number);
 
 	    switch (machineId) {
-		    case ISwipeService.REGISTER:
-		    	SwipeService.registerSwipe(machineId,number);
+		    case ISwipeRecordService.REGISTER:
+                swipeRecordService.registerSwipe(machineId,number);
 
 			    break;
-		    case ISwipeService.NORMAL:
-			    SwipeService.swipe(machineId,number);
+		    case ISwipeRecordService.NORMAL:
+                swipeRecordService.swipe(machineId,number);
 			    break;
 	    }
     }
@@ -405,7 +407,7 @@ public class RFIDServiceImpl implements IRFIDCardService {
     @Override
     public RFIDCard testing() {
 
-        RFIDCard rfidCard = redisCache.getCacheObject(swipeKey);
+        RFIDCard rfidCard = redisCache.getCacheObject(configuration.getSwipeKey());
 
         if (StringUtils.isNull(rfidCard)) {
             logger.info("查询到的卡片信息为空");

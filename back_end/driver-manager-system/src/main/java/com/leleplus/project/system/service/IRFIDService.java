@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2020-04-05 16:25
  * @description RFIDService层接口
  */
-public interface IRFIDCardService extends ICRUDService<RFIDCard> {
+public interface IRFIDService extends ICRUDService<RFIDCard> {
 
 
     /**
