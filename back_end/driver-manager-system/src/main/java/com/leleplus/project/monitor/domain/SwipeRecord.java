@@ -1,6 +1,5 @@
 package com.leleplus.project.monitor.domain;
 
-import com.leleplus.common.utils.SecurityUtils;
 import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.monitor.enums.SwipeType;
 import lombok.Data;
@@ -36,6 +35,9 @@ public class SwipeRecord extends BaseEntity {
     // 活动记录
     private String action;
 
+    //
+    private String phynumber;
+
 
     /**
      * 获的实例对象
@@ -61,10 +63,10 @@ public class SwipeRecord extends BaseEntity {
         SwipeRecord swipe = getInstance()
                 .setUserInfoId(userInfoId)
                 .setRfidId(rfidId)
-                .setSwipeType(type.getCode())
+                .setSwipeType(type.getLabel())
                 .setStatus(status)
                 .setAction(action);
-        swipe.setCreateBy(SecurityUtils.getUsername());
+        swipe.setCreateBy("用户自主刷卡");
         swipe.setRemark(remark);
         return swipe;
     }

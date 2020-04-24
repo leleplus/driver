@@ -11,7 +11,6 @@ import com.leleplus.core.web.domain.BaseEntity;
 import com.leleplus.project.monitor.domain.SwipeRecord;
 import com.leleplus.project.monitor.enums.SwipeType;
 import com.leleplus.project.system.domain.RFIDCard;
-import com.leleplus.project.system.domain.UserRFID;
 import com.leleplus.project.system.mapper.SwipeRFIDRecordSwipeMapper;
 import com.leleplus.project.system.service.IRFIDService;
 import com.leleplus.project.system.service.ISwipeRecordService;
@@ -20,11 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Copyright (C) @2020 fgwang.660@gmail.com
@@ -76,7 +76,20 @@ public class SwipeRFIDRecordServiceImpl implements ISwipeRecordService {
 	 */
 	@Override
 	public List<SwipeRecord> selectAllByPage(SwipeRecord record) {
-		return mapper.selectByPage(record);
+		List<SwipeRecord> swipeRecords = mapper.selectByPage(record);
+
+
+		if (! CollectionUtils.isEmpty(swipeRecords)) {
+			swipeRecords.forEach(item -> {
+				if (item != null) {
+					RFIDCard rfidCard = rfidService.selectById(item.getRfidId());
+					if (rfidCard != null) {
+						item.setPhynumber(rfidCard.getPhyNumber());
+					}
+				}
+			});
+		}
+		return swipeRecords;
 	}
 
 	/**
@@ -91,7 +104,7 @@ public class SwipeRFIDRecordServiceImpl implements ISwipeRecordService {
 		RFIDCard rfidCard = rfidService.selectByPhyNumber(number);
 
 		// 卡存在，直接返回，不存在，新增再返回
-		if(rfidCard == null){
+		if (rfidCard == null) {
 			rfidCard = new RFIDCard()
 					.setPhyNumber(number)
 					.setStatus("管理员授权")
@@ -130,21 +143,29 @@ public class SwipeRFIDRecordServiceImpl implements ISwipeRecordService {
 		// 查到卡片信息
 		RFIDCard rfidCard = rfidService.selectByPhyNumber(number);
 
+		if (rfidCard == null) {
+			logger.error("查询不到对应的已登记卡片数据");
+			throw new DriverException("查询不到对应的已登记卡片数据");
+		}
 
 		// 查询卡片持有者
-		UserRFID userRFID = rfidService.selectUserRFID(rfidCard.getId())
-				.stream()
-				.filter(item -> ! item.getDeleted())
-				.collect(Collectors.toList())
-				.get(0);
+//		UserRFID userRFID = rfidService.selectUserRFID(rfidCard.getId())
+//				.stream()
+//				.filter(item -> !item.getDeleted())
+//				.collect(Collectors.toList())
+//				.get(0);
+//
+//		if (userRFID == null) {
+//			logger.error("该卡片没有持有者");
+//			throw new DriverException("RFID.swipe.user.null");
+//		}
 
-		if (userRFID == null) {
-			logger.error("该卡片没有持有者");
-			throw new DriverException("RFID.swipe.user.null");
-		}
+		SwipeType[] status = new SwipeType[] {
+				SwipeType.DOOR, SwipeType.CAR_DOOR, SwipeType.ACCELERATOR, SwipeType.GEAR
+		};
 		// 保存刷卡记录
 		SwipeRecord swipe = SwipeRecord
-				.swipe(userRFID.getUserInfoId(), rfidCard.getId(), SwipeType.DOOR, "正常", "普通刷卡", "");
+				.swipe(1L, rfidCard.getId(), status[new Random().nextInt(4)], "正常", "普通刷卡", "");
 
 		// 刷卡记录保存到数据库
 		logger.info("新增刷卡记录 --> {}", addByObject(swipe));

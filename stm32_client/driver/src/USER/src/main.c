@@ -20,6 +20,7 @@
 char phyNumber [1];
 int mflag = 1;
 int keepCount = 0;
+int i = 1;
 /**
 *
 * 设备初始化函数
@@ -138,7 +139,12 @@ void normalMode(void){
  *
  */
 void swipe(char * type){
+    int response;
     int value = readPhyNumber();
+    if(i == 1){
+        sendStr("请放置卡片！\r\n");
+        i ++;
+    }
     if(value == 1){
         openLed(LED_S3);
         delayMs(200);
@@ -147,10 +153,19 @@ void swipe(char * type){
         sendStr("\r\n");
 
         // 发送get请求
-        if(esp8266SendGet(type,phyNumber) == 1) {
+        response = esp8266SendGet(type,phyNumber);
+        if(response == 1) {
             sendStr("刷卡成功！\r\n");
+            delayMs(100);
+            i = 1;
+        }else if(response == -1){
+            sendStr("此卡未注册！\r\n");
+            delayMs(100);
+            i = 1;
         }else{
             sendStr("刷卡失败！\r\n");
+            delayMs(100);
+            i = 1;
         }
     }else if(value == 0){
         sendStr("debug 读卡错误！请重刷！ \r\n");
@@ -176,13 +191,14 @@ int main(void){
     //设置Rc522工作方式
 	M500PcdConfigISOType ( 'A' );
     sendStr("正在启动....\r\n");
-    delaySec(3);
+    delaySec(2);
     sendStr("\r\n\r\n\r\n");
     while (1){
         openLed(LED_ALL);
         key = getKeyValue(0);
         delayMs(200);
         if(mflag == 1){
+            sendStr("\r\n  Welcome to the driving school management system !  \r\n");
             sendStr("\r\n------------- 请选择模式----------------  \r\n");
             sendStr("\r\n----   按键 1  --->  管理员模式     ----  \r\n");
             sendStr("\r\n----   按键 2  --->  Swipe 模式     ----  \r\n");
@@ -191,10 +207,12 @@ int main(void){
         }
         if(key == 1){
             mflag = 1;
+            i = 1;
             adminMode();
             mflag = 1;
         }else if(key == 2){
             mflag = 1;
+            i = 1;
             normalMode();
             mflag = 1;
             break;

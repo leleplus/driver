@@ -23,7 +23,8 @@
 
     <select id="selectLogininforList" parameterType="com.leleplus.project.monitor.domain.SysLogininfor"
             resultMap="SysLogininforResult">
-        select account, user_name, ipaddr, login_location, browser, os, status, msg, login_time from sys_logininfor
+        select account, account, ipaddr, login_location, browser, os, status, msg, login_time
+        from sys_logininfor
         <where>
             <if test="ipaddr != null and ipaddr != ''">
                 AND ipaddr like concat('%', #{ipaddr}, '%')

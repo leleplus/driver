@@ -36,7 +36,7 @@
     </select>
     <insert id="insert" parameterType="com.leleplus.project.monitor.domain.SwipeRecord" useGeneratedKeys="true"
             keyProperty="id">
-        insert into rfid_card
+        insert into swipe_rfid_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test=" rfidId != null ">
                 rfid_id,

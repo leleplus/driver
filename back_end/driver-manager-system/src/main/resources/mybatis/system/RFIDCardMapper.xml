@@ -211,7 +211,7 @@
         SELECT
         <include refid="Base_sql"/>
         FROM rfid_card
-        WHERE phy_number = #{phyId,jdbcType=VARCHAR}
+        WHERE phy_number = #{phyId,jdbcType=VARCHAR} and deleted = 0
     </select>
 
     <resultMap type="com.leleplus.project.system.domain.UserRFID" id="Base_UserRFRID_Result_Map">

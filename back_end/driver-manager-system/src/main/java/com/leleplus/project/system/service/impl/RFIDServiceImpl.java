@@ -386,7 +386,7 @@ public class RFIDServiceImpl implements IRFIDService {
     @Override
     public void swipe(String machineId,String number) {
 
-        logger.debug("当前刷卡设备号: {}，当前卡号: {}",machineId,number);
+        logger.info("当前刷卡设备号: {}，当前卡号: {}",machineId,number);
 
 	    switch (machineId) {
 		    case ISwipeRecordService.REGISTER:

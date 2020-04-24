@@ -41,8 +41,8 @@ u8 esp_mode[] = "AT+CIPMUX=0\r\n";
 // 查看连接状态和连接参数
 u8 esp_status[] ="AT+CIPSTATUS\r\n";
 // 建立远程TCP连接(连接服务器) 返回OK
-//u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
-u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.31.198\",8080\r\n";
+u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
+//u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.31.198\",8080\r\n";
 // 发送数据，多少个字节 返回SEND OK
 //    u8 esp_cipsend[]="AT+CIPSEND=32\r\n";
 //    u8 esp_test[]="sunny\r\n";
@@ -164,6 +164,7 @@ void esp8266_init(void){
     sendStr("\r\n\r\n ----------------------------------- \r\n");
     sendStr("  ESP8266 Ready !! \r\n");
     sendStr(" ----------------------------------- \r\n\r\n");
+    setSingleLinkMode();
 }
 
 // 设置单连接模式
@@ -184,18 +185,16 @@ void setSingleLinkMode(void){
  */
 void espConnectServer(void){
     int i = 0;
-    clearCache();
-    setSingleLinkMode();
     sendStr("\r\n\r\n -------- Begin Connect To Server ---------- \r\n\r\n");
     
-    do{
+    while(1){
         clearCache();
         Uart2SendStr(esp_tcp);
         delaySec(2);
         if(strCompare("ALREAY CONNECT") || strCompare("OK")){
             break;
         }else if(strCompare("ERROR")){
-            delayMs(200);
+            delaySec(1);
             espConnectServer();
             return;
         }else {
@@ -203,10 +202,10 @@ void espConnectServer(void){
             clearCache();
             sendStr("\r\n Connected Server fail !  again ... \r\n");
             // 失败次数过多，跳出，证明已经连接
-            if(i >= 3) break;
+            //if(i >= 5) break;
         }
-        delayMs(600);
-    }while(1);
+        delayMs(800);
+    }
     clearCache();
     delaySec(2);
     sendStr("\r\n\r\n -------- Connected Server Ready !! ---------- \r\n\r\n");
@@ -274,15 +273,15 @@ void reStartEsp8266(void){
  * @param  cardId 卡号，拼接在URL后的参数
  * @return 1 刷卡成功 0 刷卡失败 （预计还有其它返回值）
  */
-u8 esp8266SendGet(char * type,char * cardId){
+int esp8266SendGet(char * type,char * cardId){
     u8 get[100];
     int response;
     
     // 实例请求http://127.0.0.1:8080/rfid/swipe/1/1
     
     // 封装get请求http协议格式（此格式为最小格式）
-    //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n","register",cardId);
-    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n",type,cardId);
+    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n",type,cardId);
+    //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n",type,cardId);
     // 发送内容大小
 //    u8 esp_content_size[sizeof(get)];
 
@@ -328,8 +327,10 @@ int esp8266CallBack(void){
         if(strCompare("\"code\":200")){
             // 请求成功，正正意义的请求成功
             return 1;
-        }else{
+        }else if(strCompare("\"code\":500")){
             // 请求确实回来了，但是不是200 同时刷卡失败,业务失败
+            return -1;
+        }else {
             return 0;
         }
     }

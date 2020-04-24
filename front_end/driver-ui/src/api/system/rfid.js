@@ -9,3 +9,22 @@ export function userBindRFID(id) {
         method: 'get',
     })
 }
+
+// 查询所有的RFID卡片
+export function listRFID(query) {
+    return request({
+        url: '/rfid/list',
+        method: 'get',
+        params: query
+    })
+}
+
+
+// 查询所有的刷卡记录
+export function listSwipeRecord(query) {
+    return request({
+        url: '/swipeRFIDRecord',
+        method: 'post',
+        params: query
+    })
+}

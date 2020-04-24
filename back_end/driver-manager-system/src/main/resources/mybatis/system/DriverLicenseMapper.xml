@@ -157,7 +157,6 @@
             <if test="searchValue != null">
                 search_value = #{searchValue,jdbcType=VARCHAR},
             </if>
-
             update_by = #{updateBy,jdbcType=VARCHAR},
             update_time = sysdate(),
             <if test="remark != null">
