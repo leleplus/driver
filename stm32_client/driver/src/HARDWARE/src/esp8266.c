@@ -41,8 +41,8 @@ u8 esp_mode[] = "AT+CIPMUX=0\r\n";
 // 查看连接状态和连接参数
 u8 esp_status[] ="AT+CIPSTATUS\r\n";
 // 建立远程TCP连接(连接服务器) 返回OK
-u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
-//u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.31.198\",8080\r\n";
+//u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"47.103.215.243\",9999\r\n";//CONNECT
+u8 esp_tcp[] = "AT+CIPSTART=\"TCP\",\"192.168.1.100\",9999\r\n";
 // 发送数据，多少个字节 返回SEND OK
 //    u8 esp_cipsend[]="AT+CIPSEND=32\r\n";
 //    u8 esp_test[]="sunny\r\n";
@@ -280,8 +280,8 @@ int esp8266SendGet(char * type,char * cardId){
     // 实例请求http://127.0.0.1:8080/rfid/swipe/1/1
     
     // 封装get请求http协议格式（此格式为最小格式）
-    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n",type,cardId);
-    //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.31.198\r\n\r\n",type,cardId);
+    //sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:47.103.215.243\r\n\r\n",type,cardId);
+    sprintf(get,"GET /rfid/swipe/%s/%s HTTP/1.1\r\nHost:192.168.1.100\r\n\r\n",type,cardId);
     // 发送内容大小
 //    u8 esp_content_size[sizeof(get)];
 
